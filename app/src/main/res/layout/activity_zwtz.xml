@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ruiduoyi.com.skyworthpda.view.activity.ZWTZActivity">
+    <android.support.v7.widget.Toolbar
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:titleTextColor="@color/white"
+        android:background="@color/colorPrimary"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:background="@drawable/border_shape"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:gravity="right|center_vertical"
+                android:text="生产线别"
+                android:layout_width="70dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="1px"
+                android:layout_height="match_parent" />
+            <Spinner
+                android:id="@+id/sp_xb_zwtzactivity"
+                android:layout_width="150dp"
+                android:layout_height="50dp"/>
+        </LinearLayout>
+        <TextView
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:gravity="right|center_vertical"
+                android:text="站位程序"
+                android:layout_width="70dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="1px"
+                android:layout_height="match_parent" />
+            <EditText
+                android:editable="false"
+                android:id="@+id/et_zwcx_zwtzactivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <TextView
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/tv_tv3_zwtzactivity"
+                android:gravity="right|center_vertical"
+                android:text="旧站位条码"
+                android:layout_width="70dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="1px"
+                android:layout_height="match_parent" />
+            <EditText
+
+                android:id="@+id/et_slzw_zwtzactivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <TextView
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/tv_tv4_zwtzactivity"
+                android:gravity="right|center_vertical"
+                android:text="调整后站位"
+                android:layout_width="70dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="1px"
+                android:layout_height="match_parent" />
+            <EditText
+                android:id="@+id/et_code_zwtzactivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <TextView
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+        <LinearLayout
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/ll_btncontainer_zwtzactivity"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <Button
+                android:id="@+id/btn_tz_zwtzactivity"
+                android:gravity="center"
+                android:text="调整"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <Button
+                android:id="@+id/btn_exit_zwtzactivity"
+                android:gravity="center"
+                android:text="退出"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:focusableInTouchMode="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:titleTextColor="@color/white"
+        android:id="@+id/toolbar"
+        android:transitionName="title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+    </android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.CardView
+        app:cardElevation="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:background="@drawable/border_shape"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:gravity="right|center_vertical"
+                android:text="生产线别"
+                android:layout_width="60dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="1px"
+                android:layout_height="match_parent" />
+            <LinearLayout
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <Spinner
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/sp_xb_scslactivity"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"/>
+                <CheckBox
+                    android:textSize="11sp"
+                    android:id="@+id/cb_jdsl_scslactivity"
+                    android:textColor="@color/red"
+                    android:text="仅待上料"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <TextView
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:gravity="right|center_vertical"
+                android:text="站位程序"
+                android:layout_width="60dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="1px"
+                android:layout_height="match_parent" />
+            <EditText
+
+                style="@style/BordEditTextStyle"
+                android:id="@+id/et_zwcx_scslactivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <TextView
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/tv_tv3_scslactivity"
+                android:gravity="right|center_vertical"
+                android:text="上料站位"
+                android:layout_width="60dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="1px"
+                android:layout_height="match_parent" />
+            <EditText
+
+                style="@style/BordEditTextStyle"
+                android:id="@+id/et_slzw_scslactivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <TextView
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/tv_tv4_scslactivity"
+                android:gravity="right|center_vertical"
+                android:text="二维条码"
+                android:layout_width="60dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="1px"
+                android:layout_height="match_parent" />
+            <EditText
+                style="@style/BordEditTextStyle"
+                android:id="@+id/et_code_scslactivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <TextView
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_btncontainer_scslactivity"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <Button
+                android:id="@+id/btn_bbqh_scslactivity"
+                android:gravity="center"
+                android:text="版本切换"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <Button
+                android:id="@+id/btn_dgxl_scslactivity"
+                android:gravity="center"
+                android:text="单个下料"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <Button
+                android:id="@+id/btn_qbxl_scslactivity"
+                android:gravity="center"
+                android:text="全部下料"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <HorizontalScrollView
+        android:id="@+id/hsv_recycler_container_scslactivity"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardElevation="2dp"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:background="@color/colorPrimary"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+                    <TextView
+                        android:gravity="center"
+                        android:text="站位"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:background="@color/gray"
+                        android:layout_width="1px"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:gravity="center"
+                        android:text="物料"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:background="@color/gray"
+                        android:layout_width="1px"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="替代料" />
+                    <TextView
+                        android:background="@color/gray"
+                        android:layout_width="1px"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:gravity="center"
+                        android:text="用量"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:background="@color/gray"
+                        android:layout_width="1px"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:gravity="center"
+                        android:text="剩余数量"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:background="@color/gray"
+                        android:layout_width="1px"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:gravity="center"
+                        android:text="可打板数"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_recycler_scslactivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </HorizontalScrollView>
+</LinearLayout>
