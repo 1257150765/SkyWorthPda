@@ -65,7 +65,14 @@ public class MainPresentor implements MainContact.Presentor {
         allChildTitles.add(childPzglTitle);
         allChildImgs.add(childPzglImg);
         view.onLoadPermissionSecceed(groupTitles,allChildTitles,allChildImgs);
+        //view.onShowTipsDailog("加载成功");
     }
+
+    @Override
+    public void checkUpdate() {
+
+    }
+
     public boolean isPermission(String functionCode){
         boolean isExist=false;
         for (int i=0;i<permissionStrArr.length;i++){

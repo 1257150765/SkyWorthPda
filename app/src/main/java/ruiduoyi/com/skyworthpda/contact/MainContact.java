@@ -9,11 +9,12 @@ import java.util.Map;
 
 public interface MainContact {
     public interface View extends BaseContact.View{
-
+        void onCheckUpdateSucceed(boolean hasNewVer,String url);
         void onLoadPermissionSecceed(List<String> groupTitles, List<List<String>> allChildTitles, List<List<Integer>> allChildImgs);
     }
 
     public interface Presentor{
         void loadPermission();
+        void checkUpdate();
     }
 }

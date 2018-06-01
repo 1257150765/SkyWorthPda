@@ -1,5 +1,6 @@
 package ruiduoyi.com.skyworthpda.view.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,17 +26,30 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     private static final String TAG = BaseActivity.class.getSimpleName();
     protected PreferenUtil preferenUtil;
     protected Animation anim;
-    private AlertDialog dialog;
+    private AlertDialog loadingDialog;
+    private AlertDialog tipsDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setTheme(App.themeId);
+        setTheme(App.themeId);
         preferenUtil = new PreferenUtil(this);
         anim= AnimationUtils.loadAnimation(this, R.anim.btn_apha);
         View view = LayoutInflater.from(this).inflate(R.layout.loading, null, false);
-        dialog = new AlertDialog.Builder(this,R.style.transBg)
+        loadingDialog = new AlertDialog.Builder(this,R.style.transBg)
                 .setView(view)
                 .setCancelable(false)
+                .create();
+        tipsDialog = new AlertDialog.Builder(this)
+                //.setView(R.layout.loading)
+                .setCancelable(true)
+                .setTitle("温馨提示")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
                 .create();
     }
 
@@ -43,16 +57,24 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
 
     @Override
     public void onLoading(boolean isLoading) {
-        if (null == dialog){
+        if (null == loadingDialog){
             return;
         }
         if (isLoading){
-            if (!dialog.isShowing()){
-                dialog.show();
+            if (!loadingDialog.isShowing()){
+                loadingDialog.show();
             }
         }else {
-            dialog.dismiss();
+            loadingDialog.dismiss();
         }
     }
 
+    @Override
+    public void onShowTipsDailog(String tips) {
+        if (null == tipsDialog){
+            return;
+        }
+        tipsDialog.setMessage(tips);
+        tipsDialog.show();
+    }
 }

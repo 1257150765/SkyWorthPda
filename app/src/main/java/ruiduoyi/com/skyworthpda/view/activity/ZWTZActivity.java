@@ -60,6 +60,7 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View{
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
         actionBar.setTitle("站位调整");
         spXb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -90,6 +91,7 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View{
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_tz_zwtzactivity:
+
                 break;
             case R.id.btn_exit_zwtzactivity:
                 finish();
@@ -100,7 +102,7 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View{
     @Override
     public void onLoadXbSucceed(List<String> xbData) {
         this.xbData = xbData;
-        xbAdapter = new ArrayAdapter<String>(ZWTZActivity.this, android.R.layout.simple_spinner_item, xbData);
+        xbAdapter = new ArrayAdapter<String>(ZWTZActivity.this, R.layout.item_spinner, xbData);
         spXb.setAdapter(xbAdapter);
     }
 

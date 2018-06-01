@@ -1,33 +1,46 @@
 <resources>
+    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
     </style>
-    <!-- Base application theme. -->
+    <!--主题颜色1-->
     <style name="AppTheme1" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#607d8b</item>
+        <item name="colorPrimaryDark">#37474f</item>
+        <item name="colorAccent">#78909c</item>
 
     </style>
+    <!--主题颜色2-->
     <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#3f51b5</item>
-        <item name="colorPrimaryDark">#1a2371</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">#03a9f4</item>
+        <item name="colorPrimaryDark">#0277bd</item>
+        <item name="colorAccent">#29b6f6</item>
 
     </style>
+    <!--主题颜色3-->
+    <style name="AppTheme3" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#259b24</item>
+        <item name="colorPrimaryDark">#0d5302</item>
+        <item name="colorAccent">#2baf2b</item>
 
+    </style>
+    <!--主题颜色4-->
+    <style name="AppTheme4" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#ff9800</item>
+        <item name="colorPrimaryDark">#e65100</item>
+        <item name="colorAccent">#ffa726</item>
+
+    </style>
 
     <style name="MainActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
         <!--透明状态栏-->
         <item name="android:windowTranslucentStatus">true</item>
         <!--透明导航栏-->
@@ -52,9 +65,20 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="transBg" parent="android:Theme.Dialog">
-        <!--背景颜色-->
+        <!--dialog的背景颜色-->
         <item name="android:windowBackground">@color/touming</item>
-        <!--去除背景的阴影-->
+        <!--去除dialog后面的阴影-->
         <item name="android:backgroundDimEnabled">false</item>
+    </style>
+    <style name="TextViewStyle">
+        <item name="android:layout_width">75dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">right|center_vertical</item>
+    </style>
+    <!--首次上料textview style-->
+    <style name="SCSLTextViewStyle">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">right|center_vertical</item>
     </style>
 </resources>

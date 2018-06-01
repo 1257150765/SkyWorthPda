@@ -1,19 +1,22 @@
 package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,9 +25,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import ruiduoyi.com.skyworthpda.App;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.LoginContact;
+import ruiduoyi.com.skyworthpda.model.bean.CompanyBean;
+import ruiduoyi.com.skyworthpda.model.bean.LoginBean;
 import ruiduoyi.com.skyworthpda.presentor.LoginPresenter;
 import ruiduoyi.com.skyworthpda.util.Config;
-import ruiduoyi.com.skyworthpda.util.LogWraper;
 
 public class LoginActivity extends BaseActivity implements LoginContact.View {
 
@@ -41,13 +45,13 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
     TextInputEditText etUserPwd;
     @BindView(R.id.tiluser_pwd_layout_loginactivity)
     TextInputLayout tiluserPwdLayout;
-    @BindView(R.id.cb_remember_loginactivity)
-    CheckBox cbRemember;
     @BindView(R.id.cv_login_loginactivity)
     CardView cvLogin;
+    @BindView(R.id.sp_companyname_loginactivity)
+    Spinner spCompanyname;
     private LoginPresenter presenter;
-    private boolean isChecked = true;
-    private int firstColor = Config.COLOR_FIRST_GREEN;
+    private List<CompanyBean.UcDataBean> companyNameList;
+    private CompanyBean.UcDataBean companyBean = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,19 +65,25 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
 
     @Override
     protected void initView() {
-
-        if (preferenUtil.getBoolean(Config.CACHE_DATA_REMEMBER)){
-            etUserId.setText(preferenUtil.getString(Config.CACHE_DATA_USERNAME));
-            etUserPwd.setText(preferenUtil.getString(Config.CACHE_DATA_PWD));
-        }
-        cbRemember.setChecked(true);
-        cbRemember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        etUserId.setText(preferenUtil.getString(Config.CACHE_DATA_USERCODE));
+        spCompanyname.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                LoginActivity.this.isChecked = isChecked;
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //LogWraper.d(TAG,"position:"+position);
+                if (companyNameList == null){
+                    return;
+                }
+                companyBean = companyNameList.get(position);
+                App.setThemeId(position);
+                preferenUtil.setInt(Config.THEME_ID,position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                App.setThemeId(0);
+                preferenUtil.setInt(Config.THEME_ID,0);
             }
         });
-
     }
 
     @OnClick(R.id.cv_login_loginactivity)
@@ -81,45 +91,87 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
         cvLogin.startAnimation(anim);
         String userName = etUserId.getText().toString();
         String pwd = etUserPwd.getText().toString();
-        if ("".equals(userName)){
+        if (null == companyBean){
+            Snackbar.make(getWindow().getDecorView(),"系统名称不能为空",Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        if ("".equals(userName)) {
             tilUserIdLayout.setError("账号不能为空");
             tilUserIdLayout.setErrorEnabled(true);
             return;
         }
-        if ("".equals(pwd)){
+        if ("".equals(pwd)) {
             tiluserPwdLayout.setError("密码不能为空");
             tiluserPwdLayout.setErrorEnabled(true);
             return;
         }
         tilUserIdLayout.setErrorEnabled(false);
         tiluserPwdLayout.setErrorEnabled(false);
-        presenter.login(userName,pwd);
+        //presenter.login(companyBean.getSrvID(),userName, pwd);
+        presenter.checkUpdate(companyBean.getSrvID());
+    }
+
+
+
+    @Override
+    public void onLoadConpanyNameSucceed(List<CompanyBean.UcDataBean> companyNameList) {
+        this.companyNameList = companyNameList;
+        String code = preferenUtil.getString(Config.CACHE_DATA_COMPANYCODE);
+        List<String> data = new ArrayList<>(companyNameList.size());
+        for (CompanyBean.UcDataBean bean:companyNameList){
+            data.add(bean.getSrvName());
+        }
+        spCompanyname.setAdapter(new ArrayAdapter<String>(this, R.layout.item_spinner, data));
+        for (int i = 0; i < companyNameList.size(); i++) {
+            if (code.equals(companyNameList.get(i).getSrvID())){
+                spCompanyname.setSelection(i);
+            }
+        }
     }
 
     @Override
-    public void onLoginSecceed(String userName,String pwd) {
-        preferenUtil.setBoolean(Config.CACHE_DATA_REMEMBER,isChecked);
-        if (isChecked){
-            preferenUtil.setString(Config.CACHE_DATA_USERNAME,userName);
-            preferenUtil.setString(Config.CACHE_DATA_PWD,pwd);
-        }else {
-            preferenUtil.setString(Config.CACHE_DATA_USERNAME,"");
-            preferenUtil.setString(Config.CACHE_DATA_PWD,"");
-        }
+    public void onLoginSecceed(String companyCode, LoginBean.UcDataBean ucDataBean) {
+        preferenUtil.setString(Config.CACHE_DATA_USERNAME, ucDataBean.getUsr_yhmc());
+        preferenUtil.setString(Config.CACHE_DATA_USERCODE, ucDataBean.getUsr_yhdm());
+        preferenUtil.setString(Config.CACHE_DATA_COMPANYCODE, companyCode);
+        preferenUtil.setString(Config.CACHE_DATA_COMPANYNAME, ucDataBean.getUsr_gsmc());
+        preferenUtil.setString(Config.CACHE_DATA_USERTOKEN, ucDataBean.getUsr_tokenid());
+        preferenUtil.setString(Config.CACHE_DATA_BM, ucDataBean.getUsr_bmmc());
         startActivity(new Intent(this, MainActivity.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-        //startActivity(new Intent(LoginActivity.this,MainActivity.class));
         LoginActivity.this.finish();
     }
 
     @Override
-    public void onLoginFalse(String userNameErrorInfo, String pwdErrorInfo) {
-        if (!"".equals(userNameErrorInfo)){
-            tilUserIdLayout.setError(userNameErrorInfo);
-            tilUserIdLayout.setErrorEnabled(true);
+    public void onCheckUpdateSucceed(boolean hasUpdate, final String url) {
+        final String userName = etUserId.getText().toString();
+        final String pwd = etUserPwd.getText().toString();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        if (hasUpdate) {
+            builder.setCancelable(false)
+                    .setMessage("发现新版本，点击确定开始更新")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            presenter.update(url);
+                        }
+                    });
+        } else {
+            builder.setCancelable(true)
+                    .setMessage("未发现新版本，是否更新")
+                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            presenter.update(url);
+                        }
+                    })
+                    .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            presenter.login(companyBean.getSrvID(),userName, pwd);
+                        }
+                    });
         }
-        if (!"".equals(pwdErrorInfo)){
-            tiluserPwdLayout.setError(pwdErrorInfo);
-            tiluserPwdLayout.setErrorEnabled(true);
-        }
+        builder.create().show();
     }
 }

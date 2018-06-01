@@ -1,7 +1,9 @@
 package ruiduoyi.com.skyworthpda.contact;
 
 import java.util.List;
-import java.util.Map;
+
+import ruiduoyi.com.skyworthpda.model.bean.CompanyBean;
+import ruiduoyi.com.skyworthpda.model.bean.LoginBean;
 
 /**
  * Created by Chen on 2018/5/7.
@@ -9,12 +11,15 @@ import java.util.Map;
 
 public interface LoginContact {
      public interface View extends BaseContact.View{
-        void onLoginSecceed(String userName,String pwd);
-        void onLoginFalse(String userNameErrorInfo,String pwdErrorInfo);
-    }
+        void onLoadConpanyNameSucceed(List<CompanyBean.UcDataBean> companyNameList);
+         void onLoginSecceed(String companyName, LoginBean.UcDataBean ucDataBean);
+         void onCheckUpdateSucceed(boolean hasUpdate,String url);
+     }
 
     public interface Presentor {
-        void login(String userName, String pwd);
-
+        void login(String companyName, String userName, String pwd);
+        void loadCompanyName();
+        void checkUpdate(String companyCode);
+        void update(String url);
     }
 }

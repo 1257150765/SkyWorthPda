@@ -9,13 +9,14 @@
     <android.support.v7.widget.Toolbar
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:titleTextColor="@color/white"
-        android:background="@color/colorPrimary"
+        android:background="?android:attr/colorPrimary"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp">
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:background="@drawable/border_shape"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -27,14 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <TextView
-                android:gravity="right|center_vertical"
-                android:text="生产线别"
-                android:layout_width="70dp"
-                android:layout_height="match_parent" />
-            <TextView
-                android:background="@color/gray"
-                android:layout_width="1px"
-                android:layout_height="match_parent" />
+                android:text="生产线别:"
+                style="@style/TextViewStyle"/>
             <Spinner
                 android:id="@+id/sp_xb_zwtzactivity"
                 android:layout_width="150dp"
@@ -49,16 +44,14 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <TextView
-                android:gravity="right|center_vertical"
-                android:text="站位程序"
-                android:layout_width="70dp"
-                android:layout_height="match_parent" />
-            <TextView
-                android:background="@color/gray"
-                android:layout_width="1px"
-                android:layout_height="match_parent" />
+                style="@style/TextViewStyle"
+                android:text="站位程序:"
+                />
+
             <EditText
+                android:focusable="false"
                 android:editable="false"
+                android:textSize="@dimen/nomalTextSize"
                 android:id="@+id/et_zwcx_zwtzactivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -73,16 +66,9 @@
             android:layout_height="50dp">
             <TextView
                 android:id="@+id/tv_tv3_zwtzactivity"
-                android:gravity="right|center_vertical"
-                android:text="旧站位条码"
-                android:layout_width="70dp"
-                android:layout_height="match_parent" />
-            <TextView
-                android:background="@color/gray"
-                android:layout_width="1px"
-                android:layout_height="match_parent" />
+                android:text="旧站位条码:"
+                style="@style/TextViewStyle"/>
             <EditText
-
                 android:id="@+id/et_slzw_zwtzactivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
@@ -97,14 +83,8 @@
             android:layout_height="50dp">
             <TextView
                 android:id="@+id/tv_tv4_zwtzactivity"
-                android:gravity="right|center_vertical"
-                android:text="调整后站位"
-                android:layout_width="70dp"
-                android:layout_height="match_parent" />
-            <TextView
-                android:background="@color/gray"
-                android:layout_width="1px"
-                android:layout_height="match_parent" />
+                android:text="调整后站位:"
+                style="@style/TextViewStyle"/>
             <EditText
                 android:id="@+id/et_code_zwtzactivity"
                 android:layout_width="match_parent"
@@ -123,13 +103,22 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <Button
+                android:textColor="@color/white"
+                android:background="@drawable/btn_click_selector"
                 android:id="@+id/btn_tz_zwtzactivity"
                 android:gravity="center"
                 android:text="调整"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
+            <TextView
+                android:background="@color/white"
+                android:layout_width="1px"
+                android:layout_height="match_parent" />
+
             <Button
+                android:textColor="@color/white"
+                android:background="@drawable/btn_click_selector"
                 android:id="@+id/btn_exit_zwtzactivity"
                 android:gravity="center"
                 android:text="退出"

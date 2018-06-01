@@ -9,7 +9,7 @@
     <android.support.v7.widget.Toolbar
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:titleTextColor="@color/white"
-        android:background="@color/colorPrimary"
+        android:background="?android:attr/colorPrimary"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp">
@@ -27,13 +27,10 @@
             android:layout_height="50dp">
             <TextView
                 android:gravity="right|center_vertical"
-                android:text="生产线别"
+                android:text="生产线别:"
                 android:layout_width="60dp"
                 android:layout_height="match_parent" />
-            <TextView
-                android:background="@color/gray"
-                android:layout_width="1px"
-                android:layout_height="match_parent" />
+
             <Spinner
                 android:id="@+id/sp_xb_pgxjactivity"
                 android:layout_width="150dp"
@@ -50,15 +47,13 @@
             android:layout_height="50dp">
 
             <TextView
-                android:text="校验站位"
+                android:text="校验站位:"
                 android:gravity="right|center_vertical"
                 android:layout_width="60dp"
                 android:layout_height="match_parent" />
-            <TextView
-                android:background="@color/gray"
-                android:layout_width="1px"
-                android:layout_height="match_parent" />
+
             <EditText
+                android:focusable="false"
                 android:editable="false"
                 style="@style/BordEditTextStyle"
                 android:id="@+id/et_jyzw_pgxjactivity"
@@ -75,13 +70,9 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <TextView
-                android:text="站位程序"
+                android:text="站位程序:"
                 android:gravity="right|center_vertical"
                 android:layout_width="60dp"
-                android:layout_height="match_parent" />
-            <TextView
-                android:background="@color/gray"
-                android:layout_width="1px"
                 android:layout_height="match_parent" />
             <EditText
                 style="@style/BordEditTextStyle"
@@ -104,13 +95,10 @@
             <TextView
                 android:id="@+id/tv_tv4_pgxjactivity"
                 android:gravity="right|center_vertical"
-                android:text="二维条码"
+                android:text="二维条码:"
                 android:layout_width="60dp"
                 android:layout_height="match_parent" />
-            <TextView
-                android:background="@color/gray"
-                android:layout_width="1px"
-                android:layout_height="match_parent" />
+
             <EditText
                 style="@style/BordEditTextStyle"
                 android:id="@+id/et_code_pgxjactivity"
@@ -159,11 +147,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
-                android:background="@color/colorPrimary"
+                android:background="?android:attr/colorAccent"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
                 <TextView
+                    android:textColor="@color/white"
                     android:gravity="center"
                     android:text="站位"
                     android:layout_width="50dp"
@@ -173,6 +162,7 @@
                     android:layout_width="1px"
                     android:layout_height="match_parent" />
                 <TextView
+                    android:textColor="@color/white"
                     android:gravity="center"
                     android:text="物料"
                     android:layout_width="150dp"
@@ -181,8 +171,8 @@
                     android:background="@color/gray"
                     android:layout_width="1px"
                     android:layout_height="match_parent" />
-
                 <TextView
+                    android:textColor="@color/white"
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -192,11 +182,11 @@
                     android:layout_width="1px"
                     android:layout_height="match_parent" />
                 <TextView
+                    android:textColor="@color/white"
                     android:gravity="center"
                     android:text="核对"
                     android:layout_width="50dp"
                     android:layout_height="match_parent" />
-
             </LinearLayout>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_recycler_pgxjactivity"

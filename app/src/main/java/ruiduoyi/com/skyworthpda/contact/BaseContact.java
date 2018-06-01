@@ -8,6 +8,7 @@ public interface BaseContact {
 
     public interface View{
         void onLoading(boolean isLoading);
+        void onShowTipsDailog(String tips);
     }
     public interface Presentor{
 

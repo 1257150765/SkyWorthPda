@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ruiduoyi.com.skyworthpda">
+    package="ruiduoyi.com.skyworthpda"
+    android:versionCode="1"
+    android:versionName="1.0.0.1">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -26,16 +27,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:windowSoftInputMode="stateHidden"
             android:name=".view.activity.SCSLActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:windowSoftInputMode="stateHidden"
             android:name=".view.activity.ZWTZActivity"
             android:label="@string/title_activity_zwtz"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".view.activity.PGXJActivity"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+        <service android:name=".util.DownloadService"/>
     </application>
 
 </manifest>

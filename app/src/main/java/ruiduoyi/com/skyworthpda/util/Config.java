@@ -7,6 +7,7 @@ import android.graphics.Color;
  */
 
 public class Config {
+    public static final String BASE_URL = "http://192.168.0.106:9999/RdyService.asmx/";
     public static final String CACHE_DATA_USERNAME = "userName";
     public static final String CACHE_DATA_PWD = "pwd";
     public static final String CACHE_DATA_REMEMBER = "isRemember";
@@ -22,10 +23,18 @@ public class Config {
     public static final String PERMISSION_PZGL = "品质管理";
     public static final String PERMISSION_PZGL_PGXJ_CODE = "PZGL_001";
     public static final String PERMISSION_PZGL_PGXJ_NAME = "品管巡检";
-    //主色
-    public static final int COLOR_FIRST_GREEN = Color.parseColor("#03a9f4");
-    //深色背景色
-    public static final int COLOR_SECOND_GREEN = Color.parseColor("#0277bd");
-    //浅色背景色
-    public static final int COLOR_THREE_GREEN = Color.parseColor("#4fc3f7");
+    public static final String THEME_ID = "1";
+    public static final String CACHE_DATA_COMPANYNAME = "companyName";
+
+
+    public static final String TYPE_INTERFACE_UPDATE = "99999";
+    public static final String TYPE_INTERFACE_DATE = "99998";
+    public static final String TYPE_INTERFACE_LOGIN = "99997";
+    public static final String TYPE_INTERFACE_PERMISSION = "99996";
+    public static final String TYPE_INTERFACE_XB= "99995";
+    public static final String TYPE_INTERFACE_GETCOMPANYLIST = "10000";
+    public static final String CACHE_DATA_USERTOKEN = "token";
+    public static final String CACHE_DATA_BM = "bm";
+    public static final String CACHE_DATA_USERCODE = "userCode";
+    public static final String CACHE_DATA_COMPANYCODE= "companyCode";
 }

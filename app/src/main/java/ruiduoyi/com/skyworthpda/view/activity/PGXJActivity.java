@@ -82,7 +82,7 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
     @Override
     public void onLoadXbSucceed(List<String> xbData) {
         this.xbData = xbData;
-        xbAdapter = new ArrayAdapter<String>(PGXJActivity.this, android.R.layout.simple_spinner_item, xbData);
+        xbAdapter = new ArrayAdapter<String>(PGXJActivity.this, R.layout.item_spinner, xbData);
         spXb.setAdapter(xbAdapter);
     }
 

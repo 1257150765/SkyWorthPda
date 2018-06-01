@@ -2,16 +2,11 @@ package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
-import android.transition.Slide;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.animation.OvershootInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,18 +34,13 @@ import ruiduoyi.com.skyworthpda.view.adapter.SCSLAdapter;
  */
 
 public class SCSLActivity extends BaseScanActivity implements SCSLContact.View {
-    @BindView(R.id.et_code_scslactivity)
-    EditText etCode;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.sp_xb_scslactivity)
     Spinner spXb;
     @BindView(R.id.cb_jdsl_scslactivity)
     CheckBox cbJdsl;
-    @BindView(R.id.et_zwcx_scslactivity)
-    EditText etZwcx;
-    @BindView(R.id.et_slzw_scslactivity)
-    EditText etSlzw;
     @BindView(R.id.btn_bbqh_scslactivity)
     Button btnBbqh;
     @BindView(R.id.btn_dgxl_scslactivity)
@@ -67,6 +57,12 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View {
     TextView tvTv3;
     @BindView(R.id.tv_tv4_scslactivity)
     TextView tvTv4;
+    @BindView(R.id.et_edit1_scslactivity)
+    EditText etEdit1;//第一个输入框
+    @BindView(R.id.et_edit2_scslactivity)
+    EditText etEdit2;//第二个输入框
+    @BindView(R.id.et_edit3_scslactivity)
+    EditText etEdit3;//第三个输入框
     private ArrayAdapter<String> xbAdapter;
     private List<String> xbData;
     private SCSLContact.Presentor presentor;
@@ -98,8 +94,8 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View {
                 break;
             //生产续料
             case Config.PERMISSION_FCL_SCXL_NAME:
-                tvTv3.setText("旧料盘");
-                tvTv4.setText("新料盘");
+                tvTv3.setText("旧料盘:");
+                tvTv4.setText("新料盘:");
                 break;
             //上料确认
             case Config.PERMISSION_FCL_SLQR_NAME:
@@ -163,7 +159,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View {
     public void onLoadDataSucceed(List<SCSLBean> data) {
         SCSLAdapter adapter = new SCSLAdapter(data);
         //DefaultItemAnimator itemAnimator = new DefaultItemAnimator();
-       // itemAnimator.setAddDuration(500L);
+        // itemAnimator.setAddDuration(500L);
         //itemAnimator.setRemoveDuration(500L);
         //rvRecycler.setItemAnimator(itemAnimator);
        /* SlideInUpAnimator animator = new SlideInUpAnimator(new OvershootInterpolator(1f));
