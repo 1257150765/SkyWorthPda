@@ -6,6 +6,9 @@ import java.util.List;
  * Created by Chen on 2018/6/6.
  */
 
+/**
+ * 站位程序
+ */
 public class ZWCXBean {
 
     /**

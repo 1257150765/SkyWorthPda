@@ -244,7 +244,13 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     }
 
 
-
+    /**
+     * 检查二维码成功
+     * @param type QRCODE
+     * @param code 二维码
+     * @param wldm 物料代码
+     * @param qty 数量
+     */
     @Override
     public void onCheckQRCODESucceed(String type, String code,String wldm,String qty) {
         focusEditText.setText(code);
@@ -266,6 +272,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                     onShowTipsDailog("请扫描站位");
                     return;
                 }
+
                 if ("".equals(etEdit3.getText().toString().trim())){
                     onShowTipsDailog("请扫描条码");
                     return;
@@ -300,17 +307,30 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
 
     }
 
+    /**
+     * 执行成功
+     */
     @Override
     public void onExcuteSucceed() {
 
     }
 
+    /**
+     * 检查站位成功
+     * @param type
+     * @param code
+     */
     @Override
     public void onCheckZWSucceed(String type, String code) {
         etEdit2.setText(code);
         etEdit3.requestFocus();
     }
 
+    /**
+     * 监听三个输入框的焦点变化
+     * @param v
+     * @param hasFocus
+     */
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus){
@@ -320,6 +340,12 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         }
     }
 
+    /**
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -331,6 +357,11 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
             }
         }
     }
+
+    /**
+     * 获取线别列表成功
+     * @param xbData
+     */
     @Override
     public void onLoadXbSucceed(List<XbBean.UcDataBean> xbData) {
         this.xbData = xbData;
@@ -342,6 +373,10 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         spXb.setAdapter(xbAdapter);
     }
 
+    /**
+     * 获取已上料信息成功
+     * @param data
+     */
     @Override
     public void onLoadDataSucceed(List<SLXXBean.UcDataBean> data) {
         SCSLAdapter adapter = new SCSLAdapter(data);

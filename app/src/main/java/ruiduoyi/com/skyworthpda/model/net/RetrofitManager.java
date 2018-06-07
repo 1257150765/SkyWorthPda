@@ -30,6 +30,7 @@ import ruiduoyi.com.skyworthpda.model.bean.SCXLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLQRBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLXXBean;
 import ruiduoyi.com.skyworthpda.model.bean.VersionSwitchBean;
+import ruiduoyi.com.skyworthpda.model.bean.WLXXBean;
 import ruiduoyi.com.skyworthpda.model.bean.XLZWBean;
 import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 import ruiduoyi.com.skyworthpda.model.bean.ZWCXBean;
@@ -253,6 +254,19 @@ public class RetrofitManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    /**
+     * 物料下线
+     * @param wlxxType 全体、单个
+     * @param xb 线别
+     * @param v_oricode 二维码
+     * @param zw 下料站位
+     * @return
+     */
+    public static Observable<WLXXBean> wlxx(String wlxxType, String xb, String v_oricode, String zw){
+        return retrofit.create(Api.class).wlxx(Config.TYPE_INTERFACE_WLXX,wlxxType,xb,v_oricode,zw)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
     interface Api{
         @GET("SmtPDADataDeal")
@@ -296,6 +310,9 @@ public class RetrofitManager {
 
         @GET("SmtPDADataDeal")
         Observable<PGXJRecordBean> getRecord(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm);
+
+        @GET("SmtPDADataDeal")
+        Observable<WLXXBean> wlxx(@Query("key_prgid") String key_prgid, @Query("key_type") String key_type, @Query("key_qrcode") String key_qrcode, @Query("key_xbdm") String key_xbdm, @Query("key_zwdm") String key_zwdm);
 
     }
 }

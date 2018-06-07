@@ -1,22 +1,15 @@
 package ruiduoyi.com.skyworthpda.model.bean;
 
-import java.util.List;
-
 /**
  * Created by Chen on 2018/6/6.
  */
 
+import java.util.List;
+
 /**
- * 站位调整
+ * 物料下线
  */
-public class ZWTZBean {
-
-    /**
-     * utStatus : false
-     * ucMsg : 20006你扫描的旧站位不存在当前的站位表中！
-     * ucData : []
-     */
-
+public class WLXXBean {
     private boolean utStatus;
     private String ucMsg;
     private List<?> ucData;

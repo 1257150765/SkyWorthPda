@@ -6,6 +6,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import ruiduoyi.com.skyworthpda.contact.WLXXContact;
 import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
+import ruiduoyi.com.skyworthpda.model.bean.WLXXBean;
 import ruiduoyi.com.skyworthpda.model.bean.XLZWBean;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 
@@ -22,6 +23,11 @@ public class WLXXPresentor implements WLXXContact.Presentor {
         this.view = view;
     }
 
+    /**
+     * 加载下料站位
+     * @param xb
+     * @param qrcode
+     */
     @Override
     public void loadXXZW(String xb, String qrcode) {
         view.onLoading(true);
@@ -34,7 +40,11 @@ public class WLXXPresentor implements WLXXContact.Presentor {
             @Override
             public void onNext(XLZWBean value) {
                 view.onLoading(false);
-
+                if (value.isUtStatus()){
+                    view.onLoadXXZWSucceed(value.getUcData());
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
             }
 
             @Override
@@ -50,6 +60,10 @@ public class WLXXPresentor implements WLXXContact.Presentor {
         });
     }
 
+    /**
+     * 检查二维码
+     * @param key_chkval
+     */
     @Override
     public void checkQRCODE(String key_chkval) {
         view.onLoading(true);
@@ -73,6 +87,45 @@ public class WLXXPresentor implements WLXXContact.Presentor {
             public void onError(Throwable e) {
                 view.onLoading(false);
                 view.onShowTipsDailog("二维码验证出错");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    /**
+     * 执行物料下线
+     * @param wlxxType
+     * @param xb
+     * @param v_oricode
+     * @param xlzw
+     */
+    @Override
+    public void wlxx(String wlxxType, String xb, String v_oricode, String xlzw) {
+        view.onLoading(true);
+        RetrofitManager.wlxx(wlxxType,xb,v_oricode,xlzw).subscribe(new Observer<WLXXBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(WLXXBean value) {
+                view.onLoading(false);
+                if (value.isUtStatus()){
+
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.onLoading(false);
+                view.onShowTipsDailog("下料出错");
             }
 
             @Override

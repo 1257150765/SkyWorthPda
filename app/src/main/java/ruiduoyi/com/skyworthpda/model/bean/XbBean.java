@@ -6,6 +6,10 @@ import java.util.List;
  * Created by Chen on 2018/6/4.
  */
 
+/**
+ * 线别列表
+ */
+
 public class XbBean {
 
     /**
