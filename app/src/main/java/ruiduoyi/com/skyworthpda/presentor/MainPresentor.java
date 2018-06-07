@@ -6,8 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.MainContact;
+import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
+import ruiduoyi.com.skyworthpda.model.ceche.PreferenUtil;
+import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.util.Config;
 
 /**
@@ -17,54 +22,64 @@ import ruiduoyi.com.skyworthpda.util.Config;
 public class MainPresentor implements MainContact.Presentor {
     private MainContact.View view;
     private Context context;
-    private String[] permissionStrArr;
+    private PreferenUtil preferenUtil;
     public MainPresentor(MainContact.View view, Context context) {
         this.view = view;
         this.context = context;
+        preferenUtil = new PreferenUtil(context);
         loadPermission();
     }
 
     @Override
     public void loadPermission() {
-        List<String> groupTitles=new ArrayList<>();
-        final List<List<String>> allChildTitles=new ArrayList<>();
-        List<List<Integer>> allChildImgs=new ArrayList<>();
-        groupTitles.add(Config.PERMISSION_FCL);
-        groupTitles.add(Config.PERMISSION_PZGL);
-        String permissionStr = "FCL_001,FCL_002,FCL_003,FCL_004,PZGL_001";
-        permissionStrArr = permissionStr.split(",");
-        //防错料
-        List<String> childFclTitle = new ArrayList<>();
-        List<Integer> childFclImg = new ArrayList<>();
-        if (isPermission(Config.PERMISSION_FCL_SCSL_CODE)){
-            childFclTitle.add(Config.PERMISSION_FCL_SCSL_NAME);
-            childFclImg.add(R.mipmap.scsl);
-        }
-        if (isPermission(Config.PERMISSION_FCL_SCXL_CODE)){
-            childFclTitle.add(Config.PERMISSION_FCL_SCXL_NAME);
-            childFclImg.add(R.mipmap.scxl);
-        }
-        if (isPermission(Config.PERMISSION_FCL_SLQR_CODE)){
-            childFclTitle.add(Config.PERMISSION_FCL_SLQR_NAME);
-            childFclImg.add(R.mipmap.scqr);
-        }
-        if (isPermission(Config.PERMISSION_FCL_ZWTZ_CODE)){
-            childFclTitle.add(Config.PERMISSION_FCL_ZWTZ_NAME);
-            childFclImg.add(R.mipmap.zwtz);
-        }
-        allChildTitles.add(childFclTitle);
-        allChildImgs.add(childFclImg);
+        RetrofitManager.getPermission()
+                .subscribe(new Observer<PermissionBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-        //品质管理
-        List<String> childPzglTitle = new ArrayList<>();
-        List<Integer> childPzglImg = new ArrayList<>();
-        if (isPermission(Config.PERMISSION_PZGL_PGXJ_CODE)){
-            childPzglTitle.add(Config.PERMISSION_PZGL_PGXJ_NAME);
-            childPzglImg.add(R.mipmap.pgxj);
-        }
-        allChildTitles.add(childPzglTitle);
-        allChildImgs.add(childPzglImg);
-        view.onLoadPermissionSecceed(groupTitles,allChildTitles,allChildImgs);
+                    }
+
+                    @Override
+                    public void onNext(PermissionBean value) {
+                        if (value.isUtStatus()){
+                            List<PermissionBean.UcDataBean> ucDatas = value.getUcData();
+                            List<PermissionBean.UcDataBean> titles = new ArrayList<>();
+                            List<List<PermissionBean.UcDataBean>> childs = new ArrayList<>();
+                            for (PermissionBean.UcDataBean bean : ucDatas) {
+                                //当没有收录并且是第一层时
+                                if (!titles.contains(bean) && bean.getG_px() == 1){
+                                    titles.add(bean);
+                                }
+                                if (bean.getG_px() == 2){
+                                    for (int i=0; i<titles.size();i++){
+                                        PermissionBean.UcDataBean bean2 = titles.get(i);
+                                        if (bean2.getG_mkdm() == bean.getG_mkdm()){
+                                            if (childs.size() <= i){
+                                                List<PermissionBean.UcDataBean> list = new ArrayList<>();
+                                                list.add(bean);
+                                                childs.add(i,list);
+                                            }else {
+                                                childs.get(i).add(bean);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            view.onLoadPermissionSecceed(titles,childs);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
         //view.onShowTipsDailog("加载成功");
     }
 
@@ -72,14 +87,5 @@ public class MainPresentor implements MainContact.Presentor {
     public void checkUpdate() {
 
     }
-
-    public boolean isPermission(String functionCode){
-        boolean isExist=false;
-        for (int i=0;i<permissionStrArr.length;i++){
-            if (permissionStrArr[i].equals(functionCode)){
-                isExist=true;
-            }
-        }
-        return isExist;
-    }
+    
 }

@@ -3,14 +3,14 @@ package ruiduoyi.com.skyworthpda.model.bean;
 import java.util.List;
 
 /**
- * Created by Chen on 2018/6/5.
+ * Created by Chen on 2018/6/6.
  */
 
-public class SCSLBean {
+public class ZWTZBean {
 
     /**
      * utStatus : false
-     * ucMsg : 20001站位表中不存在该站位，请确认后扫描!
+     * ucMsg : 20006你扫描的旧站位不存在当前的站位表中！
      * ucData : []
      */
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="250dp"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    tools:context="ruiduoyi.com.skyworthpda.view.activity.VersionSwitchActivity">
+    <android.support.v7.widget.Toolbar
+        app:titleTextColor="@color/white"
+        android:id="@+id/toolbar"
+        android:background="?attr/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:textSize="@dimen/nomalTextSize"
+        android:id="@+id/tv_text_versionSwitch"
+        android:text="SMT01当前生产的站位程序"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:editable="false"
+        android:singleLine="true"
+        android:textSize="@dimen/nomalTextSize"
+        android:id="@+id/ed_edit_versionSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/nomalTextSize"
+        android:text="请选择需切换的站位程序"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Spinner
+        android:spinnerMode="dropdown"
+        android:id="@+id/sp_spinner_versionSwitch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </Spinner>
+    <Button
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:background="?attr/colorPrimary"
+        android:id="@+id/btn_save_versionSwitch"
+        android:text="保存"
+        android:textSize="@dimen/nomalTextSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:layout_marginTop="5dp"
+        android:textColor="@color/white"
+        android:background="?attr/colorPrimary"
+        android:id="@+id/btn_calcel_versionSwitch"
+        android:text="取消"
+        android:textSize="@dimen/nomalTextSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

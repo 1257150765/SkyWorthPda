@@ -11,7 +11,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ruiduoyi.com.skyworthpda.R;
-import ruiduoyi.com.skyworthpda.model.bean.SCSLBean;
+import ruiduoyi.com.skyworthpda.model.bean.SLXXBean;
 
 /**
  * Created by Chen on 2018/5/8.
@@ -19,9 +19,9 @@ import ruiduoyi.com.skyworthpda.model.bean.SCSLBean;
 
 public class SCSLAdapter extends RecyclerView.Adapter<SCSLAdapter.SCSLHolder> {
     private OnItemClickListener onItemClickListener;
-    private List<SCSLBean> data;
+    private List<SLXXBean.UcDataBean> data;
 
-    public SCSLAdapter(List<SCSLBean> data) {
+    public SCSLAdapter(List<SLXXBean.UcDataBean> data) {
         this.data = data;
     }
 
@@ -36,12 +36,13 @@ public class SCSLAdapter extends RecyclerView.Adapter<SCSLAdapter.SCSLHolder> {
 
     @Override
     public void onBindViewHolder(SCSLHolder holder, final int position) {
-        holder.tvZw.setText(data.get(position).getZw());
-        holder.tvWl.setText(data.get(position).getWl());
-        holder.tvTdl.setText(data.get(position).getTdl());
-        holder.tvYl.setText(data.get(position).getYl());
-        holder.tvSysl.setText(data.get(position).getSyyl());
-        holder.tvKdbs.setText(data.get(position).getKdbs());
+
+        holder.tvZw.setText(data.get(position).getZwl_zwdm());
+        holder.tvWl.setText(data.get(position).getZwl_wldm());
+        holder.tvTdl.setText(data.get(position).getZwl_dywldm());
+        holder.tvYl.setText(""+data.get(position).getZwl_dwyl());
+        holder.tvSysl.setText(""+data.get(position).getZwl_osqty());
+        holder.tvKdbs.setText(""+data.get(position).getZwl_kdbs());
         holder.content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,8 +57,8 @@ public class SCSLAdapter extends RecyclerView.Adapter<SCSLAdapter.SCSLHolder> {
     public int getItemCount() {
         return data.size();
     }
-    public void addItem(List<SCSLBean> data){
-        for (SCSLBean bean:data) {
+    public void addItem(List<SLXXBean> data){
+        for (SLXXBean bean:data) {
             data.add(0,bean);
             notifyItemInserted(0);
         }
@@ -84,6 +85,6 @@ public class SCSLAdapter extends RecyclerView.Adapter<SCSLAdapter.SCSLHolder> {
         }
     }
     interface OnItemClickListener{
-        void onItemClick(SCSLBean scslBean,int position);
+        void onItemClick(SLXXBean.UcDataBean scslBean, int position);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ruiduoyi.com.skyworthpda.R;
-import ruiduoyi.com.skyworthpda.model.bean.PGXJBean;
+import ruiduoyi.com.skyworthpda.model.bean.PGXJRecordBean;
 
 /**
  * Created by Chen on 2018/5/14.
@@ -19,9 +19,9 @@ import ruiduoyi.com.skyworthpda.model.bean.PGXJBean;
 
 public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
 
-    private List<PGXJBean> data;
+    private List<PGXJRecordBean.UcDataBean> data;
 
-    public PGXJAdapter(List<PGXJBean> data) {
+    public PGXJAdapter(List<PGXJRecordBean.UcDataBean> data) {
         this.data = data;
     }
 
@@ -32,11 +32,11 @@ public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
 
     @Override
     public void onBindViewHolder(PGXJHolder holder, int position) {
-        PGXJBean pgxjBean = data.get(position);
-        holder.tvZw.setText(pgxjBean.getZw());
-        holder.tvWl.setText(pgxjBean.getWl());
-        holder.tvTdl.setText(pgxjBean.getTdl());
-        holder.tvJd.setText(pgxjBean.getJd());
+        PGXJRecordBean.UcDataBean pgxjBean = data.get(position);
+        holder.tvZw.setText(pgxjBean.getXjd_zwdm());
+        holder.tvWl.setText(pgxjBean.getXjd_wldm());
+        holder.tvTdl.setText(pgxjBean.getXjd_dywl());
+        holder.tvJd.setText(pgxjBean.getXjd_chkms());
     }
 
     @Override

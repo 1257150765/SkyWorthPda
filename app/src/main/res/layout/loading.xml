@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <com.github.ybq.android.spinkit.SpinKitView
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/spin_kit"
-    style="@style/SpinKitView.Wave"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
+    style="@style/SpinKitView.Circle"
+    android:layout_width="200px"
+    android:layout_height="200px"
+    android:padding="30px"
     android:layout_gravity="center"
-    app:SpinKit_Color="?attr/colorPrimary" />
+    android:background="@drawable/loading_shape"
+    app:SpinKit_Color="@color/white" />
+

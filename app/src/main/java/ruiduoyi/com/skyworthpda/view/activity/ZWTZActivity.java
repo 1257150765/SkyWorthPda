@@ -2,7 +2,6 @@ package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,9 +20,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.ZWTZContact;
+import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 import ruiduoyi.com.skyworthpda.presentor.ZWTZPresentor;
 
-public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View{
+public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -43,8 +44,9 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View{
     @BindView(R.id.btn_exit_zwtzactivity)
     Button btnExit;
     private ZWTZContact.Presentor presentor;
-    private List<String> xbData;
+    private List<XbBean.UcDataBean> xbData;
     private ArrayAdapter<String> xbAdapter;
+    private XbBean.UcDataBean bean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,6 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View{
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
         actionBar.setTitle("站位调整");
         spXb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -68,7 +69,8 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View{
                 if (null == xbData) {
                     return;
                 }
-                presentor.loadZW(xbData.get(position));
+                bean = xbData.get(position);
+                etZwcx.setText(bean.getXbm_zwcxdm());
             }
 
             @Override
@@ -91,7 +93,21 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View{
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_tz_zwtzactivity:
-
+                if (null == bean){
+                    showSnakeBar("请选择线别");
+                    return;
+                }
+                String oldZw = etSlzw.getText().toString().trim();
+                String newZw = etCode.getText().toString().trim();
+                if ("".equals(oldZw)){
+                    showSnakeBar("请扫描旧站位");
+                    return;
+                }
+                if ("".equals(oldZw)){
+                    showSnakeBar("请扫描新站位");
+                    return;
+                }
+                presentor.zwtz(bean.getXbm_xbdm(),oldZw,newZw);
                 break;
             case R.id.btn_exit_zwtzactivity:
                 finish();
@@ -100,19 +116,29 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View{
     }
 
     @Override
-    public void onLoadXbSucceed(List<String> xbData) {
+    public void onLoadXbSucceed(List<XbBean.UcDataBean> xbData) {
         this.xbData = xbData;
-        xbAdapter = new ArrayAdapter<String>(ZWTZActivity.this, R.layout.item_spinner, xbData);
+        List<String> xbDataStr = new ArrayList<>();
+        for (XbBean.UcDataBean bean : xbData){
+            xbDataStr.add(bean.getXbm_xbdm());
+        }
+        xbAdapter = new ArrayAdapter<String>(ZWTZActivity.this, R.layout.item_spinner, xbDataStr);
         spXb.setAdapter(xbAdapter);
     }
 
     @Override
-    public void onLoadZwSucceed(String zwStr) {
-        etZwcx.setText(zwStr);
+    public void onCheckZwSucceed(String zw) {
+        if (etSlzw.hasFocus()){
+            etSlzw.setText(zw);
+            etCode.requestFocus();
+        }else if (etCode.hasFocus()){
+            etCode.setText(zw);
+        }
     }
+
 
     @Override
     protected void onReceiveCode(String code) {
-
+        presentor.checkZw(code);
     }
 }

@@ -78,6 +78,7 @@ public class LoginPresenter implements LoginContact.Presentor {
 
     @Override
     public void loadCompanyName() {
+        view.onLoading(true);
         RetrofitManager.getCompanyList().subscribe(new Observer<CompanyBean>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -90,7 +91,7 @@ public class LoginPresenter implements LoginContact.Presentor {
                 if (value.isUtStatus()){
                     view.onLoadConpanyNameSucceed(value.getUcData());
                 }else {
-                    view.onShowTipsDailog("获取公司名称失败");
+                    view.onShowTipsDailog(value.getUcMsg());
                 }
             }
 
@@ -98,6 +99,7 @@ public class LoginPresenter implements LoginContact.Presentor {
             public void onError(Throwable e) {
                 e.printStackTrace();
                 view.onLoading(false);
+                view.onShowTipsDailog("获取公司名称失败");
             }
 
             @Override

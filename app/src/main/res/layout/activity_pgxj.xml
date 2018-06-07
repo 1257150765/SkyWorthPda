@@ -75,6 +75,7 @@
                 android:layout_width="60dp"
                 android:layout_height="match_parent" />
             <EditText
+                android:singleLine="true"
                 style="@style/BordEditTextStyle"
                 android:id="@+id/et_zwcx_pgxjactivity"
                 android:layout_width="match_parent"

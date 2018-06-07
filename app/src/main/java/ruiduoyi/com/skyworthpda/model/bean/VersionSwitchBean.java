@@ -1,22 +1,20 @@
 package ruiduoyi.com.skyworthpda.model.bean;
 
-import java.util.List;
-
 /**
- * Created by Chen on 2018/6/5.
+ * Created by Chen on 2018/6/6.
  */
 
-public class SCSLBean {
+public class VersionSwitchBean {
 
     /**
-     * utStatus : false
-     * ucMsg : 20001站位表中不存在该站位，请确认后扫描!
-     * ucData : []
+     * utStatus : true
+     * ucMsg : 操作成功！
+     * ucData :
      */
 
     private boolean utStatus;
     private String ucMsg;
-    private List<?> ucData;
+    private String ucData;
 
     public boolean isUtStatus() {
         return utStatus;
@@ -34,11 +32,11 @@ public class SCSLBean {
         this.ucMsg = ucMsg;
     }
 
-    public List<?> getUcData() {
+    public String getUcData() {
         return ucData;
     }
 
-    public void setUcData(List<?> ucData) {
+    public void setUcData(String ucData) {
         this.ucData = ucData;
     }
 }

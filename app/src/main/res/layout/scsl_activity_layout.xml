@@ -64,6 +64,8 @@
                 android:text="站位程序:"
                 style="@style/SCSLTextViewStyle" />
             <EditText
+                android:ellipsize="end"
+                android:singleLine="true"
                 style="@style/BordEditTextStyle"
                 android:id="@+id/et_edit1_scslactivity"
                 android:layout_width="match_parent"
@@ -83,6 +85,7 @@
                 style="@style/SCSLTextViewStyle" />
 
             <EditText
+                android:singleLine="true"
                 style="@style/BordEditTextStyle"
                 android:id="@+id/et_edit2_scslactivity"
                 android:layout_width="match_parent"
@@ -101,6 +104,7 @@
                 android:text="二维条码:"
                 style="@style/SCSLTextViewStyle" />
             <EditText
+                android:singleLine="true"
                 style="@style/BordEditTextStyle"
                 android:id="@+id/et_edit3_scslactivity"
                 android:layout_width="match_parent"
@@ -147,7 +151,7 @@
                 android:background="@drawable/btn_click_selector"
                 android:id="@+id/btn_qbxl_scslactivity"
                 android:gravity="center"
-                android:text="全部下料"
+                android:text="整体下料"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />

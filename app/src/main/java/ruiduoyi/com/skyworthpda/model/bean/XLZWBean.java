@@ -1,16 +1,19 @@
 package ruiduoyi.com.skyworthpda.model.bean;
 
+/**
+ * Created by Chen on 2018/6/6.
+ */
+
 import java.util.List;
 
 /**
- * Created by Chen on 2018/6/5.
+ * 下料站位
  */
-
-public class SCSLBean {
+public class XLZWBean {
 
     /**
      * utStatus : false
-     * ucMsg : 20001站位表中不存在该站位，请确认后扫描!
+     * ucMsg : 10003当前线别没有该物料的可下料信息！
      * ucData : []
      */
 

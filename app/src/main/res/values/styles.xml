@@ -64,9 +64,11 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="transBg" parent="android:Theme.Dialog">
+    <style name="transBg">
         <!--dialog的背景颜色-->
         <item name="android:windowBackground">@color/touming</item>
+        <item name="android:layout_gravity">center</item>
+
         <!--去除dialog后面的阴影-->
         <item name="android:backgroundDimEnabled">false</item>
     </style>
@@ -81,4 +83,15 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">right|center_vertical</item>
     </style>
+    <style name="DialogActivity" parent="Base.ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>//对话框无标题
+        <item name="android:windowIsTranslucent">true</item>//此对话框的背景
+        <item name="android:windowBackground">@color/white</item>//对话框是否透明
+        <item name="android:windowContentOverlay">@null</item>//对话框是否有遮盖
+        <item name="android:windowIsFloating">true</item> //对话框是否浮动
+        <item name="android:backgroundDimEnabled">true</item>//是否允许对话框的背景变暗
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    </style>
+
 </resources>

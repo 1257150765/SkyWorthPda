@@ -49,6 +49,7 @@
                 />
 
             <EditText
+                android:singleLine="true"
                 android:focusable="false"
                 android:editable="false"
                 android:textSize="@dimen/nomalTextSize"
@@ -95,8 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px" />
         <LinearLayout
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
+
             android:layout_gravity="center_horizontal"
             android:id="@+id/ll_btncontainer_zwtzactivity"
             android:orientation="horizontal"

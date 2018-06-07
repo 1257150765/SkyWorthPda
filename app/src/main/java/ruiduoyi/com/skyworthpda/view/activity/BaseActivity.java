@@ -2,17 +2,15 @@ package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ProgressBar;
-
-import com.github.ybq.android.spinkit.SpinKitView;
-import com.github.ybq.android.spinkit.style.DoubleBounce;
 
 import ruiduoyi.com.skyworthpda.App;
 import ruiduoyi.com.skyworthpda.R;
@@ -28,18 +26,18 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     protected Animation anim;
     private AlertDialog loadingDialog;
     private AlertDialog tipsDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(App.themeId);
-        preferenUtil = new PreferenUtil(this);
+        preferenUtil = new PreferenUtil(getApplicationContext());
         anim= AnimationUtils.loadAnimation(this, R.anim.btn_apha);
         View view = LayoutInflater.from(this).inflate(R.layout.loading, null, false);
         loadingDialog = new AlertDialog.Builder(this,R.style.transBg)
                 .setView(view)
                 .setCancelable(false)
                 .create();
+
         tipsDialog = new AlertDialog.Builder(this)
                 //.setView(R.layout.loading)
                 .setCancelable(true)
@@ -63,7 +61,12 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
         if (isLoading){
             if (!loadingDialog.isShowing()){
                 loadingDialog.show();
+                WindowManager.LayoutParams params = loadingDialog.getWindow().getAttributes();
+                params.height = 250;
+                params.width = 250;
+                loadingDialog.getWindow().setAttributes(params);
             }
+
         }else {
             loadingDialog.dismiss();
         }
@@ -77,4 +80,9 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
         tipsDialog.setMessage(tips);
         tipsDialog.show();
     }
+
+    public void showSnakeBar(String tips){
+        Snackbar.make(getWindow().getDecorView(),tips,Snackbar.LENGTH_SHORT).show();
+    }
+
 }

@@ -29,6 +29,8 @@ import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.BGABannerUtil;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.MainContact;
+import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
+import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.presentor.MainPresentor;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.view.adapter.MainExpandableMenuAdapter;
@@ -72,8 +74,8 @@ public class MainActivity extends BaseActivity implements MainContact.View {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main);
-        getWindow().setEnterTransition(new Explode().setDuration(600));
-        getWindow().setExitTransition(new Explode().setDuration(600));
+        //getWindow().setEnterTransition(new Explode().setDuration(600));
+        //getWindow().setExitTransition(new Explode().setDuration(600));
         ButterKnife.bind(this);
         initView();
         presentor = new MainPresentor(this, this);
@@ -125,6 +127,8 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_switch_layout_mainactivity:
+                RetrofitManager.setToken("");
+                RetrofitManager.setCompanyName("");
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
                 break;
@@ -167,32 +171,71 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     }
 
     @Override
-    public void onLoadPermissionSecceed(List<String> groupTitles, final List<List<String>> allChildTitles, List<List<Integer>> allChildImgs) {
+    public void onLoadPermissionSecceed(List<PermissionBean.UcDataBean> titles, final List<List<PermissionBean.UcDataBean>> childs) {
+        List<String> groupTitles = new ArrayList<>();
+        for (PermissionBean.UcDataBean bean1:titles) {
+            groupTitles.add(bean1.getG_mkmc());
+        }
+        //子标题
+        List<List<String>> allChildTitles = new ArrayList<>();
+        //子标题的图片
+        List<List<Integer>> allChildImgs = new ArrayList<>();
+        for (List<PermissionBean.UcDataBean> bean2:childs) {
+            List<String> dataStr = new ArrayList<>();
+            List<Integer> dataImg = new ArrayList<>();
+            for (PermissionBean.UcDataBean bean3 : bean2){
+                dataStr.add(bean3.getG_cxmc());
+                switch (bean3.getG_cxdm()){
+                    case Config.PERMISSION_FCL_SCSL_CODE:
+                        dataImg.add(R.mipmap.scsl);
+                        break;
+                    //生产续料
+                    case Config.PERMISSION_FCL_SCXL_CODE:
+                        dataImg.add(R.mipmap.scxl);
+                        break;
+                    //上料确认
+                    case Config.PERMISSION_FCL_SLQR_CODE:
+                        dataImg.add(R.mipmap.scqr);
+                        break;
+                    //站位调整
+                    case Config.PERMISSION_FCL_ZWTZ_CODE:
+                        dataImg.add(R.mipmap.zwtz);
+                        break;
+                    //品管巡检
+                    case Config.PERMISSION_PZGL_PGXJ_CODE:
+                        dataImg.add(R.mipmap.pgxj);
+                        break;
+                }
+            }
+            allChildTitles.add(dataStr);
+            allChildImgs.add(dataImg);
+        }
+
         MainExpandableMenuAdapter adapter = new MainExpandableMenuAdapter(MainActivity.this, R.layout.item_main_title,
                 R.layout.item_main_group_title, groupTitles, allChildTitles, allChildImgs);
         elvExpandedMenu.setAdapter(adapter);
         elvExpandedMenu.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                switch (allChildTitles.get(groupPosition).get(childPosition)) {
+                switch (childs.get(groupPosition).get(childPosition).getG_cxdm()) {
                     //首次上料
-                    case Config.PERMISSION_FCL_SCSL_NAME:
+                    case Config.PERMISSION_FCL_SCSL_CODE:
                         gotoSCSL(Config.PERMISSION_FCL_SCSL_NAME);
                         break;
                     //生产续料
-                    case Config.PERMISSION_FCL_SCXL_NAME:
+                    case Config.PERMISSION_FCL_SCXL_CODE:
                         gotoSCSL(Config.PERMISSION_FCL_SCXL_NAME);
                         break;
                     //上料确认
-                    case Config.PERMISSION_FCL_SLQR_NAME:
+                    case Config.PERMISSION_FCL_SLQR_CODE:
                         gotoSCSL(Config.PERMISSION_FCL_SLQR_NAME);
                         break;
                     //站位调整
-                    case Config.PERMISSION_FCL_ZWTZ_NAME:
+                    case Config.PERMISSION_FCL_ZWTZ_CODE:
                         gotoZWTZ();
                         break;
                     //品管巡检
-                    case Config.PERMISSION_PZGL_PGXJ_NAME:
+                    case Config.PERMISSION_PZGL_PGXJ_CODE:
                         gotoPGXJ();
                         break;
                 }
@@ -200,6 +243,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
             }
         });
     }
+
 
     private void gotoPGXJ() {
         Intent intent = new Intent(MainActivity.this, PGXJActivity.class);

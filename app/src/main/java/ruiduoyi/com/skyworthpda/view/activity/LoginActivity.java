@@ -27,11 +27,11 @@ import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.LoginContact;
 import ruiduoyi.com.skyworthpda.model.bean.CompanyBean;
 import ruiduoyi.com.skyworthpda.model.bean.LoginBean;
+import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.presentor.LoginPresenter;
 import ruiduoyi.com.skyworthpda.util.Config;
 
 public class LoginActivity extends BaseActivity implements LoginContact.View {
-
     private static final String TAG = LoginActivity.class.getSimpleName();
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -61,7 +61,6 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
         initView();
         presenter = new LoginPresenter(this, this);
     }
-
 
     @Override
     protected void initView() {
@@ -107,8 +106,8 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
         }
         tilUserIdLayout.setErrorEnabled(false);
         tiluserPwdLayout.setErrorEnabled(false);
-        //presenter.login(companyBean.getSrvID(),userName, pwd);
-        presenter.checkUpdate(companyBean.getSrvID());
+        presenter.login(companyBean.getSrvID(),userName, pwd);
+        //presenter.checkUpdate(companyBean.getSrvID());
     }
 
 
@@ -137,7 +136,10 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
         preferenUtil.setString(Config.CACHE_DATA_COMPANYNAME, ucDataBean.getUsr_gsmc());
         preferenUtil.setString(Config.CACHE_DATA_USERTOKEN, ucDataBean.getUsr_tokenid());
         preferenUtil.setString(Config.CACHE_DATA_BM, ucDataBean.getUsr_bmmc());
-        startActivity(new Intent(this, MainActivity.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        //直接保存起来
+        RetrofitManager.setCompanyName(companyCode);
+        RetrofitManager.setToken(ucDataBean.getUsr_tokenid());
+        startActivity(new Intent(this, MainActivity.class)/*, ActivityOptions.makeSceneTransitionAnimation(this).toBundle()*/);
         LoginActivity.this.finish();
     }
 
@@ -145,7 +147,6 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
     public void onCheckUpdateSucceed(boolean hasUpdate, final String url) {
         final String userName = etUserId.getText().toString();
         final String pwd = etUserPwd.getText().toString();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         if (hasUpdate) {
             builder.setCancelable(false)
@@ -174,4 +175,5 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
         }
         builder.create().show();
     }
+
 }

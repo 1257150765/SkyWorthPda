@@ -2,7 +2,8 @@ package ruiduoyi.com.skyworthpda.contact;
 
 import java.util.List;
 
-import ruiduoyi.com.skyworthpda.model.bean.SCSLBean;
+import ruiduoyi.com.skyworthpda.model.bean.SLXXBean;
+import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 
 /**
  * Created by Chen on 2018/5/8.
@@ -10,11 +11,19 @@ import ruiduoyi.com.skyworthpda.model.bean.SCSLBean;
 
 public interface SCSLContact {
     public interface View extends BaseContact.View{
-        void onLoadXbSucceed(List<String> xbData);
-        void onLoadDataSucceed(List<SCSLBean> data);
+        void onLoadXbSucceed(List<XbBean.UcDataBean> xbData);
+        void onLoadDataSucceed(List<SLXXBean.UcDataBean> data);
+        void onCheckZWSucceed(String type,String code);
+        void onCheckQRCODESucceed(String type,String code,String wldm,String qty);
+        void onExcuteSucceed();
     }
     public interface Presentor{
         void loadXb();
-        void loadData(String xbStr);
+        void loadData(String xbStr,String key_flag);
+        void checkZW(String type, String code);
+        void checkQRCODE(String type, String code);
+        void scsl(String xbm_xbdm, String zw,String code, String wldm, String qty);
+        void scxl(String xbm_xbdm, String oldCoed, String code, String wldm, String qty);
+        void slqr(String xbm_xbdm, String zw, String code, String wldm);
     }
 }

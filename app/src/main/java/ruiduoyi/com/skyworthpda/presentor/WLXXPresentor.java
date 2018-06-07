@@ -1,0 +1,84 @@
+package ruiduoyi.com.skyworthpda.presentor;
+
+import android.content.Context;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import ruiduoyi.com.skyworthpda.contact.WLXXContact;
+import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
+import ruiduoyi.com.skyworthpda.model.bean.XLZWBean;
+import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
+
+/**
+ * Created by Chen on 2018/6/6.
+ */
+
+public class WLXXPresentor implements WLXXContact.Presentor {
+    private Context context;
+    private WLXXContact.View view;
+
+    public WLXXPresentor(Context context, WLXXContact.View view) {
+        this.context = context;
+        this.view = view;
+    }
+
+    @Override
+    public void loadXXZW(String xb, String qrcode) {
+        view.onLoading(true);
+        RetrofitManager.getXLZW(xb,qrcode).subscribe(new Observer<XLZWBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(XLZWBean value) {
+                view.onLoading(false);
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.onLoading(false);
+                view.onShowTipsDailog("加载下料站位出错");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    @Override
+    public void checkQRCODE(String key_chkval) {
+        view.onLoading(true);
+        RetrofitManager.checkQRCODE("QRCODE",key_chkval).subscribe(new Observer<CheckQRCODEBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(CheckQRCODEBean value) {
+                view.onLoading(false);
+                if (value.isUtStatus()){
+                    view.onCheckQRCODESucceed(value.getUcData().get(0));
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.onLoading(false);
+                view.onShowTipsDailog("二维码验证出错");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+}
