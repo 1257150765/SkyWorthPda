@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -85,6 +86,9 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     private String edit2ScanType = "";
     private String edit3ScanType = "";
     private AlertDialog dialog;
+    private SCSLAdapter adapter;
+    private List<SLXXBean.UcDataBean> slData;
+    private String curXb = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +124,11 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 }else {
                     key_flag = "0";
                 }
-                presentor.loadData(bean.getXbm_xbdm(),key_flag);
+                if (startType.equals(Config.PERMISSION_FCL_SLQR_NAME)){
+                    presentor.loadQRData(bean.getXbm_xbdm(), key_flag);
+                }else {
+                    presentor.loadData(bean.getXbm_xbdm(), key_flag);
+                }
             }
         });
 
@@ -140,7 +148,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 break;
             //上料确认
             case Config.PERMISSION_FCL_SLQR_NAME:
-                edit2ScanType = Config.CHECK_TYPE_QRCODE;
+                edit2ScanType = Config.CHECK_TYPE_ZWM;
                 edit3ScanType = Config.CHECK_TYPE_QRCODE;
                 break;
         }
@@ -148,12 +156,17 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         spXb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (null == xbData) {
+                if (null == xbData || position == 0) {
+                    bean = null;
+                    curXb = "";
+                    clearData();
                     return;
                 }
-                bean = xbData.get(position);
+                bean = xbData.get(position - 1);
+                curXb = bean.getXbm_xbdm();
                 setZwcx(bean.getXbm_zwcxdm());
                 presentor.loadData(bean.getXbm_xbdm(),key_flag);
+
             }
 
             @Override
@@ -161,6 +174,16 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 bean = xbData.get(0);
             }
         });
+    }
+
+    private void clearData() {
+        etEdit1.setText("");
+        etEdit2.setText("");
+        etEdit3.setText("");
+        if (adapter != null && slData != null){
+            slData.clear();
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void setZwcx(String xbm_zwcxdm) {
@@ -178,6 +201,14 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     }
 
     @Override
+    public void onExecuteSucceed() {
+        super.onExecuteSucceed();
+        presentor.loadData(bean.getXbm_xbdm(),key_flag);
+        etEdit2.setText("");
+        etEdit3.setText("");
+    }
+
+    @Override
     protected void onReceiveCode(String code) {
         String type = "";
         if (focusEditText.getId() == etEdit2.getId()){
@@ -185,6 +216,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         }else if (focusEditText.getId() == etEdit3.getId()){
             type = edit3ScanType;
         }
+
         LogWraper.d(TAG,"--"+type+","+code);
         if ("".equals(type) || "".equals(code)){
             return;
@@ -198,13 +230,13 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
 
     @OnClick({R.id.btn_bbqh_scslactivity, R.id.btn_dgxl_scslactivity, R.id.btn_qbxl_scslactivity})
     public void onViewClicked(View view) {
+        if (null == bean){
+            showSnakeBar("请选择线别");
+            return;
+        }
         switch (view.getId()) {
             //版本切换
             case R.id.btn_bbqh_scslactivity:
-                if (null == bean){
-                    showSnakeBar("请选择线别");
-                    return;
-                }
                 Intent intent = new Intent(this,VersionSwitchActivity.class);
                 intent.putExtra(Config.EXTRA_DATE_XB,bean.getXbm_xbdm());
                 intent.putExtra(Config.EXTRA_DATE_ZWCX,bean.getXbm_zwcxdm());
@@ -212,10 +244,6 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 break;
             //单个下料
             case R.id.btn_dgxl_scslactivity:
-                if (null == bean){
-                    showSnakeBar("请选择线别");
-                    return;
-                }
                 Intent intent2 = new Intent(this,WLXXActivity.class);
                 intent2.putExtra(Config.EXTRA_DATE_XB,bean.getXbm_xbdm());
                 startActivityForResult(intent2,REQUEST_CODE_WLXX);
@@ -229,7 +257,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
+                                    presentor.wlxx(Config.WLXX_TYPE_QTXL,bean.getXbm_xbdm());
                                 }
                             }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                 @Override
@@ -272,7 +300,6 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                     onShowTipsDailog("请扫描站位");
                     return;
                 }
-
                 if ("".equals(etEdit3.getText().toString().trim())){
                     onShowTipsDailog("请扫描条码");
                     return;
@@ -304,16 +331,14 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 presentor.slqr(bean.getXbm_xbdm(),edit2Str,code,wldm);
                 break;
         }
-
     }
 
-    /**
-     * 执行成功
-     */
     @Override
-    public void onExcuteSucceed() {
-
+    public void onWLXXSucceed() {
+        super.onExecuteSucceed();
+        presentor.loadXb();
     }
+
 
     /**
      * 检查站位成功
@@ -354,6 +379,9 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 case REQUEST_CODE_VERSIONSWITCH:
                     presentor.loadXb();
                     break;
+                case REQUEST_CODE_WLXX:
+                    presentor.loadData(bean.getXbm_xbdm(),key_flag);
+                    break;
             }
         }
     }
@@ -366,11 +394,20 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     public void onLoadXbSucceed(List<XbBean.UcDataBean> xbData) {
         this.xbData = xbData;
         List<String> xbDataStr = new ArrayList<>();
-        for (XbBean.UcDataBean bean : xbData){
+        xbDataStr.add("");
+        int index = 0;
+        for (int i=0; i<xbData.size(); i++){
+            XbBean.UcDataBean bean = xbData.get(i);
             xbDataStr.add(bean.getXbm_xbdm());
+            if (curXb.equals(bean.getXbm_xbdm())){
+                index = i + 1;
+            }
         }
         xbAdapter = new ArrayAdapter<String>(SCSLActivity.this, R.layout.item_spinner, xbDataStr);
         spXb.setAdapter(xbAdapter);
+        Log.d(TAG, "onLoadXbSucceed: curXb:"+curXb);
+        Log.d(TAG, "onLoadXbSucceed: index:"+index);
+        spXb.setSelection(index);
     }
 
     /**
@@ -379,7 +416,8 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
      */
     @Override
     public void onLoadDataSucceed(List<SLXXBean.UcDataBean> data) {
-        SCSLAdapter adapter = new SCSLAdapter(data);
+        this.slData = data;
+        adapter = new SCSLAdapter(data);
         rvRecycler.setAdapter(adapter);
         rvRecycler.setLayoutManager(new LinearLayoutManager(SCSLActivity.this));
         //adapter.notifyItemRangeInserted(0,data.size());

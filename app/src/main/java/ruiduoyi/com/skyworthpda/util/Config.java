@@ -39,8 +39,10 @@ public class Config {
 
     public static final String TYPE_INTERFACE_GETCOMPANYLIST = "10000";
     public static final String TYPE_INTERFACE_GETSLXX = "10001";
+
     public static final String TYPE_INTERFACE_GETXLZW = "10003";
     public static final String TYPE_INTERFACE_GETHAVERECORE = "10004";
+    public static final String TYPE_INTERFACE_GETECORE = "10005";
 
     public static final String TYPE_INTERFACE_SCSL = "20001";
     public static final String TYPE_INTERFACE_VERSIONSWITCH = "20002";
@@ -48,6 +50,7 @@ public class Config {
     public static final String TYPE_INTERFACE_SCXL = "20004";
     public static final String TYPE_INTERFACE_SCQR = "20005";
     public static final String TYPE_INTERFACE_ZWTZ = "20006";
+    public static final String TYPE_INTERFACE_PGXJ = "20007";
 
     public static final String CHECK_TYPE_ZWM = "ZWM";
     public static final String CHECK_TYPE_QRCODE = "QRCODE";
@@ -72,10 +75,12 @@ public class Config {
     public static final String EXTRA_STARTTYPE_VERSIONSWITCH = "startTpye";
 
 
-    public static final String TYPE_INTERFACE_GETECORE = "10005";
+
     public static final String PGXJ_TYPE_ADD = "ADD";
     public static final String PGXJ_TYPE_SCAN = "SCAN";
     public static final String WLXX_TYPE_QTXL = "A";
     public static final String WLXX_TYPE_DGXL = "B";
+
+
 
 }

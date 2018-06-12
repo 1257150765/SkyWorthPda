@@ -15,6 +15,7 @@ import ruiduoyi.com.skyworthpda.model.bean.SCSLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SCXLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLQRBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLXXBean;
+import ruiduoyi.com.skyworthpda.model.bean.WLXXBean;
 import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.util.LogWraper;
@@ -181,7 +182,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             public void onNext(SCSLBean value) {
                 view.onLoading(false);
                 if (value.isUtStatus()){
-                    view.onExcuteSucceed();
+                    view.onExecuteSucceed();
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
                 }
@@ -202,6 +203,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
 
     @Override
     public void scxl(String xbm_xbdm, String oldCoed, String code, String wldm, String qty) {
+        view.onLoading(true);
         RetrofitManager.scxl(xbm_xbdm,oldCoed,code,wldm,qty).subscribe(new Observer<SCXLBean>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -210,12 +212,18 @@ public class SCSLPresentor implements SCSLContact.Presentor {
 
             @Override
             public void onNext(SCXLBean value) {
-
+                view.onLoading(false);
+                if (value.isUtStatus()){
+                    view.onExecuteSucceed();
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
             }
 
             @Override
             public void onError(Throwable e) {
-
+                view.onLoading(false);
+                view.onShowTipsDailog("续料失败");
             }
 
             @Override
@@ -237,13 +245,17 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             @Override
             public void onNext(SLQRBean value) {
                 view.onLoading(false);
-
+                if (value.isUtStatus()){
+                    view.onExecuteSucceed();
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
             }
 
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
-                view.onShowTipsDailog("确认失败");
+                view.onShowTipsDailog("上料确认失败");
             }
 
             @Override
@@ -251,5 +263,76 @@ public class SCSLPresentor implements SCSLContact.Presentor {
 
             }
         });
+    }
+    /**
+     * 执行物料下线
+     * @param wlxxType
+     * @param xb
+     */
+    @Override
+    public void wlxx(String wlxxType, String xb) {
+        view.onLoading(true);
+        RetrofitManager.wlxx(wlxxType,xb,"","","").subscribe(new Observer<WLXXBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(WLXXBean value) {
+                view.onLoading(false);
+                if (value.isUtStatus()){
+                    view.onWLXXSucceed();
+                    //view.onExecuteSucceed();
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.onLoading(false);
+                view.onShowTipsDailog("下料出错");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    @Override
+    public void loadQRData(String xbm_xbdm, String key_flag) {
+        view.onLoading(true);
+        List<SLXXBean> data = new ArrayList<>();
+        /*RetrofitManager.getQRXX(xbm_xbdm,key_flag).subscribe(new Observer<SLXXBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(SLXXBean value) {
+                view.onLoading(false);
+                if (value.isUtStatus()){
+                    view.onLoadDataSucceed(value.getUcData());
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                view.onLoading(false);
+                view.onShowTipsDailog("加载出错");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });*/
     }
 }

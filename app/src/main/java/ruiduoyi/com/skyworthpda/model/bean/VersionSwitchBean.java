@@ -4,6 +4,8 @@ package ruiduoyi.com.skyworthpda.model.bean;
  * Created by Chen on 2018/6/6.
  */
 
+import java.util.List;
+
 /**
  * 版本切换
  */
@@ -17,7 +19,7 @@ public class VersionSwitchBean {
 
     private boolean utStatus;
     private String ucMsg;
-    private String ucData;
+    private List<?> ucData;
 
     public boolean isUtStatus() {
         return utStatus;
@@ -35,11 +37,11 @@ public class VersionSwitchBean {
         this.ucMsg = ucMsg;
     }
 
-    public String getUcData() {
+    public List<?> getUcData() {
         return ucData;
     }
 
-    public void setUcData(String ucData) {
+    public void setUcData(List<?> ucData) {
         this.ucData = ucData;
     }
 }

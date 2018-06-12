@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.model.bean.SLXXBean;
+import ruiduoyi.com.skyworthpda.util.Util;
 
 /**
  * Created by Chen on 2018/5/8.
@@ -36,18 +37,33 @@ public class SCSLAdapter extends RecyclerView.Adapter<SCSLAdapter.SCSLHolder> {
 
     @Override
     public void onBindViewHolder(SCSLHolder holder, final int position) {
+        final SLXXBean.UcDataBean bean = data.get(position);
+        int fcolor = Util.getFColor(bean.getV_fcolor());
+        int bcolor = Util.getBColor(bean.getV_bcolor());
+        holder.content.setBackgroundColor(bcolor);
 
-        holder.tvZw.setText(data.get(position).getZwl_zwdm());
-        holder.tvWl.setText(data.get(position).getZwl_wldm());
-        holder.tvTdl.setText(data.get(position).getZwl_dywldm());
-        holder.tvYl.setText(""+data.get(position).getZwl_dwyl());
-        holder.tvSysl.setText(""+data.get(position).getZwl_osqty());
-        holder.tvKdbs.setText(""+data.get(position).getZwl_kdbs());
+        holder.tvZw.setText(bean.getZwl_zwdm());
+        holder.tvZw.setTextColor(fcolor);
+
+        holder.tvWl.setText(bean.getZwl_wldm());
+        holder.tvWl.setTextColor(fcolor);
+
+        holder.tvTdl.setText(bean.getZwl_dywldm());
+        holder.tvTdl.setTextColor(fcolor);
+
+        holder.tvYl.setText(""+ bean.getZwl_dwyl());
+        holder.tvYl.setTextColor(fcolor);
+
+        holder.tvSysl.setText(""+ bean.getZwl_osqty());
+        holder.tvSysl.setTextColor(fcolor);
+
+        holder.tvKdbs.setText(""+ bean.getZwl_kdbs());
+        holder.tvKdbs.setTextColor(fcolor);
         holder.content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != onItemClickListener){
-                    onItemClickListener.onItemClick(data.get(position),position);
+                    onItemClickListener.onItemClick(bean,position);
                 }
             }
         });

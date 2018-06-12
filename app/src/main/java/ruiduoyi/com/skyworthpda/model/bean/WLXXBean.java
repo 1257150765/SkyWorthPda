@@ -10,6 +10,13 @@ import java.util.List;
  * 物料下线
  */
 public class WLXXBean {
+
+    /**
+     * utStatus : true
+     * ucMsg : 操作成功！
+     * ucData : [{"sll_zwdm":"10-10","sll_osqty":3000}]
+     */
+
     private boolean utStatus;
     private String ucMsg;
     private List<?> ucData;
@@ -37,4 +44,6 @@ public class WLXXBean {
     public void setUcData(List<?> ucData) {
         this.ucData = ucData;
     }
+
+
 }

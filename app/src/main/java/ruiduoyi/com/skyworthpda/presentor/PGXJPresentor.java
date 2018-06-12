@@ -7,6 +7,7 @@ import io.reactivex.disposables.Disposable;
 import ruiduoyi.com.skyworthpda.contact.PGXJContact;
 import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
 import ruiduoyi.com.skyworthpda.model.bean.HaveRecordBean;
+import ruiduoyi.com.skyworthpda.model.bean.PGXJBean;
 import ruiduoyi.com.skyworthpda.model.bean.PGXJRecordBean;
 import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
@@ -76,10 +77,14 @@ public class PGXJPresentor implements PGXJContact.Presentor {
             public void onNext(HaveRecordBean value) {
                 view.onLoading(false);
                 if (value.isUtStatus()){
-                    view.onLoadHaveRecordSucceed(true,value.getUcData().get(0).getXjm_zwcxdm());
-                }else {
-                    view.onLoadHaveRecordSucceed(false,value.getUcMsg());
+                    if (value.getUcData() == null || value.getUcData().size() == 0) {
+                        view.onLoadHaveRecordSucceed(false,"");
+                    }else {
+                        view.onLoadHaveRecordSucceed(true, value.getUcData().get(0).getXjm_zwcxdm());
+                    }
 
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
                 }
             }
 
@@ -129,8 +134,36 @@ public class PGXJPresentor implements PGXJContact.Presentor {
     }
 
     @Override
-    public void pgxj(String key_type, String key_xbdm, String key_qrcode, String key_wldm) {
-        //RetrofitManager.pgxj
+    public void pgxj(final String key_type, final String key_xbdm, String key_qrcode, String key_wldm) {
+        view.onLoading(true);
+        RetrofitManager.pgxj(key_type,key_xbdm,key_qrcode,key_wldm).subscribe(new Observer<PGXJBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(PGXJBean value) {
+                view.onLoading(false);
+                if (value.isUtStatus()){
+                    view.onPGXJSucceed(key_type,key_xbdm);
+                    view.onExecuteSucceed();
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.onLoading(false);
+                view.onShowTipsDailog("巡检出错");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     @Override
@@ -147,7 +180,7 @@ public class PGXJPresentor implements PGXJContact.Presentor {
                 view.onLoading(false);
                 if (value.isUtStatus()){
                     CheckQRCODEBean.UcDataBean bean = value.getUcData().get(0);
-                    view.onCheckQRCODESucceed(Config.CHECK_TYPE_QRCODE,bean.getV_oricode(),bean.getV_wldm(),""+bean.getV_qty());
+                    view.onCheckQRCODESucceed(Config.CHECK_TYPE_QRCODE,bean.getV_oricode(),bean.getV_wldm());
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
                 }

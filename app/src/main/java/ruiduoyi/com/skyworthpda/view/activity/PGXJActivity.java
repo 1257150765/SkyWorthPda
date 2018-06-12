@@ -54,6 +54,9 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
     private PGXJContact.Presentor presentor;
     private XbBean.UcDataBean bean;
     private AlertDialog dialog;
+    private List<PGXJRecordBean.UcDataBean> recordData = new ArrayList<>();
+    private PGXJAdapter adapter;
+
 
 
     @Override
@@ -76,8 +79,10 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (null == xbData || position == 0) {
                     bean = null;
+                    clearData();
                     return;
                 }
+                clearData();
                 bean = xbData.get(position-1);
                 //presentor.loadData(xbData.get(position));
                 presentor.loadHaveRecord(bean.getXbm_xbdm());
@@ -90,12 +95,23 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
         });
     }
 
-
-
+    private void clearData() {
+        /*删除之前的数据*/
+        etJyzw.setText("");
+        etZwcx.setText("");
+        recordData.clear();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
 
 
     @Override
     protected void onReceiveCode(String code) {
+        if (null == recordData || recordData.size() == 0){
+            showSnakeBar("无巡检记录");
+            return;
+        }
         presentor.checkRQCODE(code);
     }
 
@@ -125,15 +141,11 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
     public void onLoadHaveRecordSucceed(boolean b, String msg) {
         if (b){
             etZwcx.setText(msg);
-            if (null == bean){
-                showSnakeBar("请选择线别");
-                return;
-            }
+            etCode.requestFocus();
             presentor.loadRecord(bean.getXbm_xbdm());
         }else {
             if (dialog == null){
                 dialog = new AlertDialog.Builder(this)
-                        .setMessage(msg)
                         .setTitle("提示")
                         .setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
@@ -147,20 +159,48 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
                             }
                         }).create();
             }
+            String tips = "系统检测到【线别:" + bean.getXbm_xbdm() + "】巡检记录已完成，是需要新增新的巡检记录？";
+            dialog.setMessage(tips);
             dialog.show();
-
         }
     }
 
     @Override
     public void onLoadRecord(List<PGXJRecordBean.UcDataBean> data) {
-        PGXJAdapter adapter = new PGXJAdapter(data);
+        this.recordData = data;
+        adapter = new PGXJAdapter(data);
         rvRecycler.setAdapter(adapter);
         rvRecycler.setLayoutManager(new LinearLayoutManager(PGXJActivity.this));
+        loadZw();
+    }
+
+    /**
+     * 找到未巡检的站位
+     */
+    private void loadZw() {
+        if (recordData == null){
+            return;
+        }
+        for (int i=0; i<recordData.size(); i++) {
+            PGXJRecordBean.UcDataBean bean = recordData.get(i);
+            if (bean.getXjd_chkms().equals("")){
+                etJyzw.setText(bean.getXjd_zwdm());
+                rvRecycler.scrollToPosition(i);
+                return;
+            }
+        }
     }
 
     @Override
-    public void onCheckQRCODESucceed(String type, String xb, String qrcode, String wldm) {
-        presentor.pgxj(Config.PGXJ_TYPE_ADD,xb,qrcode,wldm);
+    public void onCheckQRCODESucceed(String type,String qrcode, String wldm) {
+        presentor.pgxj(Config.PGXJ_TYPE_SCAN,bean.getXbm_xbdm(),qrcode,wldm);
+    }
+
+    @Override
+    public void onPGXJSucceed(String key_type, String key_xbdm) {
+        if (bean == null){
+            return;
+        }
+        presentor.loadRecord(bean.getXbm_xbdm());
     }
 }

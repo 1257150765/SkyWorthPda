@@ -11,7 +11,7 @@ public class CheckQRCODEBean {
     /**
      * utStatus : true
      * ucMsg : 操作成功！
-     * ucData : [{"v_msg":"OK","v_upn":"CW-20.808102-180514-000530","v_wldm":"Z9.06.EER1005C1C20","v_dc":"1820","v_lotno":"20180514","v_csdm":"20.808102","v_qty":1300,"v_oricode":"CW-20.808102-180514-000530&Z9.06.EER1005C1C20&1820&20180514&20.808102&1300"}]
+     * ucData : [{"v_msg":"ok","v_upn":"CW-20.808102-180514-000530","v_wldm":"Z9.06.EER1005C1C20","v_dc":"1820","v_lotno":"20180514","v_csdm":"20.808102","v_qty":1300,"v_oricode":"CW-20.808102-180514-000530&Z9.06.EER1005C1C20&1820&20180514&20.808102&1300"}]
      */
 
     private boolean utStatus;
@@ -44,7 +44,7 @@ public class CheckQRCODEBean {
 
     public static class UcDataBean {
         /**
-         * v_msg : OK
+         * v_msg : ok
          * v_upn : CW-20.808102-180514-000530
          * v_wldm : Z9.06.EER1005C1C20
          * v_dc : 1820

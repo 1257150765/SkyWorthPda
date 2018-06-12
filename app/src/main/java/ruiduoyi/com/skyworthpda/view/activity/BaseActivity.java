@@ -16,6 +16,7 @@ import ruiduoyi.com.skyworthpda.App;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.BaseContact;
 import ruiduoyi.com.skyworthpda.model.ceche.PreferenUtil;
+import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
 
 /**
  * 封装了加载动画，缓存等
@@ -85,4 +86,13 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
         Snackbar.make(getWindow().getDecorView(),tips,Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onExecuteSucceed() {
+        SoundPoolUtil.playOK();
+    }
+
+    @Override
+    public void onScanError() {
+
+    }
 }

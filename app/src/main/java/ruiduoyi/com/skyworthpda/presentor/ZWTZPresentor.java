@@ -109,7 +109,7 @@ public class ZWTZPresentor implements ZWTZContact.Presentor {
             public void onNext(ZWTZBean value) {
                 view.onLoading(false);
                 if (value.isUtStatus()){
-
+                    view.onExecuteSucceed();
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
                 }

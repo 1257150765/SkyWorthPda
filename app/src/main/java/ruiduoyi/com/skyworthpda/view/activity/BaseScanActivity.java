@@ -12,6 +12,7 @@ import android.view.Window;
 
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.LogWraper;
+import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
 
 /**
  * 封装了扫描功能，（）
@@ -46,4 +47,15 @@ public abstract class BaseScanActivity extends BaseActivity {
         unregisterReceiver(receiver);
     }
     protected abstract void onReceiveCode(String code);
+
+    @Override
+    public void onExecuteSucceed() {
+        super.onExecuteSucceed();
+    }
+
+    @Override
+    public void onScanError() {
+        super.onScanError();
+
+    }
 }

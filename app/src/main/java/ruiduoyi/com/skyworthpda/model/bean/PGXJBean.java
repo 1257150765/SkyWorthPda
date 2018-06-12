@@ -3,17 +3,10 @@ package ruiduoyi.com.skyworthpda.model.bean;
 import java.util.List;
 
 /**
- * Created by Chen on 2018/6/6.
+ * Created by Chen on 2018/6/11.
  */
 
-public class SCXLBean {
-
-    /**
-     * utStatus : false
-     * ucMsg : 20004你扫描的旧料盘条码不属于最后一次上料记录, 不允许上料!
-     * ucData : []
-     */
-
+public class PGXJBean {
     private boolean utStatus;
     private String ucMsg;
     private List<?> ucData;

@@ -101,12 +101,13 @@ public class WLXXPresentor implements WLXXContact.Presentor {
      * @param wlxxType
      * @param xb
      * @param v_oricode
-     * @param xlzw
+     * @param wldm
+     * @param key_zwdm
      */
     @Override
-    public void wlxx(String wlxxType, String xb, String v_oricode, String xlzw) {
+    public void wlxx(String wlxxType, String xb, String v_oricode, String wldm,String key_zwdm) {
         view.onLoading(true);
-        RetrofitManager.wlxx(wlxxType,xb,v_oricode,xlzw).subscribe(new Observer<WLXXBean>() {
+        RetrofitManager.wlxx(wlxxType,xb,v_oricode,wldm,key_zwdm).subscribe(new Observer<WLXXBean>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -116,7 +117,7 @@ public class WLXXPresentor implements WLXXContact.Presentor {
             public void onNext(WLXXBean value) {
                 view.onLoading(false);
                 if (value.isUtStatus()){
-
+                    view.onExecuteSucceed();
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
                 }

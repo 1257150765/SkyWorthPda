@@ -1,10 +1,12 @@
 package ruiduoyi.com.skyworthpda;
 
 import android.app.Application;
+import android.media.SoundPool;
 
 import ruiduoyi.com.skyworthpda.model.ceche.PreferenUtil;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.LogWraper;
+import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
 import ruiduoyi.com.skyworthpda.util.Util;
 
 /**
@@ -16,6 +18,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        SoundPoolUtil.init(this);
         PreferenUtil preferenUtil = new PreferenUtil(this);
         boolean b = preferenUtil.getBoolean(Config.IS_INIT);
         //如果没有初始化

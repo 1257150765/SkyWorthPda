@@ -3,6 +3,7 @@ package ruiduoyi.com.skyworthpda.contact;
 import java.util.List;
 
 import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
+import ruiduoyi.com.skyworthpda.model.bean.XLZWBean;
 
 /**
  * Created by Chen on 2018/6/6.
@@ -13,12 +14,12 @@ import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
  */
 public interface WLXXContact {
     public interface View extends BaseContact.View{
-        void onLoadXXZWSucceed(List<?> zwStr);
+        void onLoadXXZWSucceed(List<XLZWBean.UcDataBean> zwStr);
         void onCheckQRCODESucceed(CheckQRCODEBean.UcDataBean bean);
     }
     public interface Presentor{
         void loadXXZW(String xb, String qrcode);
         void checkQRCODE(String key_chkval);
-        void wlxx(String wlxxType, String xb, String v_oricode, String v_wldm);
+        void wlxx(String wlxxType, String xb, String v_oricode, String v_wldm,String key_zwdm);
     }
 }

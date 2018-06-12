@@ -2,15 +2,23 @@ package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +27,9 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +44,14 @@ import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.presentor.MainPresentor;
 import ruiduoyi.com.skyworthpda.util.Config;
+import ruiduoyi.com.skyworthpda.util.DownloadService;
 import ruiduoyi.com.skyworthpda.view.adapter.MainExpandableMenuAdapter;
 import ruiduoyi.com.skyworthpda.widget.MyExpandableListView;
 
 
 public class MainActivity extends BaseActivity implements MainContact.View {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.banner_mainactivity)
     BGABanner bgabBanner;
     @BindView(R.id.toolbar)
@@ -61,6 +74,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     @BindView(R.id.bm)
     TextView bm;
     private MainContact.Presentor presentor;
+    private BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +154,14 @@ public class MainActivity extends BaseActivity implements MainContact.View {
 
 
     @Override
-    public void onCheckUpdateSucceed(boolean hasNewVer, String url) {
+    public void onCheckUpdateSucceed(boolean hasNewVer, final String url) {
+        try {
+            URL url1 = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            onShowTipsDailog("URL不合法，更新失败");
+            return;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         if (hasNewVer) {
             builder.setCancelable(false)
@@ -148,7 +169,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            update(url);
                         }
                     });
         } else {
@@ -157,7 +178,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
+                            update(url);
                         }
                     })
                     .setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -168,6 +189,37 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     });
         }
         builder.create().show();
+    }
+
+    private void update(String url) {
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                long data = intent.getLongExtra(DownloadService.EXTENDED_DATA_STATUS,0L);
+                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/RdyPDA.apk")),
+                        "application/vnd.android.package-archive");
+                context.startActivity(intent);
+                finish();
+            }
+        };
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver, new IntentFilter(DownloadService.BROADCAST_ACTION));
+        //MainActivity.this.registerReceiver(receiver,new IntentFilter(DownloadService.BROADCAST_ACTION));
+        Intent serviceIntent = new Intent(MainActivity.this,DownloadService.class);
+        //将下载地址url放入intent中
+        serviceIntent.setData(Uri.parse(url.trim()));
+        Log.d(TAG, "onClick: "+Uri.parse(url));
+        startService(serviceIntent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (receiver != null){
+            unregisterReceiver(receiver);
+        }
     }
 
     @Override

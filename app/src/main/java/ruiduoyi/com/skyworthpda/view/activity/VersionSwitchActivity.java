@@ -69,10 +69,11 @@ public class VersionSwitchActivity extends BaseActivity implements VersionSeitch
         spSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (null == zwcxData) {
+                if (null == zwcxData || position == 0) {
+                    bean = null;
                     return;
                 }
-                bean = zwcxData.get(position);
+                bean = zwcxData.get(position-1);
             }
 
             @Override
@@ -86,6 +87,7 @@ public class VersionSwitchActivity extends BaseActivity implements VersionSeitch
     public void onLoadZWCXSucceed(List<ZWCXBean.UcDataBean> zwcxData) {
         this.zwcxData = zwcxData;
         List<String> xbDataStr = new ArrayList<>();
+        xbDataStr.add("");
         for (ZWCXBean.UcDataBean bean : zwcxData) {
             xbDataStr.add(bean.getZwm_cxdm());
         }
@@ -95,6 +97,7 @@ public class VersionSwitchActivity extends BaseActivity implements VersionSeitch
 
     @Override
     public void onVersionSwitchSucceed() {
+        //onExecuteSucceed();
         setResult(RESULT_OK);
         finish();
     }

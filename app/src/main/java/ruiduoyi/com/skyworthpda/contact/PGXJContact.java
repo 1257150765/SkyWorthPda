@@ -16,7 +16,9 @@ public interface PGXJContact {
         void onLoadHaveRecordSucceed(boolean b, String ucMsg);
         void onLoadRecord(List<PGXJRecordBean.UcDataBean> data);
 
-        void onCheckQRCODESucceed(String type, String v_oricode, String v_wldm, String qty);
+        void onCheckQRCODESucceed(String type, String v_oricode, String v_wldm);
+
+        void onPGXJSucceed(String key_type, String key_xbdm);
     }
     public interface Presentor{
         void loadXb();

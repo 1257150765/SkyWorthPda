@@ -23,12 +23,14 @@ import ruiduoyi.com.skyworthpda.model.bean.CheckZWBean;
 import ruiduoyi.com.skyworthpda.model.bean.HaveRecordBean;
 import ruiduoyi.com.skyworthpda.model.bean.LoginBean;
 import ruiduoyi.com.skyworthpda.model.bean.CompanyBean;
+import ruiduoyi.com.skyworthpda.model.bean.PGXJBean;
 import ruiduoyi.com.skyworthpda.model.bean.PGXJRecordBean;
 import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
 import ruiduoyi.com.skyworthpda.model.bean.SCSLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SCXLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLQRBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLXXBean;
+import ruiduoyi.com.skyworthpda.model.bean.UpdateBean;
 import ruiduoyi.com.skyworthpda.model.bean.VersionSwitchBean;
 import ruiduoyi.com.skyworthpda.model.bean.WLXXBean;
 import ruiduoyi.com.skyworthpda.model.bean.XLZWBean;
@@ -259,11 +261,25 @@ public class RetrofitManager {
      * @param wlxxType 全体、单个
      * @param xb 线别
      * @param v_oricode 二维码
-     * @param zw 下料站位
+     * @param wldm 物料代码
+     * @param key_zwdm 下料站位
      * @return
      */
-    public static Observable<WLXXBean> wlxx(String wlxxType, String xb, String v_oricode, String zw){
-        return retrofit.create(Api.class).wlxx(Config.TYPE_INTERFACE_WLXX,wlxxType,xb,v_oricode,zw)
+    public static Observable<WLXXBean> wlxx(String wlxxType, String xb, String v_oricode, String wldm,String key_zwdm){
+        return retrofit.create(Api.class).wlxx(Config.TYPE_INTERFACE_WLXX,wlxxType,xb,v_oricode,wldm,key_zwdm)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+    public static Observable<PGXJBean> pgxj(String type, String xb, String v_oricode, String wldm ){
+        return retrofit.create(Api.class).pgxj(Config.TYPE_INTERFACE_PGXJ,type,xb,v_oricode,wldm)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static Observable<UpdateBean> checkUpdate(){
+        return retrofit.create(Api.class).checkUpdate(Config.TYPE_INTERFACE_UPDATE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -273,6 +289,10 @@ public class RetrofitManager {
         Observable<LoginBean> login(@Query("key_prgid") String key_prgid,@Query("key_srvid") String key_srvid,@Query("key_usrid") String key_usrid,@Query("key_pwd") String key_pwd);
         @GET("SmtPDADataDeal")
         Observable<CompanyBean> getCompanyList(@Query("key_prgid") String key_prgid, @Query("key_srvid") String key_srvid);
+
+        @GET("SmtPDADataDeal")
+        Observable<UpdateBean> checkUpdate(@Query("key_prgid") String key_prgid);
+
         @GET("SmtPDADataDeal")
         Observable<PermissionBean> getPermission(@Query("key_prgid") String key_prgid);
         @GET("SmtPDADataDeal")
@@ -312,7 +332,10 @@ public class RetrofitManager {
         Observable<PGXJRecordBean> getRecord(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm);
 
         @GET("SmtPDADataDeal")
-        Observable<WLXXBean> wlxx(@Query("key_prgid") String key_prgid, @Query("key_type") String key_type, @Query("key_qrcode") String key_qrcode, @Query("key_xbdm") String key_xbdm, @Query("key_zwdm") String key_zwdm);
+        Observable<WLXXBean> wlxx(@Query("key_prgid") String key_prgid, @Query("key_type") String key_type,  @Query("key_xbdm") String key_xbdm,@Query("key_qrcode") String key_qrcode, @Query("key_wldm") String wldm,@Query("key_zwdm") String key_zwdm);
+
+        @GET("SmtPDADataDeal")
+        Observable<PGXJBean> pgxj(@Query("key_prgid") String key_prgid, @Query("key_type") String key_type,  @Query("key_xbdm") String key_xbdm, @Query("key_qrcode") String key_qrcode, @Query("key_wldm") String wldm);
 
     }
 }

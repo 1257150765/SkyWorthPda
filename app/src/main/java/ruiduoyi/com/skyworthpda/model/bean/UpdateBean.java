@@ -1,21 +1,17 @@
 package ruiduoyi.com.skyworthpda.model.bean;
 
-/**
- * Created by Chen on 2018/6/6.
- */
-
 import java.util.List;
 
 /**
- * 下料站位
+ * Created by Chen on 2018/6/8.
  */
-public class XLZWBean {
 
+public class UpdateBean {
 
     /**
      * utStatus : true
      * ucMsg : 操作成功！
-     * ucData : [{"sll_zwdm":"10-10","sll_osqty":3000}]
+     * ucData : [{"v_UpFlag":"","v_SrvVer":"","v_UpAddr":""}]
      */
 
     private boolean utStatus;
@@ -48,27 +44,37 @@ public class XLZWBean {
 
     public static class UcDataBean {
         /**
-         * sll_zwdm : 10-10
-         * sll_osqty : 3000
+         * v_UpFlag :
+         * v_SrvVer :
+         * v_UpAddr :
          */
 
-        private String sll_zwdm;
-        private int sll_osqty;
+        private String v_UpFlag;
+        private String v_SrvVer;
+        private String v_UpAddr;
 
-        public String getSll_zwdm() {
-            return sll_zwdm;
+        public String getV_UpFlag() {
+            return v_UpFlag;
         }
 
-        public void setSll_zwdm(String sll_zwdm) {
-            this.sll_zwdm = sll_zwdm;
+        public void setV_UpFlag(String v_UpFlag) {
+            this.v_UpFlag = v_UpFlag;
         }
 
-        public int getSll_osqty() {
-            return sll_osqty;
+        public String getV_SrvVer() {
+            return v_SrvVer;
         }
 
-        public void setSll_osqty(int sll_osqty) {
-            this.sll_osqty = sll_osqty;
+        public void setV_SrvVer(String v_SrvVer) {
+            this.v_SrvVer = v_SrvVer;
+        }
+
+        public String getV_UpAddr() {
+            return v_UpAddr;
+        }
+
+        public void setV_UpAddr(String v_UpAddr) {
+            this.v_UpAddr = v_UpAddr;
         }
     }
 }

@@ -15,7 +15,8 @@ public interface SCSLContact {
         void onLoadDataSucceed(List<SLXXBean.UcDataBean> data);
         void onCheckZWSucceed(String type,String code);
         void onCheckQRCODESucceed(String type,String code,String wldm,String qty);
-        void onExcuteSucceed();
+
+        void onWLXXSucceed();
     }
     public interface Presentor{
         void loadXb();
@@ -25,5 +26,9 @@ public interface SCSLContact {
         void scsl(String xbm_xbdm, String zw,String code, String wldm, String qty);
         void scxl(String xbm_xbdm, String oldCoed, String code, String wldm, String qty);
         void slqr(String xbm_xbdm, String zw, String code, String wldm);
+
+        void wlxx(String type, String xbm_xbdm);
+
+        void loadQRData(String xbm_xbdm, String key_flag);
     }
 }

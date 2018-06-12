@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import butterknife.OnClick;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.WLXXContact;
 import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
+import ruiduoyi.com.skyworthpda.model.bean.XLZWBean;
 import ruiduoyi.com.skyworthpda.presentor.WLXXPresentor;
 import ruiduoyi.com.skyworthpda.util.Config;
 
@@ -43,6 +45,8 @@ public class WLXXActivity extends BaseScanActivity implements WLXXContact.View {
     private String xb;
     private ArrayAdapter<String> adapter;
     private CheckQRCODEBean.UcDataBean bean;
+    private List<XLZWBean.UcDataBean> data;
+    private XLZWBean.UcDataBean zwBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,28 @@ public class WLXXActivity extends BaseScanActivity implements WLXXContact.View {
         actionBar.setTitle("物料下线");
         Intent intent = getIntent();
         xb = intent.getStringExtra(Config.EXTRA_DATE_XB);
+        spSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (null == data || position == 0){
+                    zwBean = null;
+                    return;
+                }
+                zwBean = data.get(position - 1);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onExecuteSucceed() {
+        super.onExecuteSucceed();
+        setResult(RESULT_OK);
+        finish();
     }
 
     /**
@@ -73,14 +99,15 @@ public class WLXXActivity extends BaseScanActivity implements WLXXContact.View {
      * @param data
      */
     @Override
-    public void onLoadXXZWSucceed(List<?> data) {
-        /*this.data = data;
+    public void onLoadXXZWSucceed(List<XLZWBean.UcDataBean> data) {
+        this.data = data;
         List<String> xbDataStr = new ArrayList<>();
-        for (XbBean.UcDataBean bean : xbData){
-            xbDataStr.add(bean.getXbm_xbdm());
+        xbDataStr.add("");
+        for (XLZWBean.UcDataBean bean : data){
+            xbDataStr.add(bean.getSll_zwdm()+" 剩余数量:"+bean.getSll_osqty());
         }
         adapter = new ArrayAdapter<String>(WLXXActivity.this, R.layout.item_spinner, xbDataStr);
-        spSpinner.setAdapter(adapter);*/
+        spSpinner.setAdapter(adapter);
     }
 
     /**
@@ -102,7 +129,11 @@ public class WLXXActivity extends BaseScanActivity implements WLXXContact.View {
                     showSnakeBar("请扫描二维码");
                     return;
                 }
-                presentor.wlxx(Config.WLXX_TYPE_DGXL,xb,bean.getV_oricode(),bean.getV_wldm());
+                if (zwBean == null){
+                    showSnakeBar("请选择站位");
+                    return;
+                }
+                presentor.wlxx(Config.WLXX_TYPE_DGXL,xb,bean.getV_oricode(),bean.getV_wldm(),zwBean.getSll_zwdm());
                 break;
             case R.id.btn_calcel_wlxx:
                 finish();

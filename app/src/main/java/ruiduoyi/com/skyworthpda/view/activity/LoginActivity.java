@@ -99,11 +99,11 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
             tilUserIdLayout.setErrorEnabled(true);
             return;
         }
-        if ("".equals(pwd)) {
+        /*if ("".equals(pwd)) {
             tiluserPwdLayout.setError("密码不能为空");
             tiluserPwdLayout.setErrorEnabled(true);
             return;
-        }
+        }*/
         tilUserIdLayout.setErrorEnabled(false);
         tiluserPwdLayout.setErrorEnabled(false);
         presenter.login(companyBean.getSrvID(),userName, pwd);
@@ -148,6 +148,7 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
         final String userName = etUserId.getText().toString();
         final String pwd = etUserPwd.getText().toString();
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+
         if (hasUpdate) {
             builder.setCancelable(false)
                     .setMessage("发现新版本，点击确定开始更新")

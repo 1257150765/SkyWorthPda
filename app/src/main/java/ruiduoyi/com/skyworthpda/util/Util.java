@@ -12,8 +12,24 @@ import ruiduoyi.com.skyworthpda.App;
 
 public class Util {
 
-    public int getColor(String colorStr){
+    public static  int getFColor(String colorStr){
         int color = Color.BLACK;
+        switch (colorStr){
+            case "Y":
+                color = Color.YELLOW;
+                break;
+            case "R":
+                color = Color.RED;
+                break;
+            case "V":
+                color = Color.parseColor("#A757A8");
+                break;
+        }
+        return color;
+    }
+
+    public static  int getBColor(String colorStr){
+        int color = Color.WHITE;
         switch (colorStr){
             case "Y":
                 color = Color.YELLOW;

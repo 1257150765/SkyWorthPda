@@ -11,9 +11,11 @@ import io.reactivex.disposables.Disposable;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.MainContact;
 import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
+import ruiduoyi.com.skyworthpda.model.bean.UpdateBean;
 import ruiduoyi.com.skyworthpda.model.ceche.PreferenUtil;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.util.Config;
+import ruiduoyi.com.skyworthpda.util.DownloadService;
 
 /**
  * Created by Chen on 2018/5/8.
@@ -85,7 +87,39 @@ public class MainPresentor implements MainContact.Presentor {
 
     @Override
     public void checkUpdate() {
+        view.onLoading(true);
+        RetrofitManager.checkUpdate().subscribe(new Observer<UpdateBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
+            }
+
+            @Override
+            public void onNext(UpdateBean value) {
+                view.onLoading(false);
+                if (value.isUtStatus()){
+                    UpdateBean.UcDataBean bean = value.getUcData().get(0);
+                    if (DownloadService.haveNewVersion(context,bean.getV_SrvVer())){
+                        view.onCheckUpdateSucceed(true,bean.getV_UpAddr());
+                    }else {
+                        view.onCheckUpdateSucceed(false,bean.getV_UpAddr());
+                    }
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.onLoading(false);
+                view.onShowTipsDailog("更新出错");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
     
 }

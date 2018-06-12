@@ -32,7 +32,9 @@ public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
 
     @Override
     public void onBindViewHolder(PGXJHolder holder, int position) {
+
         PGXJRecordBean.UcDataBean pgxjBean = data.get(position);
+
         holder.tvZw.setText(pgxjBean.getXjd_zwdm());
         holder.tvWl.setText(pgxjBean.getXjd_wldm());
         holder.tvTdl.setText(pgxjBean.getXjd_dywl());

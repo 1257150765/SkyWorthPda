@@ -2,10 +2,11 @@ package ruiduoyi.com.skyworthpda.util;
 
 import android.app.DownloadManager;
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -17,7 +18,7 @@ import java.io.File;
 /**
  * Created by Chen on 2018/5/15.
  */
-
+@Deprecated
 public class DownloadService extends IntentService {
     private String TAG = "DownloadService";
     public static final String BROADCAST_ACTION =
@@ -180,5 +181,42 @@ public class DownloadService extends IntentService {
         }
 
 
+    }
+    /**
+     * 是否有新版本
+     *
+     * @param context
+     * @param newVersion
+     * @return
+     */
+    public static boolean haveNewVersion(Context context, String newVersion) {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo pi = null;
+        try {
+            pi = pm.getPackageInfo(context.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String oldVersion = pi.versionName;
+        boolean isHaveNewVersion = false;
+        //LogWraper.d(TAG, "haveNewVersion: newVersion"+newVersion);
+        //LogWraper.d(TAG, "haveNewVersion: oldVersion"+oldVersion);
+        String[] oldVersionArr = oldVersion.split("\\.");
+        String[] newVersionArr = newVersion.split("\\.");
+        try {
+            //Log.d(TAG, "haveNewVersion: length"+oldVersionArr.length);
+            for (int i=0;i<oldVersionArr.length; i++){
+                if((Integer.parseInt(newVersionArr[i])) > (Integer.parseInt(oldVersionArr[i]))){
+                    isHaveNewVersion = true;
+                }else if ((Integer.parseInt(newVersionArr[i])) == (Integer.parseInt(oldVersionArr[i]))){
+                    continue;
+                }else{
+                    break;
+                }
+            }
+        }catch (Exception e){
+            return false;
+        }
+        return isHaveNewVersion;
     }
 }

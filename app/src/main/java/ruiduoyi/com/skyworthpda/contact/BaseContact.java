@@ -9,6 +9,8 @@ public interface BaseContact {
     public interface View{
         void onLoading(boolean isLoading);
         void onShowTipsDailog(String tips);
+        void onExecuteSucceed();
+        void onScanError();
     }
     public interface Presentor{
 

@@ -44,6 +44,7 @@ public class VersionSwitchPresentor implements VersionSeitchContact.Presentor {
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
+
             }
 
             @Override
@@ -67,6 +68,7 @@ public class VersionSwitchPresentor implements VersionSeitchContact.Presentor {
                 view.onLoading(false);
                 if (value.isUtStatus()){
                     view.onVersionSwitchSucceed();
+                    view.onExecuteSucceed();
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
                 }

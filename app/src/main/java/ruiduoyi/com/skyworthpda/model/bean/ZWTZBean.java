@@ -1,7 +1,5 @@
 package ruiduoyi.com.skyworthpda.model.bean;
 
-import java.util.List;
-
 /**
  * Created by Chen on 2018/6/6.
  */
@@ -11,15 +9,16 @@ import java.util.List;
  */
 public class ZWTZBean {
 
+
     /**
-     * utStatus : false
-     * ucMsg : 20006你扫描的旧站位不存在当前的站位表中！
-     * ucData : []
+     * utStatus : true
+     * ucMsg : 操作成功！
+     * ucData :
      */
 
     private boolean utStatus;
     private String ucMsg;
-    private List<?> ucData;
+    private String ucData;
 
     public boolean isUtStatus() {
         return utStatus;
@@ -37,11 +36,11 @@ public class ZWTZBean {
         this.ucMsg = ucMsg;
     }
 
-    public List<?> getUcData() {
+    public String getUcData() {
         return ucData;
     }
 
-    public void setUcData(List<?> ucData) {
+    public void setUcData(String ucData) {
         this.ucData = ucData;
     }
 }
