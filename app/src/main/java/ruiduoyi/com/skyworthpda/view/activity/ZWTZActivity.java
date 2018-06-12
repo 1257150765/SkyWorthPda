@@ -1,7 +1,9 @@
 package ruiduoyi.com.skyworthpda.view.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -127,6 +129,7 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View {
                     showSnakeBar("请扫描新站位");
                     return;
                 }
+
                 presentor.zwtz(bean.getXbm_xbdm(), oldZw, newZw);
                 break;
             case R.id.btn_exit_zwtzActivity:

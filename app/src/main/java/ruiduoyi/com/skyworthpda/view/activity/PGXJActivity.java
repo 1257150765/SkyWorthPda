@@ -56,7 +56,7 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
     private AlertDialog dialog;
     private List<PGXJRecordBean.UcDataBean> recordData = new ArrayList<>();
     private PGXJAdapter adapter;
-
+    private String zw = "";
 
 
     @Override
@@ -84,7 +84,7 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
                 }
                 clearData();
                 bean = xbData.get(position-1);
-                etJyzw.setText(bean.getXbm_zwcxdm());
+                etZwcx.setText(bean.getXbm_zwcxdm());
                 //presentor.loadData(xbData.get(position));
                 presentor.loadHaveRecord(bean.getXbm_xbdm());
             }
@@ -100,11 +100,16 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
     public void onExecuteSucceed() {
         super.onExecuteSucceed();
         etCode.setText("");
+        etCode.requestFocus();
+
     }
+
+
 
     @Override
     public void onExecuteFalse() {
         super.onExecuteFalse();
+        etCode.requestFocus();
         etCode.setText("");
     }
 
@@ -112,16 +117,17 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
         /*删除之前的数据*/
         etJyzw.setText("");
         etZwcx.setText("");
-        recordData.clear();
-        if (adapter != null) {
+
+        if (adapter != null && recordData != null) {
             adapter.notifyDataSetChanged();
+            recordData.clear();
         }
     }
 
 
     @Override
     protected void onReceiveCode(String code) {
-        if (null == recordData || recordData.size() == 0){
+        if (bean == null || null == recordData || recordData.size() == 0){
             showSnakeBar("无巡检记录");
             return;
         }
@@ -198,6 +204,7 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
             PGXJRecordBean.UcDataBean bean = recordData.get(i);
             if (bean.getXjd_chkms().equals("")){
                 etJyzw.setText(bean.getXjd_zwdm());
+                zw = bean.getXjd_zwdm();
                 rvRecycler.scrollToPosition(i);
                 return;
             }
@@ -210,11 +217,11 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
     }
 
     @Override
-    public void onPGXJSucceed(String key_type, String key_xbdm) {
+    public void onPGXJSucceed(String key_type, String data) {
+
         if (bean == null){
             return;
         }
-
         presentor.loadRecord(bean.getXbm_xbdm());
     }
 }

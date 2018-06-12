@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import ruiduoyi.com.skyworthpda.App;
 import ruiduoyi.com.skyworthpda.R;
@@ -27,6 +30,9 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     protected Animation anim;
     private AlertDialog loadingDialog;
     private AlertDialog tipsDialog;
+    private Toast tipsToast;
+    private ImageView ivSucceed;
+    private ImageView ivFail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +56,13 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
                     }
                 })
                 .create();
+        tipsToast = new Toast(this);
+        tipsToast.setDuration(Toast.LENGTH_SHORT);
+        tipsToast.setGravity(Gravity.CENTER,0,0);
+        ivSucceed = new ImageView(this);
+        ivSucceed.setImageResource(R.mipmap.ok);
+        ivFail = new ImageView(this);
+        ivFail.setImageResource(R.mipmap.error);
     }
 
     protected abstract void initView();
@@ -89,6 +102,8 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     @Override
     public void onExecuteSucceed() {
         SoundPoolUtil.playOK();
+        tipsToast.setView(ivSucceed);
+        tipsToast.show();
     }
 
     @Override
@@ -98,6 +113,7 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
 
     @Override
     public void onExecuteFalse() {
-
+        /*tipsToast.setView(ivFail);
+        tipsToast.show();*/
     }
 }

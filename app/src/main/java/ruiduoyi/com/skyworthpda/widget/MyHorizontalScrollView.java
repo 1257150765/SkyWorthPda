@@ -32,7 +32,7 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case  MotionEvent.ACTION_DOWN:
                 startX = ev.getX();
@@ -50,6 +50,6 @@ public class MyHorizontalScrollView extends HorizontalScrollView {
                 }
 
         }
-        return super.onTouchEvent(ev);
+        return super.onInterceptTouchEvent(ev);
     }
 }

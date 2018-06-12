@@ -1,8 +1,10 @@
 package ruiduoyi.com.skyworthpda.view.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -110,7 +112,25 @@ public class VersionSwitchActivity extends BaseActivity implements VersionSeitch
                     showSnakeBar("请选择需切换的站位程序");
                     return;
                 }
-                presentor.versionSwitch(xb, bean.getZwm_cxdm());
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setMessage("切换站位程序后，线体的物料将会整体下料，确定切换？")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                presentor.versionSwitch(xb, bean.getZwm_cxdm());
+
+                            }
+                        })
+                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setCancelable(false)
+                        .create();
+                dialog.show();
+
                 break;
             case R.id.btn_calcel_versionSwitch:
                 finish();

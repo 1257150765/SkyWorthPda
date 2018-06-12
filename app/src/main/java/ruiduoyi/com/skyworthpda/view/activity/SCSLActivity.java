@@ -180,7 +180,6 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
      * 加载列表数据
      */
     private void loadData() {
-
         if (startType.equals(Config.PERMISSION_FCL_SLQR_NAME)){
             presentor.loadQRData(bean.getXbm_xbdm(),key_flag);
         }else {
