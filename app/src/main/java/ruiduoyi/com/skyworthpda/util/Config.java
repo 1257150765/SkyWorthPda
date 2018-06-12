@@ -39,7 +39,7 @@ public class Config {
 
     public static final String TYPE_INTERFACE_GETCOMPANYLIST = "10000";
     public static final String TYPE_INTERFACE_GETSLXX = "10001";
-
+    public static final String TYPE_INTERFACE_GETQRXX = "10002";
     public static final String TYPE_INTERFACE_GETXLZW = "10003";
     public static final String TYPE_INTERFACE_GETHAVERECORE = "10004";
     public static final String TYPE_INTERFACE_GETECORE = "10005";

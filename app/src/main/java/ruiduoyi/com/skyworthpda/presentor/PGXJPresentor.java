@@ -149,6 +149,7 @@ public class PGXJPresentor implements PGXJContact.Presentor {
                     view.onPGXJSucceed(key_type,key_xbdm);
                     view.onExecuteSucceed();
                 }else {
+                    view.onExecuteFalse();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }

@@ -46,6 +46,7 @@ public class ZWTZPresentor implements ZWTZContact.Presentor {
                 if (value.isUtStatus()){
                     view.onLoadXbSucceed(value.getUcData());
                 }else {
+
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }
@@ -111,6 +112,7 @@ public class ZWTZPresentor implements ZWTZContact.Presentor {
                 if (value.isUtStatus()){
                     view.onExecuteSucceed();
                 }else {
+                    view.onExecuteFalse();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }
@@ -118,6 +120,7 @@ public class ZWTZPresentor implements ZWTZContact.Presentor {
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
+                view.onExecuteFalse();
                 view.onShowTipsDailog("调整站位出错");
             }
 

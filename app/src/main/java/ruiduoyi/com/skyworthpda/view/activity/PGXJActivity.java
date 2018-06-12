@@ -84,6 +84,7 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
                 }
                 clearData();
                 bean = xbData.get(position-1);
+                etJyzw.setText(bean.getXbm_zwcxdm());
                 //presentor.loadData(xbData.get(position));
                 presentor.loadHaveRecord(bean.getXbm_xbdm());
             }
@@ -93,6 +94,18 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
 
             }
         });
+    }
+
+    @Override
+    public void onExecuteSucceed() {
+        super.onExecuteSucceed();
+        etCode.setText("");
+    }
+
+    @Override
+    public void onExecuteFalse() {
+        super.onExecuteFalse();
+        etCode.setText("");
     }
 
     private void clearData() {
@@ -201,6 +214,7 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
         if (bean == null){
             return;
         }
+
         presentor.loadRecord(bean.getXbm_xbdm());
     }
 }

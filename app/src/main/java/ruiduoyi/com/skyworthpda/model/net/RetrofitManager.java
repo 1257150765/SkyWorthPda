@@ -127,6 +127,11 @@ public class RetrofitManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+    public static Observable<SLXXBean> getQRXX(String key_xbdm,String key_flag){
+        return retrofit.create(Api.class).getSLXX(Config.TYPE_INTERFACE_GETQRXX,key_xbdm,key_flag)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
     public static Observable<CheckZWBean> checkZW(String key_type, String key_chkval){
         return retrofit.create(Api.class).checkZW(Config.TYPE_INTERFACE_CHECK,key_type,key_chkval)
                 .subscribeOn(Schedulers.io())

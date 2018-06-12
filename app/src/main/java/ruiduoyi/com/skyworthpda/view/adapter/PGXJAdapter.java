@@ -1,5 +1,6 @@
 package ruiduoyi.com.skyworthpda.view.adapter;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,9 @@ public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
         holder.tvWl.setText(pgxjBean.getXjd_wldm());
         holder.tvTdl.setText(pgxjBean.getXjd_dywl());
         holder.tvJd.setText(pgxjBean.getXjd_chkms());
+        if (!"".equals(pgxjBean.getXjd_chkms())){
+            holder.content.setBackgroundColor(Color.GREEN);
+        }
     }
 
     @Override
@@ -55,8 +59,10 @@ public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
         TextView tvTdl;
         @BindView(R.id.tv_jd_item_pgxj)
         TextView tvJd;
+        View content;
         public PGXJHolder(View itemView) {
             super(itemView);
+            content = itemView;
             ButterKnife.bind(this,itemView);
         }
     }

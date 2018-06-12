@@ -112,7 +112,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         etEdit2.setOnFocusChangeListener(this);
         etEdit3.setOnFocusChangeListener(this);
         etEdit2.requestFocus();
-
+        //是否待上料
         cbJdsl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -124,48 +124,48 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 }else {
                     key_flag = "0";
                 }
-                if (startType.equals(Config.PERMISSION_FCL_SLQR_NAME)){
-                    presentor.loadQRData(bean.getXbm_xbdm(), key_flag);
-                }else {
-                    presentor.loadData(bean.getXbm_xbdm(), key_flag);
-                }
+                loadData();
             }
         });
-
+        //根据启动类型，显示不同的标题，并且修改扫描类型
         switch (startType) {
-            //首次上料
+            //首次上料，第二个框是站位，第三个框是二维码
             case Config.PERMISSION_FCL_SCSL_NAME:
                 llBtncontainer.setVisibility(View.VISIBLE);
                 edit2ScanType = Config.CHECK_TYPE_ZWM;
                 edit3ScanType = Config.CHECK_TYPE_QRCODE;
                 break;
-            //生产续料
+            //生产续料，第二个框和第三个框都是二维码
             case Config.PERMISSION_FCL_SCXL_NAME:
                 tvTv3.setText("旧料盘:");
                 tvTv4.setText("新料盘:");
                 edit2ScanType = Config.CHECK_TYPE_QRCODE;
                 edit3ScanType = Config.CHECK_TYPE_QRCODE;
                 break;
-            //上料确认
+            //上料确认，第二个框是站位，第三个框是二维码
             case Config.PERMISSION_FCL_SLQR_NAME:
                 edit2ScanType = Config.CHECK_TYPE_ZWM;
                 edit3ScanType = Config.CHECK_TYPE_QRCODE;
                 break;
         }
-
+        //选择线别
         spXb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //因为不要默认值，所有每个下拉框都加了一个空的选项，
+                // 用户一定选择后才能操作（防止用户错选），所以第一个框是空的，不加载数据
+                //其他地方的下拉框也以此类推
                 if (null == xbData || position == 0) {
                     bean = null;
                     curXb = "";
                     clearData();
                     return;
                 }
+                clearData();
                 bean = xbData.get(position - 1);
                 curXb = bean.getXbm_xbdm();
                 setZwcx(bean.getXbm_zwcxdm());
-                presentor.loadData(bean.getXbm_xbdm(),key_flag);
+                loadData();
 
             }
 
@@ -176,6 +176,21 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         });
     }
 
+    /**
+     * 加载列表数据
+     */
+    private void loadData() {
+
+        if (startType.equals(Config.PERMISSION_FCL_SLQR_NAME)){
+            presentor.loadQRData(bean.getXbm_xbdm(),key_flag);
+        }else {
+            presentor.loadData(bean.getXbm_xbdm(), key_flag);
+        }
+    }
+
+    /**
+     * 清除数据，操作之后需要吧原来的数据清除，以免影响用户判断
+     */
     private void clearData() {
         etEdit1.setText("");
         etEdit2.setText("");
@@ -186,38 +201,39 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         }
     }
 
-    private void setZwcx(String xbm_zwcxdm) {
-        etEdit1.setText(xbm_zwcxdm);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+    //执行成功
     @Override
     public void onExecuteSucceed() {
         super.onExecuteSucceed();
-        presentor.loadData(bean.getXbm_xbdm(),key_flag);
+
+        loadData();
+        etEdit2.requestFocus();
         etEdit2.setText("");
         etEdit3.setText("");
     }
 
+    //执行失败
+    @Override
+    public void onExecuteFalse() {
+        super.onExecuteFalse();
+        etEdit2.requestFocus();
+        etEdit2.setText("");
+        etEdit3.setText("");
+    }
+
+    //扫描回调,
     @Override
     protected void onReceiveCode(String code) {
         String type = "";
+        //那个输入框有焦点，就使用哪个扫描类型
         if (focusEditText.getId() == etEdit2.getId()){
             type = edit2ScanType;
         }else if (focusEditText.getId() == etEdit3.getId()){
             type = edit3ScanType;
         }
 
-        LogWraper.d(TAG,"--"+type+","+code);
+        //LogWraper.d(TAG,"--"+type+","+code);
         if ("".equals(type) || "".equals(code)){
             return;
         } else if(Config.CHECK_TYPE_ZWM.equals(type)){
@@ -228,6 +244,10 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
 
     }
 
+    /**
+     * 版本切换 单个下料 整体下料
+     * @param view
+     */
     @OnClick({R.id.btn_bbqh_scslactivity, R.id.btn_dgxl_scslactivity, R.id.btn_qbxl_scslactivity})
     public void onViewClicked(View view) {
         if (null == bean){
@@ -253,7 +273,6 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 if (dialog == null){
                     dialog = new AlertDialog.Builder(this)
                             .setTitle("提示")
-                            .setMessage("对"+bean.getXbm_xbdm()+"线整体下料?")
                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -266,6 +285,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                                 }
                             }).create();
                 }
+                dialog.setMessage("对"+bean.getXbm_xbdm()+"线整体下料?");
                 dialog.show();
                 break;
         }
@@ -333,6 +353,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         }
     }
 
+    //执行物料下线成功
     @Override
     public void onWLXXSucceed() {
         super.onExecuteSucceed();
@@ -366,7 +387,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     }
 
     /**
-     *
+     *版本切换 单个下料 执行成功后回调
      * @param requestCode
      * @param resultCode
      * @param data
@@ -380,7 +401,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                     presentor.loadXb();
                     break;
                 case REQUEST_CODE_WLXX:
-                    presentor.loadData(bean.getXbm_xbdm(),key_flag);
+                    loadData();
                     break;
             }
         }
@@ -410,6 +431,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         spXb.setSelection(index);
     }
 
+
     /**
      * 获取已上料信息成功
      * @param data
@@ -421,5 +443,19 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         rvRecycler.setAdapter(adapter);
         rvRecycler.setLayoutManager(new LinearLayoutManager(SCSLActivity.this));
         //adapter.notifyItemRangeInserted(0,data.size());
+    }
+    //设置站位程序
+    private void setZwcx(String xbm_zwcxdm) {
+        etEdit1.setText(xbm_zwcxdm);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

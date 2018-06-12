@@ -95,4 +95,9 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     public void onScanError() {
 
     }
+
+    @Override
+    public void onExecuteFalse() {
+
+    }
 }

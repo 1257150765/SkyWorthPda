@@ -69,6 +69,11 @@ public class SCSLPresentor implements SCSLContact.Presentor {
         });
     }
 
+    /**
+     * 加载上料信息
+     * @param xbStr 线别
+     * @param key_flag 是否待上料
+     */
     @Override
     public void loadData(String xbStr,String key_flag) {
         view.onLoading(true);
@@ -103,6 +108,11 @@ public class SCSLPresentor implements SCSLContact.Presentor {
         });
     }
 
+    /**
+     * 检查站位
+     * @param type 站位||二维码
+     * @param code 检查的值
+     */
     @Override
     public void checkZW(final String type, String code) {
         view.onLoading(true);
@@ -135,6 +145,11 @@ public class SCSLPresentor implements SCSLContact.Presentor {
         });
     }
 
+    /**
+     * 检查二维码
+     * @param type 站位||二维码
+     * @param code 检查的值
+     */
     @Override
     public void checkQRCODE(final String type, String code) {
         view.onLoading(true);
@@ -169,6 +184,14 @@ public class SCSLPresentor implements SCSLContact.Presentor {
         });
     }
 
+    /**
+     * 首次上料
+     * @param xbm_xbdm 线别
+     * @param zw 站位
+     * @param code 二维码
+     * @param wldm 物料代码
+     * @param qty 数量
+     */
     @Override
     public void scsl(String xbm_xbdm, String zw,String code, String wldm, String qty) {
         view.onLoading(true);
@@ -185,6 +208,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
                     view.onExecuteSucceed();
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
+                    view.onExecuteFalse();
                 }
             }
 
@@ -192,6 +216,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             public void onError(Throwable e) {
                 view.onLoading(false);
                 view.onShowTipsDailog("上料失败");
+                view.onExecuteFalse();
             }
 
             @Override
@@ -201,6 +226,14 @@ public class SCSLPresentor implements SCSLContact.Presentor {
         });
     }
 
+    /**
+     * 生产续料
+     * @param xbm_xbdm 线别
+     * @param oldCoed 旧料盘二维码
+     * @param code 新料盘二维码
+     * @param wldm 物料代码
+     * @param qty 数量
+     */
     @Override
     public void scxl(String xbm_xbdm, String oldCoed, String code, String wldm, String qty) {
         view.onLoading(true);
@@ -217,6 +250,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
                     view.onExecuteSucceed();
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
+                    view.onExecuteFalse();
                 }
             }
 
@@ -224,6 +258,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             public void onError(Throwable e) {
                 view.onLoading(false);
                 view.onShowTipsDailog("续料失败");
+                view.onExecuteFalse();
             }
 
             @Override
@@ -233,6 +268,13 @@ public class SCSLPresentor implements SCSLContact.Presentor {
         });
     }
 
+    /**
+     * 上料确认
+     * @param xbm_xbdm 线别
+     * @param zw 站位
+     * @param code 二维码
+     * @param wldm 物料代码
+     */
     @Override
     public void slqr(String xbm_xbdm, String zw, String code, String wldm) {
         view.onLoading(true);
@@ -248,6 +290,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
                 if (value.isUtStatus()){
                     view.onExecuteSucceed();
                 }else {
+                    view.onExecuteFalse();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }
@@ -255,6 +298,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
+                view.onExecuteFalse();
                 view.onShowTipsDailog("上料确认失败");
             }
 
@@ -265,9 +309,9 @@ public class SCSLPresentor implements SCSLContact.Presentor {
         });
     }
     /**
-     * 执行物料下线
-     * @param wlxxType
-     * @param xb
+     * 执行整体物料下线
+     * @param wlxxType 单个下料||整体下料
+     * @param xb 线别
      */
     @Override
     public void wlxx(String wlxxType, String xb) {
@@ -285,6 +329,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
                     view.onWLXXSucceed();
                     //view.onExecuteSucceed();
                 }else {
+                    view.onExecuteFalse();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }
@@ -292,7 +337,8 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
-                view.onShowTipsDailog("下料出错");
+                view.onExecuteFalse();
+                view.onShowTipsDailog("整体下料出错");
             }
 
             @Override
@@ -302,11 +348,16 @@ public class SCSLPresentor implements SCSLContact.Presentor {
         });
     }
 
+    /**
+     * 加载确认下料信息
+     * @param xbm_xbdm 线别
+     * @param key_flag 是否待上料
+     */
     @Override
     public void loadQRData(String xbm_xbdm, String key_flag) {
         view.onLoading(true);
         List<SLXXBean> data = new ArrayList<>();
-        /*RetrofitManager.getQRXX(xbm_xbdm,key_flag).subscribe(new Observer<SLXXBean>() {
+        RetrofitManager.getQRXX(xbm_xbdm,key_flag).subscribe(new Observer<SLXXBean>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -318,14 +369,16 @@ public class SCSLPresentor implements SCSLContact.Presentor {
                 if (value.isUtStatus()){
                     view.onLoadDataSucceed(value.getUcData());
                 }else {
+                    view.onExecuteFalse();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 view.onLoading(false);
+                view.onExecuteFalse();
                 view.onShowTipsDailog("加载出错");
             }
 
@@ -333,6 +386,6 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             public void onComplete() {
 
             }
-        });*/
+        });
     }
 }

@@ -58,4 +58,5 @@ public abstract class BaseScanActivity extends BaseActivity {
         super.onScanError();
 
     }
+
 }

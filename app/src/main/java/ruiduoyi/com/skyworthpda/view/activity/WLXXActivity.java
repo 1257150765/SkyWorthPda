@@ -60,7 +60,16 @@ public class WLXXActivity extends BaseScanActivity implements WLXXContact.View {
 
     @Override
     protected void onReceiveCode(String code) {
+        clearData();
         presentor.checkQRCODE(code);
+    }
+
+    private void clearData() {
+        edEdit.setText("");
+        if (adapter != null && data !=null){
+            data.clear();
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

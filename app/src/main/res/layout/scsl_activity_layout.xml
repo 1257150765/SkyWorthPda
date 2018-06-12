@@ -64,6 +64,7 @@
                 android:text="站位程序:"
                 style="@style/SCSLTextViewStyle" />
             <EditText
+                android:editable="false"
                 android:ellipsize="end"
                 android:singleLine="true"
                 style="@style/BordEditTextStyle"

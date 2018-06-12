@@ -11,6 +11,8 @@ public interface BaseContact {
         void onShowTipsDailog(String tips);
         void onExecuteSucceed();
         void onScanError();
+
+        void onExecuteFalse();
     }
     public interface Presentor{
 

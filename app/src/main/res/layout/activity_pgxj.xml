@@ -45,6 +45,26 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="50dp">
+            <TextView
+                android:text="站位程序:"
+                android:gravity="right|center_vertical"
+                android:layout_width="60dp"
+                android:layout_height="match_parent" />
+            <EditText
+                android:singleLine="true"
+                style="@style/BordEditTextStyle"
+                android:id="@+id/et_zwcx_pgxjactivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <TextView
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1px" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
 
             <TextView
                 android:text="校验站位:"
@@ -65,30 +85,8 @@
             android:layout_width="match_parent"
             android:layout_height="1px" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <TextView
-                android:text="站位程序:"
-                android:gravity="right|center_vertical"
-                android:layout_width="60dp"
-                android:layout_height="match_parent" />
-            <EditText
-                android:singleLine="true"
-                style="@style/BordEditTextStyle"
-                android:id="@+id/et_zwcx_pgxjactivity"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-        <TextView
-            android:background="@color/gray"
-            android:layout_width="match_parent"
-            android:layout_height="1px" />
-        <TextView
-            android:background="@color/gray"
-            android:layout_width="match_parent"
-            android:layout_height="1px" />
+
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
