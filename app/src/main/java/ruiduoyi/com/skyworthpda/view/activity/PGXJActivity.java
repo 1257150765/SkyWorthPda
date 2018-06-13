@@ -104,8 +104,6 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
 
     }
 
-
-
     @Override
     public void onExecuteFalse() {
         super.onExecuteFalse();
@@ -123,12 +121,10 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
             recordData.clear();
         }
     }
-
-
     @Override
     protected void onReceiveCode(String code) {
         if (bean == null || null == recordData || recordData.size() == 0){
-            showSnakeBar("无巡检记录");
+            showSnakeBar("请选择线别");
             return;
         }
         presentor.checkRQCODE(code);

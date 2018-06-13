@@ -288,6 +288,16 @@ public class RetrofitManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+    public static Observable<UpdateBean> checkUpdate2(String companyName){
+        return retrofit.create(Api.class).checkUpdate2(Config.TYPE_INTERFACE_UPDATE,companyName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static void logout() {
+        setToken("");
+        setCompanyName("");
+    }
 
     interface Api{
         @GET("SmtPDADataDeal")
@@ -297,6 +307,8 @@ public class RetrofitManager {
 
         @GET("SmtPDADataDeal")
         Observable<UpdateBean> checkUpdate(@Query("key_prgid") String key_prgid);
+@GET("SmtPDADataDeal")
+        Observable<UpdateBean> checkUpdate2(@Query("key_prgid") String key_prgid,@Query("key_srvid") String key_srvid);
 
         @GET("SmtPDADataDeal")
         Observable<PermissionBean> getPermission(@Query("key_prgid") String key_prgid);

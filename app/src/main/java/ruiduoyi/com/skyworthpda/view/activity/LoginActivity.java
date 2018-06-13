@@ -2,6 +2,7 @@ package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +12,11 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -31,7 +35,7 @@ import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.presentor.LoginPresenter;
 import ruiduoyi.com.skyworthpda.util.Config;
 
-public class LoginActivity extends BaseActivity implements LoginContact.View {
+public class LoginActivity extends BaseScanActivity implements LoginContact.View, View.OnFocusChangeListener {
     private static final String TAG = LoginActivity.class.getSimpleName();
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -52,6 +56,8 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
     private LoginPresenter presenter;
     private List<CompanyBean.UcDataBean> companyNameList;
     private CompanyBean.UcDataBean companyBean = null;
+    private ProgressDialog downloadProgressDialog;
+    private EditText focusEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,7 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initView();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         presenter = new LoginPresenter(this, this);
     }
 
@@ -73,7 +80,7 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
                     return;
                 }
                 companyBean = companyNameList.get(position);
-                App.setThemeId(position);
+                App.setThemeId(position % 2);
                 preferenUtil.setInt(Config.THEME_ID,position);
             }
 
@@ -83,6 +90,14 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
                 preferenUtil.setInt(Config.THEME_ID,0);
             }
         });
+        downloadProgressDialog = new ProgressDialog(this);
+        downloadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        downloadProgressDialog.setCancelable(false);
+        downloadProgressDialog.setCanceledOnTouchOutside(false);
+        downloadProgressDialog.setTitle("下载中");
+        downloadProgressDialog.setMax(100);
+        etUserPwd.setOnFocusChangeListener(this);
+        etUserId.setOnFocusChangeListener(this);
     }
 
     @OnClick(R.id.cv_login_loginactivity)
@@ -106,8 +121,7 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
         }*/
         tilUserIdLayout.setErrorEnabled(false);
         tiluserPwdLayout.setErrorEnabled(false);
-        presenter.login(companyBean.getSrvID(),userName, pwd);
-        //presenter.checkUpdate(companyBean.getSrvID());
+        presenter.checkUpdate(companyBean.getSrvID());
     }
 
 
@@ -148,19 +162,9 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
         final String userName = etUserId.getText().toString();
         final String pwd = etUserPwd.getText().toString();
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-
         if (hasUpdate) {
-            builder.setCancelable(false)
-                    .setMessage("发现新版本，点击确定开始更新")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            presenter.update(url);
-                        }
-                    });
-        } else {
             builder.setCancelable(true)
-                    .setMessage("未发现新版本，是否更新")
+                    .setMessage("发现新版本，是否更新")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -173,8 +177,41 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
                             presenter.login(companyBean.getSrvID(),userName, pwd);
                         }
                     });
+            builder.create().show();
+        } else {
+            presenter.login(companyBean.getSrvID(),userName, pwd);
         }
-        builder.create().show();
+
     }
 
+    @Override
+    public void onUpdate(Integer value) {
+        //下载进度条
+        downloadProgressDialog.setProgress(value);
+        downloadProgressDialog.show();
+    }
+
+    @Override
+    public void onUpdateComplete() {
+        if (downloadProgressDialog != null && downloadProgressDialog.isShowing()){
+            downloadProgressDialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onReceiveCode(String code) {
+        if (focusEditText == null){
+            etUserPwd.requestFocus();
+        }
+        focusEditText.setText(code);
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus){
+            if (v instanceof EditText){
+                focusEditText = (EditText) v;
+            }
+        }
+    }
 }

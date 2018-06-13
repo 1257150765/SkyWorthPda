@@ -22,8 +22,10 @@ import io.reactivex.disposables.Disposable;
 import ruiduoyi.com.skyworthpda.contact.LoginContact;
 import ruiduoyi.com.skyworthpda.model.bean.CompanyBean;
 import ruiduoyi.com.skyworthpda.model.bean.LoginBean;
+import ruiduoyi.com.skyworthpda.model.bean.UpdateBean;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.util.DownloadService;
+import ruiduoyi.com.skyworthpda.util.DownloadUtils;
 
 /**
  * Created by DengJf on 2018/1/12.
@@ -112,31 +114,68 @@ public class LoginPresenter implements LoginContact.Presentor {
 
     @Override
     public void checkUpdate(String companyCode) {
+        view.onLoading(true);
+        RetrofitManager.checkUpdate2(companyCode).subscribe(new Observer<UpdateBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
+            }
+
+            @Override
+            public void onNext(UpdateBean value) {
+                view.onLoading(false);
+                if (value.isUtStatus()){
+                    UpdateBean.UcDataBean bean = value.getUcData().get(0);
+                    if (DownloadService.haveNewVersion(context,bean.getV_SrvVer())){
+                        view.onCheckUpdateSucceed(true,bean.getV_UpAddr());
+                    }else {
+                        view.onCheckUpdateSucceed(false,bean.getV_UpAddr());
+                    }
+                }else {
+                    view.onShowTipsDailog(value.getUcMsg());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.onLoading(false);
+                view.onShowTipsDailog("更新出错");
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     @Override
     public void update(String url) {
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                long data = intent.getLongExtra(DownloadService.EXTENDED_DATA_STATUS,0L);
-                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/RdyPDA.apk")),
-                        "application/vnd.android.package-archive");
-                context.startActivity(intent);
-                ((Activity)(context)).finish();
-            }
-        };
-        LocalBroadcastManager.getInstance(context).registerReceiver(receiver, new IntentFilter(DownloadService.BROADCAST_ACTION));
-        //FirstActivity.this.registerReceiver(receiver,new IntentFilter(DownloadService.BROADCAST_ACTION));
-        //presenter.downloadInstallApk(url);
-        Intent serviceIntent = new Intent(context,DownloadService.class);
-        //将下载地址url放入intent中
-        serviceIntent.setData(Uri.parse(url));
-        context.startService(serviceIntent);
+        DownloadUtils downloadUtils = new DownloadUtils(context);
+        downloadUtils.downloadAPK(url, Environment.getExternalStorageDirectory().getPath(),"App.apk")
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer value) {
+                        view.onUpdate(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        view.onShowTipsDailog("更新失败");
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        view.onUpdateComplete();
+                    }
+                });
+
     }
     /**
      * 是否有新版本

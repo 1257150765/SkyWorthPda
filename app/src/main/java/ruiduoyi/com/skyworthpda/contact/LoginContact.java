@@ -14,6 +14,10 @@ public interface LoginContact {
         void onLoadConpanyNameSucceed(List<CompanyBean.UcDataBean> companyNameList);
          void onLoginSecceed(String companyName, LoginBean.UcDataBean ucDataBean);
          void onCheckUpdateSucceed(boolean hasUpdate,String url);
+
+         void onUpdate(Integer value);
+
+         void onUpdateComplete();
      }
 
     public interface Presentor {

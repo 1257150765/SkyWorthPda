@@ -8,6 +8,7 @@ import android.graphics.Color;
 
 public class Config {
     public static final String BASE_URL = "http://192.168.4.249:6666/RdyService.asmx/";
+    //public static final String BASE_URL = "http://172.24.176.7:9999/RdyService.asmx/";
     public static final String CACHE_DATA_USERNAME = "userName";
     public static final String CACHE_DATA_PWD = "pwd";
     public static final String CACHE_DATA_REMEMBER = "isRemember";
@@ -23,6 +24,14 @@ public class Config {
     public static final String PERMISSION_PZGL = "品质管理";
     public static final String PERMISSION_PZGL_PGXJ_CODE = "PDA905D1";
     public static final String PERMISSION_PZGL_PGXJ_NAME = "品管巡检";
+
+    public static final String PERMISSION_SMTZZ_YSJBD_CODE = "PDA906D1";
+    public static final String PERMISSION_SMTZZ_YSJBD_NAME = "压缩机绑定";
+    public static final String PERMISSION_SMTZZ_KZQDQHBD_CODE = "PDA907D1";
+    public static final String PERMISSION_SMTZZ_KZQDQHBD_NAME = "控制器/电器盒绑定";
+    public static final String PERMISSION_SMTZZ_DZJC_CODE = "PDA908D1";
+    public static final String PERMISSION_SMTZZ_DZJC_NAME = "电子检查";
+
     public static final String THEME_ID = "1";
     public static final String CACHE_DATA_COMPANYNAME = "companyName";
     public static final String CACHE_DATA_USERTOKEN = "token";
@@ -51,13 +60,10 @@ public class Config {
     public static final String TYPE_INTERFACE_SCQR = "20005";
     public static final String TYPE_INTERFACE_ZWTZ = "20006";
     public static final String TYPE_INTERFACE_PGXJ = "20007";
-
     public static final String CHECK_TYPE_ZWM = "ZWM";
     public static final String CHECK_TYPE_QRCODE = "QRCODE";
     public static final String CHECK_TYPE_QXM = "QXM";
-
     public static final String IS_INIT = "init";
-
     // 扫描工具内应用设置的广播名称action;
     public final static String BROADCAST_SETTING = "com.android.scanner.service_settings";
     // 扫描工具内应用设置下的条码发送方式的广播名称key；
@@ -71,7 +77,6 @@ public class Config {
 
     public static final String EXTRA_DATE_XB = "xb";
     public static final String EXTRA_DATE_ZWCX = "zwcx";
-
     public static final String EXTRA_STARTTYPE_VERSIONSWITCH = "startTpye";
 
 
@@ -82,5 +87,5 @@ public class Config {
     public static final String WLXX_TYPE_DGXL = "B";
 
 
-
+    public static final String ACTIVITY_START_TYPE = "startType";
 }

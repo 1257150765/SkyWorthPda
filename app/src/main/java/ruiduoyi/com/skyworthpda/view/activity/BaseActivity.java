@@ -37,6 +37,7 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(App.themeId);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         preferenUtil = new PreferenUtil(getApplicationContext());
         anim= AnimationUtils.loadAnimation(this, R.anim.btn_apha);
         View view = LayoutInflater.from(this).inflate(R.layout.loading, null, false);

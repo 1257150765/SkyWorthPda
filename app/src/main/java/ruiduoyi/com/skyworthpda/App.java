@@ -31,14 +31,10 @@ public class App extends Application {
         LogWraper.d("App","初始化this.themeId:"+this.themeId);
     }
     public static void setThemeId(int i){
-        if (i == 0){
-            themeId = R.style.AppTheme3;
-        }else if(i ==1){
+        if (i%2 == 0){
             themeId = R.style.AppTheme2;
-        }else if(i ==2){
+        }else if(i ==1){
             themeId = R.style.AppTheme1;
-        }else if(i ==3){
-            themeId = R.style.AppTheme4;
         }
     }
 }

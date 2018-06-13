@@ -224,6 +224,10 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     //扫描回调,
     @Override
     protected void onReceiveCode(String code) {
+        if (null == bean){
+            showSnakeBar("请选择线别");
+            return;
+        }
         String type = "";
         //那个输入框有焦点，就使用哪个扫描类型
         if (focusEditText.getId() == etEdit2.getId()){
@@ -381,6 +385,13 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         if (hasFocus){
             if (v instanceof EditText){
                 focusEditText = (EditText) v;
+            }
+            if (v.getId() == etEdit3.getId()){
+                if (etEdit2.getText().toString().equals("")){
+                    showSnakeBar("请先扫描站位");
+                    etEdit2.requestFocus();
+                    return;
+                }
             }
         }
     }

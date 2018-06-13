@@ -157,6 +157,11 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View {
             etNewZw.requestFocus();
         } else if (etNewZw.hasFocus()) {
             etNewZw.setText(zw);
+            if (etOldZw.getText().toString().equals("")){
+                showSnakeBar("请先扫描旧站位");
+                etOldZw.requestFocus();
+                return;
+            }
         }
     }
 
@@ -166,3 +171,4 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View {
         presentor.checkZw(code);
     }
 }
+

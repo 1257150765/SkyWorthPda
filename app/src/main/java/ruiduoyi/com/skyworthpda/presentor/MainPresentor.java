@@ -1,6 +1,7 @@
 package ruiduoyi.com.skyworthpda.presentor;
 
 import android.content.Context;
+import android.os.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import ruiduoyi.com.skyworthpda.model.ceche.PreferenUtil;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.DownloadService;
+import ruiduoyi.com.skyworthpda.util.DownloadUtils;
 
 /**
  * Created by Chen on 2018/5/8.
@@ -121,5 +123,33 @@ public class MainPresentor implements MainContact.Presentor {
             }
         });
     }
-    
+
+    @Override
+    public void update(String url) {
+        DownloadUtils downloadUtils = new DownloadUtils(context);
+        downloadUtils.downloadAPK(url, Environment.getExternalStorageDirectory().getPath(),"App.apk")
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer value) {
+                        view.onUpdate(value);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        view.onShowTipsDailog("更新失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        view.onUpdateSucceed();
+                    }
+                });
+    }
+
 }

@@ -13,10 +13,13 @@ public interface MainContact {
     public interface View extends BaseContact.View{
         void onCheckUpdateSucceed(boolean hasNewVer,String url);
         void onLoadPermissionSecceed(List<PermissionBean.UcDataBean> titles, List<List<PermissionBean.UcDataBean>> childs);
+        void onUpdate(int value);
+        void onUpdateSucceed();
     }
 
     public interface Presentor{
         void loadPermission();
         void checkUpdate();
+        void update(String url);
     }
 }

@@ -51,6 +51,8 @@
                 android:layout_width="60dp"
                 android:layout_height="match_parent" />
             <EditText
+                android:focusable="false"
+                android:editable="false"
                 android:singleLine="true"
                 style="@style/BordEditTextStyle"
                 android:id="@+id/et_zwcx_pgxjactivity"

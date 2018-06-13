@@ -40,7 +40,9 @@ public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
         holder.tvWl.setText(pgxjBean.getXjd_wldm());
         holder.tvTdl.setText(pgxjBean.getXjd_dywl());
         holder.tvJd.setText(pgxjBean.getXjd_chkms());
-        if (!"".equals(pgxjBean.getXjd_chkms())){
+        if ("".equals(pgxjBean.getXjd_chkms())){
+            holder.content.setBackgroundColor(Color.WHITE);
+        }else {
             holder.content.setBackgroundColor(Color.GREEN);
         }
     }

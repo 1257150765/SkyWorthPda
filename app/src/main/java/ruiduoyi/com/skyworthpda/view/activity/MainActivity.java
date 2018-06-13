@@ -3,6 +3,7 @@ package ruiduoyi.com.skyworthpda.view.activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -74,7 +75,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     @BindView(R.id.bm)
     TextView bm;
     private MainContact.Presentor presentor;
-    private BroadcastReceiver receiver;
+    private ProgressDialog downloadProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,12 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         companyName.setText("公司:" + preferenUtil.getString(Config.CACHE_DATA_COMPANYNAME));
         bm.setText("部门:" + preferenUtil.getString(Config.CACHE_DATA_BM));
 
+        downloadProgressDialog = new ProgressDialog(this);
+        downloadProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        downloadProgressDialog.setCancelable(false);
+        downloadProgressDialog.setCanceledOnTouchOutside(false);
+        downloadProgressDialog.setTitle("下载中");
+        downloadProgressDialog.setMax(100);
     }
 
     @Override
@@ -141,7 +148,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_switch_layout_mainactivity:
-                RetrofitManager.setToken("");
+                RetrofitManager.logout();
                 RetrofitManager.setCompanyName("");
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
@@ -169,7 +176,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            update(url);
+                            presentor.update(url);
                         }
                     });
         } else {
@@ -178,7 +185,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            update(url);
+                            presentor.update(url);
                         }
                     })
                     .setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -191,35 +198,13 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         builder.create().show();
     }
 
-    private void update(String url) {
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                long data = intent.getLongExtra(DownloadService.EXTENDED_DATA_STATUS,0L);
-                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                intent = new Intent(Intent.ACTION_VIEW);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + "/RdyPDA.apk")),
-                        "application/vnd.android.package-archive");
-                context.startActivity(intent);
-                finish();
-            }
-        };
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(receiver, new IntentFilter(DownloadService.BROADCAST_ACTION));
-        //MainActivity.this.registerReceiver(receiver,new IntentFilter(DownloadService.BROADCAST_ACTION));
-        Intent serviceIntent = new Intent(MainActivity.this,DownloadService.class);
-        //将下载地址url放入intent中
-        serviceIntent.setData(Uri.parse(url.trim()));
-        Log.d(TAG, "onClick: "+Uri.parse(url));
-        startService(serviceIntent);
-    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (receiver != null){
-            unregisterReceiver(receiver);
-        }
+        RetrofitManager.logout();
+
     }
 
     @Override
@@ -257,6 +242,9 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     case Config.PERMISSION_PZGL_PGXJ_CODE:
                         dataImg.add(R.mipmap.pgxj);
                         break;
+                    default:
+                        dataImg.add(R.mipmap.unknown);
+                        break;
                 }
             }
             allChildTitles.add(dataStr);
@@ -290,10 +278,45 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     case Config.PERMISSION_PZGL_PGXJ_CODE:
                         gotoPGXJ();
                         break;
+                    //压缩机绑定
+                    case Config.PERMISSION_SMTZZ_YSJBD_CODE:
+                        gotoBD(Config.PERMISSION_SMTZZ_YSJBD_NAME);
+                        break;
+                    //控制器/电器盒绑定
+                    case Config.PERMISSION_SMTZZ_KZQDQHBD_CODE:
+                        gotoBD(Config.PERMISSION_SMTZZ_KZQDQHBD_NAME);
+                        break;
+                    //电子检查
+                    case Config.PERMISSION_SMTZZ_DZJC_CODE:
+                        showSnakeBar("敬请期待");
+                        break;
+                    default:
+                        showSnakeBar("敬请期待");
+                        break;
                 }
                 return true;
             }
         });
+    }
+
+    private void gotoBD(String startType) {
+        Intent intent =  new Intent(MainActivity.this,BDActivity.class);
+        intent.putExtra(Config.ACTIVITY_START_TYPE,startType);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onUpdate(int value) {
+        //下载进度条
+        downloadProgressDialog.setProgress(value);
+        downloadProgressDialog.show();
+    }
+
+    @Override
+    public void onUpdateSucceed() {
+        if (downloadProgressDialog != null && downloadProgressDialog.isShowing()){
+            downloadProgressDialog.dismiss();
+        }
     }
 
 
@@ -321,4 +344,5 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+
 }
