@@ -2,6 +2,7 @@ package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import ruiduoyi.com.skyworthpda.App;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.BaseContact;
 import ruiduoyi.com.skyworthpda.model.ceche.PreferenUtil;
+import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
 
 /**
@@ -33,6 +35,7 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     private Toast tipsToast;
     private ImageView ivSucceed;
     private ImageView ivFail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +48,6 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
                 .setView(view)
                 .setCancelable(false)
                 .create();
-
         tipsDialog = new AlertDialog.Builder(this)
                 //.setView(R.layout.loading)
                 .setCancelable(true)
@@ -64,6 +66,7 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
         ivSucceed.setImageResource(R.mipmap.ok);
         ivFail = new ImageView(this);
         ivFail.setImageResource(R.mipmap.error);
+
     }
 
     protected abstract void initView();
@@ -105,7 +108,10 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
         SoundPoolUtil.playOK();
         tipsToast.setView(ivSucceed);
         tipsToast.show();
+        //showSucceedStatu();
     }
+
+
 
     @Override
     public void onScanError() {
@@ -116,5 +122,11 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     public void onExecuteFalse() {
         /*tipsToast.setView(ivFail);
         tipsToast.show();*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

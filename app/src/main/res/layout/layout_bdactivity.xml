@@ -27,6 +27,8 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <EditText
+
+                android:id="@+id/et_edit1_bdActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></EditText>
         </LinearLayout>
@@ -119,12 +121,13 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <TextView
-                android:id="@+id/tv_tv7_"
+                android:id="@+id/tv_tv7_bdActivity"
                 android:text="MES条码:"
                 android:gravity="center_vertical|end"
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <EditText
+                android:id="@+id/et_edit7_bdActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
@@ -136,11 +139,13 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <TextView
+                android:id="@+id/tv_tv8_bdActivity"
                 android:text="压缩机条码:"
                 android:gravity="center_vertical|end"
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <EditText
+                android:id="@+id/et_edit8_bdActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>

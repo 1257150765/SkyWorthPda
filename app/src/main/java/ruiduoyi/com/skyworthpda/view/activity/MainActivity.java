@@ -288,7 +288,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                         break;
                     //电子检查
                     case Config.PERMISSION_SMTZZ_DZJC_CODE:
-                        showSnakeBar("敬请期待");
+                        gotoBD(Config.PERMISSION_SMTZZ_DZJC_NAME);
                         break;
                     default:
                         showSnakeBar("敬请期待");
