@@ -7,8 +7,8 @@ import android.graphics.Color;
  */
 
 public class Config {
-    //public static final String BASE_URL = "http://192.168.4.249:6666/RdyService.asmx/";
-    public static final String BASE_URL = "http://172.24.176.7:9999/RdyService.asmx/";
+    public static final String BASE_URL = "http://cwps.ruiduoyi.com:8080/RdyService.asmx/";
+    //public static final String BASE_URL = "http://172.24.176.7:9999/RdyService.asmx/";
     public static final String CACHE_DATA_USERNAME = "userName";
     public static final String CACHE_DATA_PWD = "pwd";
     public static final String CACHE_DATA_REMEMBER = "isRemember";
@@ -87,6 +87,8 @@ public class Config {
     public static final String WLXX_TYPE_DGXL = "B";
 
 
-    public static final String ACTIVITY_START_TYPE = "startType";
+    public static final String ACTIVITY_START_TYPE_NAME = "startTypeName";
+    public static final String ACTIVITY_START_TYPE_CODE = "startTypeCode";
     public static final long STATU_DIALOG_SHOW_TIME = 3000L;
+    public static final String TYPE_INTERFACE_GETMES = "30001";
 }

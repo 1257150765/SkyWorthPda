@@ -257,7 +257,8 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         elvExpandedMenu.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                switch (childs.get(groupPosition).get(childPosition).getG_cxdm()) {
+                PermissionBean.UcDataBean bean = childs.get(groupPosition).get(childPosition);
+                switch (bean.getG_cxdm()) {
                     //首次上料
                     case Config.PERMISSION_FCL_SCSL_CODE:
                         gotoSCSL(Config.PERMISSION_FCL_SCSL_NAME);
@@ -280,15 +281,15 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                         break;
                     //压缩机绑定
                     case Config.PERMISSION_SMTZZ_YSJBD_CODE:
-                        gotoBD(Config.PERMISSION_SMTZZ_YSJBD_NAME);
+                        gotoBD(bean.getG_cxmc(),bean.getG_cxdm());
                         break;
                     //控制器/电器盒绑定
                     case Config.PERMISSION_SMTZZ_KZQDQHBD_CODE:
-                        gotoBD(Config.PERMISSION_SMTZZ_KZQDQHBD_NAME);
+                        gotoBD(bean.getG_cxmc(),bean.getG_cxdm());
                         break;
                     //电子检查
                     case Config.PERMISSION_SMTZZ_DZJC_CODE:
-                        gotoBD(Config.PERMISSION_SMTZZ_DZJC_NAME);
+                        gotoBD(bean.getG_cxmc(),bean.getG_cxdm());
                         break;
                     default:
                         showSnakeBar("敬请期待");
@@ -299,9 +300,10 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         });
     }
 
-    private void gotoBD(String startType) {
+    private void gotoBD(String startTypeName,String startTypeCode) {
         Intent intent =  new Intent(MainActivity.this,BDActivity.class);
-        intent.putExtra(Config.ACTIVITY_START_TYPE,startType);
+        intent.putExtra(Config.ACTIVITY_START_TYPE_NAME,startTypeName);
+        intent.putExtra(Config.ACTIVITY_START_TYPE_CODE,startTypeCode);
         startActivity(intent);
     }
 

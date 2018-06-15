@@ -23,6 +23,7 @@ import ruiduoyi.com.skyworthpda.model.bean.CheckZWBean;
 import ruiduoyi.com.skyworthpda.model.bean.HaveRecordBean;
 import ruiduoyi.com.skyworthpda.model.bean.LoginBean;
 import ruiduoyi.com.skyworthpda.model.bean.CompanyBean;
+import ruiduoyi.com.skyworthpda.model.bean.MesBean;
 import ruiduoyi.com.skyworthpda.model.bean.PGXJBean;
 import ruiduoyi.com.skyworthpda.model.bean.PGXJRecordBean;
 import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
@@ -119,6 +120,11 @@ public class RetrofitManager {
     }
     public static Observable<XbBean> getXb(){
         return retrofit.create(Api.class).getXb(Config.TYPE_INTERFACE_XB,"XBM")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    public static Observable<XbBean> getZZXB(){
+        return retrofit.create(Api.class).getXb(Config.TYPE_INTERFACE_XB,"ZZXB")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -293,6 +299,11 @@ public class RetrofitManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+    public static Observable<MesBean> getMesDetail(String key_xbdm, String key_gzdm, String key_qrcode){
+        return retrofit.create(Api.class).getMesDetail(Config.TYPE_INTERFACE_GETMES,key_xbdm,key_gzdm,key_qrcode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
     public static void logout() {
         setToken("");
@@ -353,6 +364,9 @@ public class RetrofitManager {
 
         @GET("SmtPDADataDeal")
         Observable<PGXJBean> pgxj(@Query("key_prgid") String key_prgid, @Query("key_type") String key_type,  @Query("key_xbdm") String key_xbdm, @Query("key_qrcode") String key_qrcode, @Query("key_wldm") String wldm);
+
+        @GET("SmtPDADataDeal")
+        Observable<MesBean> getMesDetail(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm, @Query("key_gzdm") String gzdm, @Query("key_qrcode") String key_qrcode);
 
     }
 }

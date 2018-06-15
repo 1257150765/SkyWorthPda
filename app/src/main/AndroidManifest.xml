@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ruiduoyi.com.skyworthpda"
     android:versionCode="1"
-    android:versionName="1.0.0.5">
+    android:versionName="1.0.0.9">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.INTERNET" />

@@ -22,7 +22,7 @@ public abstract class BaseStatuScanActivity extends BaseScanActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        statuDialog = new AlertDialog.Builder(this)
+        statuDialog = new AlertDialog.Builder(this,R.style.transBg)
                 .setCancelable(true)
                 .create();
         handler = new Handler();

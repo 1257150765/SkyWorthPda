@@ -26,11 +26,10 @@
                 android:gravity="center_vertical|end"
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
-            <EditText
-
-                android:id="@+id/et_edit1_bdActivity"
+            <Spinner
+                android:id="@+id/sp_xbSp_bdActivity"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></EditText>
+                android:layout_height="match_parent"></Spinner>
         </LinearLayout>
         <TextView
             android:background="@color/gray"
@@ -45,6 +44,8 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <TextView
+
+                android:id="@+id/tv_gdh_bdActivity"
                 android:gravity="start|center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
@@ -62,6 +63,8 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <TextView
+                android:gravity="start|center_vertical"
+                android:id="@+id/tv_cpxh_bdActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
@@ -78,6 +81,8 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <TextView
+                android:gravity="start|center_vertical"
+                android:id="@+id/tv_pmgg_bdActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
@@ -89,11 +94,14 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <TextView
+
                 android:text="订单数量:"
                 android:gravity="center_vertical|end"
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <TextView
+                android:gravity="start|center_vertical"
+                android:id="@+id/tv_ddsl_bdActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
@@ -105,11 +113,14 @@
             android:layout_width="match_parent"
             android:layout_height="50dp">
             <TextView
+
                 android:text="投入数量:"
                 android:gravity="center_vertical|end"
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <TextView
+                android:gravity="start|center_vertical"
+                android:id="@+id/tv_trsl_bdActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
@@ -127,6 +138,7 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent" />
             <EditText
+
                 android:id="@+id/et_edit7_bdActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
@@ -149,6 +161,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
-
+        <TextView
+            android:id="@+id/tv_tips_bdActivity"
+            android:textColor="@color/red"
+            android:gravity="center"
+            android:text="* 提示: 请先扫描MES条码, 然后扫描压缩机条码."
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>
