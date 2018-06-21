@@ -39,4 +39,5 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-banner:2.1.9@aar'
     implementation project(':loadViewLibrary')
     //compile 'jp.wasabeef:recyclerview-animators:2.3.0'
+    compile 'com.tencent.bugly:crashreport:latest.release'
 }

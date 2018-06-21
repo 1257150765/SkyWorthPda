@@ -121,6 +121,7 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
         }*/
         tilUserIdLayout.setErrorEnabled(false);
         tiluserPwdLayout.setErrorEnabled(false);
+
         presenter.checkUpdate(companyBean.getSrvID());
     }
 
@@ -134,6 +135,7 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
         for (CompanyBean.UcDataBean bean:companyNameList){
             data.add(bean.getSrvName());
         }
+
         spCompanyname.setAdapter(new ArrayAdapter<String>(this, R.layout.item_spinner, data));
         for (int i = 0; i < companyNameList.size(); i++) {
             if (code.equals(companyNameList.get(i).getSrvID())){
@@ -213,5 +215,6 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
                 focusEditText = (EditText) v;
             }
         }
+        //
     }
 }

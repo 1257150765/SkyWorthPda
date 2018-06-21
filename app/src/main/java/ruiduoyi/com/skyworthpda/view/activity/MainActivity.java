@@ -2,24 +2,15 @@ package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +19,6 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,13 +29,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.bgabanner.BGABanner;
 import cn.bingoogolapple.bgabanner.BGABannerUtil;
+import de.hdodenhof.circleimageview.CircleImageView;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.MainContact;
 import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.presentor.MainPresentor;
+import ruiduoyi.com.skyworthpda.util.CatchExceptionUtil;
 import ruiduoyi.com.skyworthpda.util.Config;
-import ruiduoyi.com.skyworthpda.util.DownloadService;
 import ruiduoyi.com.skyworthpda.view.adapter.MainExpandableMenuAdapter;
 import ruiduoyi.com.skyworthpda.widget.MyExpandableListView;
 
@@ -74,6 +65,8 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     TextView companyName;
     @BindView(R.id.bm)
     TextView bm;
+    @BindView(R.id.iv_clearLog)
+    CircleImageView ivClearLog;
     private MainContact.Presentor presentor;
     private ProgressDialog downloadProgressDialog;
 
@@ -94,6 +87,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         ButterKnife.bind(this);
         initView();
         presentor = new MainPresentor(this, this);
+        //int a = 1 / 0;
     }
 
     @Override
@@ -119,6 +113,14 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         downloadProgressDialog.setCanceledOnTouchOutside(false);
         downloadProgressDialog.setTitle("下载中");
         downloadProgressDialog.setMax(100);
+        ivClearLog.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                CatchExceptionUtil.getInstance().deleteLogFile();
+                showSnakeBar("删除日志文件成功");
+                return false;
+            }
+        });
     }
 
     @Override
@@ -199,7 +201,6 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -210,19 +211,19 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     @Override
     public void onLoadPermissionSecceed(List<PermissionBean.UcDataBean> titles, final List<List<PermissionBean.UcDataBean>> childs) {
         List<String> groupTitles = new ArrayList<>();
-        for (PermissionBean.UcDataBean bean1:titles) {
+        for (PermissionBean.UcDataBean bean1 : titles) {
             groupTitles.add(bean1.getG_mkmc());
         }
         //子标题
         List<List<String>> allChildTitles = new ArrayList<>();
         //子标题的图片
         List<List<Integer>> allChildImgs = new ArrayList<>();
-        for (List<PermissionBean.UcDataBean> bean2:childs) {
+        for (List<PermissionBean.UcDataBean> bean2 : childs) {
             List<String> dataStr = new ArrayList<>();
             List<Integer> dataImg = new ArrayList<>();
-            for (PermissionBean.UcDataBean bean3 : bean2){
+            for (PermissionBean.UcDataBean bean3 : bean2) {
                 dataStr.add(bean3.getG_cxmc());
-                switch (bean3.getG_cxdm()){
+                switch (bean3.getG_cxdm()) {
                     case Config.PERMISSION_FCL_SCSL_CODE:
                         dataImg.add(R.mipmap.scsl);
                         break;
@@ -281,15 +282,15 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                         break;
                     //压缩机绑定
                     case Config.PERMISSION_SMTZZ_YSJBD_CODE:
-                        gotoBD(bean.getG_cxmc(),bean.getG_cxdm());
+                        gotoBD(bean.getG_cxmc(), bean.getG_cxdm());
                         break;
                     //控制器/电器盒绑定
                     case Config.PERMISSION_SMTZZ_KZQDQHBD_CODE:
-                        gotoBD(bean.getG_cxmc(),bean.getG_cxdm());
+                        gotoBD(bean.getG_cxmc(), bean.getG_cxdm());
                         break;
                     //电子检查
                     case Config.PERMISSION_SMTZZ_DZJC_CODE:
-                        gotoBD(bean.getG_cxmc(),bean.getG_cxdm());
+                        gotoBD(bean.getG_cxmc(), bean.getG_cxdm());
                         break;
                     default:
                         showSnakeBar("敬请期待");
@@ -300,10 +301,10 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         });
     }
 
-    private void gotoBD(String startTypeName,String startTypeCode) {
-        Intent intent =  new Intent(MainActivity.this,BDActivity.class);
-        intent.putExtra(Config.ACTIVITY_START_TYPE_NAME,startTypeName);
-        intent.putExtra(Config.ACTIVITY_START_TYPE_CODE,startTypeCode);
+    private void gotoBD(String startTypeName, String startTypeCode) {
+        Intent intent = new Intent(MainActivity.this, BDActivity.class);
+        intent.putExtra(Config.ACTIVITY_START_TYPE_NAME, startTypeName);
+        intent.putExtra(Config.ACTIVITY_START_TYPE_CODE, startTypeCode);
         startActivity(intent);
     }
 
@@ -316,7 +317,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
 
     @Override
     public void onUpdateSucceed() {
-        if (downloadProgressDialog != null && downloadProgressDialog.isShowing()){
+        if (downloadProgressDialog != null && downloadProgressDialog.isShowing()) {
             downloadProgressDialog.dismiss();
         }
     }

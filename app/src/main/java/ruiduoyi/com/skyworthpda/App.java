@@ -3,7 +3,10 @@ package ruiduoyi.com.skyworthpda;
 import android.app.Application;
 import android.media.SoundPool;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import ruiduoyi.com.skyworthpda.model.ceche.PreferenUtil;
+import ruiduoyi.com.skyworthpda.util.CatchExceptionUtil;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.LogWraper;
 import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
@@ -15,9 +18,12 @@ import ruiduoyi.com.skyworthpda.util.Util;
 
 public class App extends Application {
     public static int themeId = R.style.AppTheme1;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        //CrashReport.initCrashReport(getApplicationContext(), "f25ebf3d0c", true);
+        CatchExceptionUtil.getInstance().init(this,true,false);
         SoundPoolUtil.init(this);
         PreferenUtil preferenUtil = new PreferenUtil(this);
         boolean b = preferenUtil.getBoolean(Config.IS_INIT);

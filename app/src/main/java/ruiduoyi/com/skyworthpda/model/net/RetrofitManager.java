@@ -32,6 +32,7 @@ import ruiduoyi.com.skyworthpda.model.bean.SCXLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLQRBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLXXBean;
 import ruiduoyi.com.skyworthpda.model.bean.UpdateBean;
+import ruiduoyi.com.skyworthpda.model.bean.UploadLogBean;
 import ruiduoyi.com.skyworthpda.model.bean.VersionSwitchBean;
 import ruiduoyi.com.skyworthpda.model.bean.WLXXBean;
 import ruiduoyi.com.skyworthpda.model.bean.XLZWBean;
@@ -305,6 +306,11 @@ public class RetrofitManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public static Observable<UploadLogBean> uploadLog(String key_Mac,String key_ErrMsg){
+        return retrofit.create(Api.class).uploadLog(Config.TYPE_INTERFACE_UPLOADLOG,key_Mac,key_ErrMsg);
+
+    }
+
     public static void logout() {
         setToken("");
         setCompanyName("");
@@ -367,6 +373,9 @@ public class RetrofitManager {
 
         @GET("SmtPDADataDeal")
         Observable<MesBean> getMesDetail(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm, @Query("key_gzdm") String gzdm, @Query("key_qrcode") String key_qrcode);
+
+        @GET("SmtPDADataDeal")
+        Observable<UploadLogBean> uploadLog(@Query("key_prgid") String key_prgid,@Query("key_Mac") String key_Mac,@Query("key_ErrMsg") String key_ErrMsg);
 
     }
 }
