@@ -22,6 +22,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         //CrashReport.initCrashReport(getApplicationContext(), "f25ebf3d0c", true);
         CatchExceptionUtil.getInstance().init(this,true,false);
         SoundPoolUtil.init(this);

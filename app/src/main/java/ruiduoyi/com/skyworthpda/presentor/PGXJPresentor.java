@@ -183,6 +183,7 @@ public class PGXJPresentor implements PGXJContact.Presentor {
                     CheckQRCODEBean.UcDataBean bean = value.getUcData().get(0);
                     view.onCheckQRCODESucceed(Config.CHECK_TYPE_QRCODE,bean.getV_oricode(),bean.getV_wldm());
                 }else {
+                    view.onScanError();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
 
@@ -191,6 +192,7 @@ public class PGXJPresentor implements PGXJContact.Presentor {
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
+                view.onScanError();
                 view.onShowTipsDailog("验证条码出错");
             }
 

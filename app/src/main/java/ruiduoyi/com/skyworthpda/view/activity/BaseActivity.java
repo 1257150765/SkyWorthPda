@@ -103,6 +103,9 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
         Snackbar.make(getWindow().getDecorView(),tips,Snackbar.LENGTH_SHORT).show();
     }
 
+    /**
+     * 执行成功
+     */
     @Override
     public void onExecuteSucceed() {
         SoundPoolUtil.playOK();
@@ -112,17 +115,24 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     }
 
 
-
+    /**
+     * 扫描二维码时验证出错，会提示
+     */
     @Override
     public void onScanError() {
-
+        SoundPoolUtil.playScanError();
     }
 
+    /**
+     * 执行失败
+     */
     @Override
     public void onExecuteFalse() {
-        /*tipsToast.setView(ivFail);
-        tipsToast.show();*/
+        SoundPoolUtil.playNG();
+        //tipsToast.setView(ivFail);
+        //tipsToast.show();
     }
+
 
     @Override
     protected void onDestroy() {

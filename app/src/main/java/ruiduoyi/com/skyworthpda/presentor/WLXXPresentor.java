@@ -79,6 +79,7 @@ public class WLXXPresentor implements WLXXContact.Presentor {
                 if (value.isUtStatus()){
                     view.onCheckQRCODESucceed(value.getUcData().get(0));
                 }else {
+                    view.onScanError();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }
@@ -91,8 +92,8 @@ public class WLXXPresentor implements WLXXContact.Presentor {
 
             @Override
             public void onComplete() {
-
             }
+
         });
     }
 
@@ -119,6 +120,7 @@ public class WLXXPresentor implements WLXXContact.Presentor {
                 if (value.isUtStatus()){
                     view.onExecuteSucceed();
                 }else {
+                    view.onExecuteFalse();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }

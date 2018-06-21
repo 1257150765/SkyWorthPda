@@ -70,6 +70,7 @@ public class VersionSwitchPresentor implements VersionSeitchContact.Presentor {
                     view.onVersionSwitchSucceed();
                     view.onExecuteSucceed();
                 }else {
+                    view.onExecuteFalse();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }

@@ -80,12 +80,14 @@ public class ZWTZPresentor implements ZWTZContact.Presentor {
                 if (value.isUtStatus()){
                     view.onCheckZwSucceed(zw);
                 }else {
+                    view.onScanError();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
+                view.onScanError();
                 view.onLoading(false);
                 view.onShowTipsDailog("站位验证失败");
             }
@@ -119,6 +121,7 @@ public class ZWTZPresentor implements ZWTZContact.Presentor {
 
             @Override
             public void onError(Throwable e) {
+
                 view.onLoading(false);
                 view.onExecuteFalse();
                 view.onShowTipsDailog("调整站位出错");

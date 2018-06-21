@@ -128,13 +128,16 @@ public class SCSLPresentor implements SCSLContact.Presentor {
                 if (value.isUtStatus()){
                     view.onCheckZWSucceed(type,value.getUcData().get(0).getColumn1());
                 }else {
+                    view.onScanError();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
+
             }
 
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
+                view.onScanError();
                 view.onShowTipsDailog("验证站位出错");
             }
 
@@ -166,6 +169,8 @@ public class SCSLPresentor implements SCSLContact.Presentor {
                     CheckQRCODEBean.UcDataBean bean = value.getUcData().get(0);
                     view.onCheckQRCODESucceed(type,bean.getV_oricode(),bean.getV_wldm(),""+bean.getV_qty());
                 }else {
+
+                    view.onScanError();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
 
@@ -174,6 +179,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
+                view.onScanError();
                 view.onShowTipsDailog("验证条码出错");
             }
 

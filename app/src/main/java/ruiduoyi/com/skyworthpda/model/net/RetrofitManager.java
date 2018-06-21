@@ -53,6 +53,7 @@ public class RetrofitManager {
     static {
         init();
     }
+
     private static String token = "";
     private static String companyName = "";
 
