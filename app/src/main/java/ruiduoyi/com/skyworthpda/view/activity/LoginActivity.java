@@ -7,8 +7,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -41,6 +43,7 @@ import ruiduoyi.com.skyworthpda.util.Config;
 
 public class LoginActivity extends BaseScanActivity implements LoginContact.View, View.OnFocusChangeListener {
     private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final int REQUEST_PERMISSION_WTITE_EXTERNAL = 1002;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.user_img)
@@ -130,16 +133,41 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
             if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                 presenter.checkUpdate(companyBean.getSrvID());
             }else {
-                presenter.login(companyBean.getSrvID(),userName, pwd);
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setMessage("请授予App写SD卡的权限，否则将会导致更新失败")
+                        .setCancelable(false)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // 如果没有授予该权限，就去提示用户请求
+                                ActivityCompat.requestPermissions(LoginActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION_WTITE_EXTERNAL);
+                            }
+                        })
+                        .create();
+                dialog.show();
+                //presenter.login(companyBean.getSrvID(),userName, pwd);
             }
         }else {
             presenter.checkUpdate(companyBean.getSrvID());
         }
-
-
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_WTITE_EXTERNAL){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                presenter.checkUpdate(companyBean.getSrvID());
+            }else {
+                //跳到详情，让用户授予权限
+                Intent localIntent = new Intent();
+                localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                localIntent.setData(Uri.fromParts("package", getPackageName(), null));
+                startActivity(localIntent);
+            }
+        }
+    }
 
     @Override
     public void onLoadConpanyNameSucceed(List<CompanyBean.UcDataBean> companyNameList) {
