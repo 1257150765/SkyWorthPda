@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PDA</string>
+    <string name="app_name">A-MES</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

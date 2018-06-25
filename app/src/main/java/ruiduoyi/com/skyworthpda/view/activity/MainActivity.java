@@ -1,15 +1,21 @@
 package ruiduoyi.com.skyworthpda.view.activity;
 
+import android.Manifest;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
@@ -44,6 +50,7 @@ import ruiduoyi.com.skyworthpda.widget.MyExpandableListView;
 public class MainActivity extends BaseActivity implements MainContact.View {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL = 1001;
     @BindView(R.id.banner_mainactivity)
     BGABanner bgabBanner;
     @BindView(R.id.toolbar)
@@ -92,6 +99,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
 
     @Override
     protected void initView() {
+
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -121,6 +129,22 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                 return false;
             }
         });
+
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                //showSnakeBar("授予成功");
+                presentor.checkUpdate();
+            }else {
+                showSnakeBar("授予失败");
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     }
 
     @Override
@@ -130,11 +154,35 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                 drawer.openDrawer(Gravity.LEFT);
                 break;
             case R.id.checkUptate:
-                presentor.checkUpdate();
+                // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    // 检查该权限是否已经获取
+                    int i = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    // 权限是否已经 授权 GRANTED---授权  DINIED---拒绝
+                    if (i != PackageManager.PERMISSION_GRANTED) {
+                        AlertDialog dialog = new AlertDialog.Builder(this)
+                                .setMessage("请授予App写SD卡的权限，否则将会导致更新失败")
+                                .setCancelable(false)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        // 如果没有授予该权限，就去提示用户请求
+                                        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL);
+                                    }
+                                })
+                                .create();
+                        dialog.show();
+                    }else {
+                        presentor.checkUpdate();
+                    }
+                }else {
+                    presentor.checkUpdate();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     protected void onResume() {
@@ -243,6 +291,12 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     case Config.PERMISSION_PZGL_PGXJ_CODE:
                         dataImg.add(R.mipmap.pgxj);
                         break;
+                    case Config.PERMISSION_SMTZZ_YSJBD_CODE:
+                        dataImg.add(R.mipmap.ysjbd);
+                    case Config.PERMISSION_SMTZZ_KZQDQHBD_CODE:
+                        dataImg.add(R.mipmap.kzqbd);
+                    case Config.PERMISSION_SMTZZ_DZJC_CODE:
+                        dataImg.add(R.mipmap.jzjl);
                     default:
                         dataImg.add(R.mipmap.unknown);
                         break;

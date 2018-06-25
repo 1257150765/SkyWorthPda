@@ -103,6 +103,9 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
 
     @Override
     protected void initView() {
+        /*btnBbqh.setBackgroundResource(R.drawable.btn_click_selector);
+        btnDgxl.setBackgroundResource(R.drawable.btn_click_selector);
+        btnQbxl.setBackgroundResource(R.drawable.btn_click_selector);*/
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

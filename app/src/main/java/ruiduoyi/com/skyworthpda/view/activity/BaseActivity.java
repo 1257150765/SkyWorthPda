@@ -1,6 +1,7 @@
 package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -40,6 +41,7 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(App.themeId);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         preferenUtil = new PreferenUtil(getApplicationContext());
         anim= AnimationUtils.loadAnimation(this, R.anim.btn_apha);

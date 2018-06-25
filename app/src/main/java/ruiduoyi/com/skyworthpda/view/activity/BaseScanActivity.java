@@ -10,16 +10,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 
+import ruiduoyi.com.skyworthpda.App;
 import ruiduoyi.com.skyworthpda.util.Config;
+import ruiduoyi.com.skyworthpda.util.EDAScanUtil;
 import ruiduoyi.com.skyworthpda.util.LogWraper;
 import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
+
+import static ruiduoyi.com.skyworthpda.App.edaScanUtil;
 
 /**
  * 封装了扫描功能，（）
  * Created by Chen on 2018/5/7.
  */
 
-public abstract class BaseScanActivity extends BaseActivity {
+public abstract class BaseScanActivity extends BaseActivity implements EDAScanUtil.EDAScanListener {
     private static final String CODE_RECEIVER_ACTION = Config.CUSTOM_NAME;
     private static final String TAG = BaseScanActivity.class.getSimpleName();
     BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -37,14 +41,23 @@ public abstract class BaseScanActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        IntentFilter filter=new IntentFilter(CODE_RECEIVER_ACTION);
-        registerReceiver(receiver, filter);
+        if (edaScanUtil == null){
+            IntentFilter filter = new IntentFilter(CODE_RECEIVER_ACTION);
+            registerReceiver(receiver, filter);
+        }else {
+            LogWraper.d(TAG,"监听器");
+            edaScanUtil.start(this);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+        if (edaScanUtil == null){
+            unregisterReceiver(receiver);
+        }else {
+            edaScanUtil.stop();
+        }
     }
     protected abstract void onReceiveCode(String code);
 
@@ -56,7 +69,11 @@ public abstract class BaseScanActivity extends BaseActivity {
     @Override
     public void onScanError() {
         super.onScanError();
-
     }
 
+    @Override
+    public void onScanSucceed(String code) {
+        LogWraper.d(TAG,"EDA60K:"+code);
+        onReceiveCode(code);
+    }
 }

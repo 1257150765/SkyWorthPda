@@ -1,14 +1,18 @@
 package ruiduoyi.com.skyworthpda.view.activity;
 
+import android.Manifest;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -121,8 +125,18 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
         }*/
         tilUserIdLayout.setErrorEnabled(false);
         tiluserPwdLayout.setErrorEnabled(false);
+        //如果大于等于6.0 并且还没有授权
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                presenter.checkUpdate(companyBean.getSrvID());
+            }else {
+                presenter.login(companyBean.getSrvID(),userName, pwd);
+            }
+        }else {
+            presenter.checkUpdate(companyBean.getSrvID());
+        }
 
-        presenter.checkUpdate(companyBean.getSrvID());
+
     }
 
 

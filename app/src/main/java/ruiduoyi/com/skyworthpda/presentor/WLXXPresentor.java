@@ -129,6 +129,7 @@ public class WLXXPresentor implements WLXXContact.Presentor {
             public void onError(Throwable e) {
                 view.onLoading(false);
                 view.onShowTipsDailog("下料出错");
+
             }
 
             @Override

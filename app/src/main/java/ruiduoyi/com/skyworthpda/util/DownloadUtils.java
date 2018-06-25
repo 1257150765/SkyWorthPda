@@ -3,6 +3,8 @@ package ruiduoyi.com.skyworthpda.util;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import java.io.File;
@@ -71,12 +73,26 @@ public class DownloadUtils {
     //下载到本地后执行安装
     private void installAPK(String filePath) {
         //获取下载文件的Uri
-        Uri downloadFileUri = Uri.fromFile(new File(filePath));
-        if (downloadFileUri != null) {
-            Intent intent= new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        File file = new File(filePath);
+        if (file.exists()) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri data;
+            // 判断版本大于等于7.0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.setAction(Intent.ACTION_INSTALL_PACKAGE);
+                //清单文件中配置的authorities
+                data = FileProvider.getUriForFile(mContext, "com.ruiduoyi.FileProvider", file);
+                // 给目标应用一个临时授权
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//重点！！
+            } else {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//重点！！！
+                data = Uri.fromFile(file);
+            }
+            intent.setDataAndType(data, "application/vnd.android.package-archive");
             mContext.startActivity(intent);
+        } else {
+            Log.e("ruin", file.getName()+"文件不存在!" );
         }
+
     }
 }
