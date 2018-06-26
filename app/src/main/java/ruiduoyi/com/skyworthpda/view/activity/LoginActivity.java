@@ -40,6 +40,7 @@ import ruiduoyi.com.skyworthpda.model.bean.LoginBean;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.presentor.LoginPresenter;
 import ruiduoyi.com.skyworthpda.util.Config;
+import ruiduoyi.com.skyworthpda.util.Util;
 
 public class LoginActivity extends BaseScanActivity implements LoginContact.View, View.OnFocusChangeListener {
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -134,7 +135,7 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
                 presenter.checkUpdate(companyBean.getSrvID());
             }else {
                 AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setMessage("请授予App写SD卡的权限，否则将会导致更新失败")
+                        .setMessage("请授予App写SD卡的权限，否则将会导致更新失败.")
                         .setCancelable(false)
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
@@ -160,11 +161,7 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
                 presenter.checkUpdate(companyBean.getSrvID());
             }else {
                 //跳到详情，让用户授予权限
-                Intent localIntent = new Intent();
-                localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                localIntent.setData(Uri.fromParts("package", getPackageName(), null));
-                startActivity(localIntent);
+                Util.startToAppDetail(this);
             }
         }
     }

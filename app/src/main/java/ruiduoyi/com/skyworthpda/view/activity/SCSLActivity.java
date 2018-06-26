@@ -169,9 +169,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 curXb = bean.getXbm_xbdm();
                 setZwcx(bean.getXbm_zwcxdm());
                 loadData();
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 bean = xbData.get(0);
@@ -376,6 +374,15 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     public void onCheckZWSucceed(String type, String code) {
         etEdit2.setText(code);
         etEdit3.requestFocus();
+        for (int i = 0; i < slData.size(); i++) {
+            //LogWraper.d(TAG,"--"+slData.get(i).getZwl_zwdm());
+            if (code.equals(slData.get(i).getZwl_zwdm())){
+                rvRecycler.scrollToPosition(i);
+                LinearLayoutManager mLayoutManager =
+                        (LinearLayoutManager) rvRecycler.getLayoutManager();
+                mLayoutManager.scrollToPositionWithOffset(i, 0);
+            }
+        }
     }
 
     /**

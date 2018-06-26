@@ -3,6 +3,7 @@ package ruiduoyi.com.skyworthpda.util;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 
 import ruiduoyi.com.skyworthpda.App;
 
@@ -53,5 +54,13 @@ public class Util {
         // 修改扫描工具内应用设置下的结束符为 "NONE"
         intent.putExtra(Config.END_KEY, "NONE");
         context.sendBroadcast(intent);
+    }
+    public static void startToAppDetail(Context context){
+        //跳到详情，让用户授予权限
+        Intent localIntent = new Intent();
+        localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+        localIntent.setData(Uri.fromParts("package", context.getPackageName(), null));
+        context.startActivity(localIntent);
     }
 }

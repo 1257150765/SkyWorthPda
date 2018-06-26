@@ -49,6 +49,10 @@ public class DownloadUtils {
                 double fileSize=urlConnection.getContentLength()/1024;
                 Log.e("getLastModified()",urlConnection.getLastModified()+"");
                 InputStream in=urlConnection.getInputStream();
+                File file1 = new File(filePath+"/"+fileName);
+                if (file.exists()){
+                    file.delete();
+                }
                 OutputStream out=new FileOutputStream(filePath+"/"+fileName,false);
                 byte[] buff=new byte[1024];
                 int downloadSize=0;

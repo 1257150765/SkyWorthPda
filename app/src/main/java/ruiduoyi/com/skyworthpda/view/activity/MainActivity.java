@@ -8,8 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -43,6 +45,7 @@ import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.presentor.MainPresentor;
 import ruiduoyi.com.skyworthpda.util.CatchExceptionUtil;
 import ruiduoyi.com.skyworthpda.util.Config;
+import ruiduoyi.com.skyworthpda.util.Util;
 import ruiduoyi.com.skyworthpda.view.adapter.MainExpandableMenuAdapter;
 import ruiduoyi.com.skyworthpda.widget.MyExpandableListView;
 
@@ -99,7 +102,6 @@ public class MainActivity extends BaseActivity implements MainContact.View {
 
     @Override
     protected void initView() {
-
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -140,7 +142,8 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                 //showSnakeBar("授予成功");
                 presentor.checkUpdate();
             }else {
-                showSnakeBar("授予失败");
+                Util.startToAppDetail(this);
+                //showSnakeBar("授予失败");
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -255,6 +258,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         RetrofitManager.logout();
 
     }
+
 
     @Override
     public void onLoadPermissionSecceed(List<PermissionBean.UcDataBean> titles, final List<List<PermissionBean.UcDataBean>> childs) {

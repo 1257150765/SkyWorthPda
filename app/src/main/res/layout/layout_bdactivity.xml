@@ -162,6 +162,7 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
         <TextView
+            android:textSize="13sp"
             android:id="@+id/tv_tips_bdActivity"
             android:textColor="@color/red"
             android:gravity="center"

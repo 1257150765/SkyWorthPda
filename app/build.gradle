@@ -3,11 +3,12 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
+        versionCode="1"
+        versionName="1.0.0.10"
         applicationId "ruiduoyi.com.skyworthpda"
         minSdkVersion 21
         targetSdkVersion 27
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
 
@@ -15,7 +16,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
+        /*定义输出的apk名字*/
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                outputFileName = "${defaultConfig.versionName}-SmtPDAApp.apk"
+            }
+        }
     }
 
 }
@@ -28,6 +34,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
     implementation files('libsref/ScannerAPI.jar')
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -40,6 +47,5 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-banner:2.1.9@aar'
     implementation project(':loadViewLibrary')
     //compile 'jp.wasabeef:recyclerview-animators:2.3.0'
-    compile 'com.tencent.bugly:crashreport:latest.release'
     implementation files('libs/DataCollection.jar')
 }

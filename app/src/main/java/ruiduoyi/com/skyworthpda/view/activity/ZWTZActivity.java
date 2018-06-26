@@ -26,7 +26,7 @@ import ruiduoyi.com.skyworthpda.contact.ZWTZContact;
 import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 import ruiduoyi.com.skyworthpda.presentor.ZWTZPresentor;
 
-public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View {
+public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View, View.OnFocusChangeListener {
 
 
     @BindView(R.id.toolbar)
@@ -100,6 +100,8 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View {
 
             }
         });
+        etOldZw.setOnFocusChangeListener(this);
+        etNewZw.setOnFocusChangeListener(this);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -148,7 +150,9 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View {
         }
         xbAdapter = new ArrayAdapter<String>(ZWTZActivity.this, R.layout.item_spinner, xbDataStr);
         spXb.setAdapter(xbAdapter);
+
     }
+
 
     @Override
     public void onCheckZwSucceed(String zw) {
@@ -164,11 +168,19 @@ public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View {
             }
         }
     }
-
-
     @Override
     protected void onReceiveCode(String code) {
         presentor.checkZw(code);
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean b) {
+
+        if (b && etNewZw.getId() == view.getId() && "".equals(etOldZw.getText().toString())){
+            showSnakeBar("请先扫描旧站位");
+            etOldZw.requestFocus();
+        }
+
     }
 }
 
