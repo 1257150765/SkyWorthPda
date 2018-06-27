@@ -206,7 +206,6 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     @Override
     public void onExecuteSucceed() {
         super.onExecuteSucceed();
-
         loadData();
         etEdit2.requestFocus();
         etEdit2.setText("");
@@ -245,7 +244,6 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         }else if(Config.CHECK_TYPE_QRCODE.equals(type)){
             presentor.checkQRCODE(type,code);
         }
-
     }
 
     /**
@@ -357,7 +355,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         }
     }
 
-    //执行物料下线成功
+    //执行物料下线成功，
     @Override
     public void onWLXXSucceed() {
         super.onExecuteSucceed();
@@ -390,6 +388,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
      * @param v
      * @param hasFocus
      */
+
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus){
