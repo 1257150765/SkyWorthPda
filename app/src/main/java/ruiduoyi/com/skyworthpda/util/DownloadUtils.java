@@ -47,7 +47,7 @@ public class DownloadUtils {
                 urlConnection.setConnectTimeout(5000);
                 urlConnection.connect();
                 double fileSize=urlConnection.getContentLength()/1024;
-                Log.e("getLastModified()",urlConnection.getLastModified()+"");
+                //Log.e("getLastModified()",urlConnection.getLastModified()+"");
                 InputStream in=urlConnection.getInputStream();
                 File file1 = new File(filePath+"/"+fileName);
                 if (file.exists()){

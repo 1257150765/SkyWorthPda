@@ -50,6 +50,7 @@ import static ruiduoyi.com.skyworthpda.util.Config.BASE_URL;
  */
 
 public class RetrofitManager {
+
     static {
         init();
     }
