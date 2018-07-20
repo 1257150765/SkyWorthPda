@@ -62,6 +62,15 @@ public class CheckQRCODEBean {
         private String v_csdm;
         private int v_qty;
         private String v_oricode;
+        private String v_isInUse;
+
+        public String getV_isInUse() {
+            return v_isInUse;
+        }
+
+        public void setV_isInUse(String v_isInUse) {
+            this.v_isInUse = v_isInUse;
+        }
 
         public String getV_msg() {
             return v_msg;

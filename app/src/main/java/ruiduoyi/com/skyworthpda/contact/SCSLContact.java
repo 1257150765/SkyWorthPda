@@ -14,7 +14,7 @@ public interface SCSLContact {
         void onLoadXbSucceed(List<XbBean.UcDataBean> xbData);
         void onLoadDataSucceed(List<SLXXBean.UcDataBean> data);
         void onCheckZWSucceed(String type,String code);
-        void onCheckQRCODESucceed(String type,String code,String wldm,String qty);
+        void onCheckQRCODESucceed(String type,String code,String wldm,String qty,String isUse);
 
         void onWLXXSucceed();
     }
@@ -30,5 +30,7 @@ public interface SCSLContact {
         void wlxx(String type, String xbm_xbdm);
 
         void loadQRData(String xbm_xbdm, String key_flag);
+
+        void setStartType(String startType);
     }
 }

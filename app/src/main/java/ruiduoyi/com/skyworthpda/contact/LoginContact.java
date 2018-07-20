@@ -21,7 +21,7 @@ public interface LoginContact {
      }
 
     public interface Presentor {
-        void login(String companyName, String userName, String pwd);
+        void login(String companyName, String userName, String pwd, String key_isAuto);
         void loadCompanyName();
         void checkUpdate(String companyCode);
         void update(String url);

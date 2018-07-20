@@ -26,11 +26,14 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,7 +82,8 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     CircleImageView ivClearLog;
     private MainContact.Presentor presentor;
     private ProgressDialog downloadProgressDialog;
-
+    private boolean isCanBack = false;
+    private Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -256,7 +260,9 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     protected void onDestroy() {
         super.onDestroy();
         RetrofitManager.logout();
-
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 
 
@@ -404,6 +410,26 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isCanBack){
+            super.onBackPressed();
+        }else {
+            Toast.makeText(MainActivity.this,"在按一次退出",Toast.LENGTH_LONG).show();
+            isCanBack  = true;
+            if (timer == null){
+                timer = new Timer();
+            }
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isCanBack = false;
+                }
+            },2000L);
+        }
+
     }
 
 }

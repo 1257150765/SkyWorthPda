@@ -1,13 +1,11 @@
 package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.Manifest;
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,7 +16,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,7 +39,7 @@ import ruiduoyi.com.skyworthpda.presentor.LoginPresenter;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.Util;
 
-public class LoginActivity extends BaseScanActivity implements LoginContact.View, View.OnFocusChangeListener {
+public class LoginActivity extends BaseScanActivity implements LoginContact.View {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int REQUEST_PERMISSION_WTITE_EXTERNAL = 1002;
     @BindView(R.id.toolbar)
@@ -65,7 +62,6 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
     private List<CompanyBean.UcDataBean> companyNameList;
     private CompanyBean.UcDataBean companyBean = null;
     private ProgressDialog downloadProgressDialog;
-    private EditText focusEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +100,7 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
         downloadProgressDialog.setCanceledOnTouchOutside(false);
         downloadProgressDialog.setTitle("下载中");
         downloadProgressDialog.setMax(100);
-        etUserPwd.setOnFocusChangeListener(this);
-        etUserId.setOnFocusChangeListener(this);
+
     }
 
     @OnClick(R.id.cv_login_loginactivity)
@@ -114,7 +109,7 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
         String userName = etUserId.getText().toString();
         String pwd = etUserPwd.getText().toString();
         if (null == companyBean){
-            Snackbar.make(getWindow().getDecorView(),"系统名称不能为空",Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(getWindow().getDecorView(),"公司名称不能为空",Snackbar.LENGTH_SHORT).show();
             return;
         }
         if ("".equals(userName)) {
@@ -215,12 +210,13 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
                     .setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            presenter.login(companyBean.getSrvID(),userName, pwd);
+                            presenter.login(companyBean.getSrvID(),userName, pwd, "0");
                         }
                     });
             builder.create().show();
         } else {
-            presenter.login(companyBean.getSrvID(),userName, pwd);
+            //0表示手动登录
+            presenter.login(companyBean.getSrvID(),userName, pwd, "0");
         }
 
     }
@@ -241,13 +237,20 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
 
     @Override
     protected void onReceiveCode(String code) {
-        if (focusEditText == null){
+        /*if (focusEditText == null){
             etUserPwd.requestFocus();
         }
-        focusEditText.setText(code);
+        focusEditText.setText(code);*/
+        String[] split = code.split("\\*");
+        if (null == companyBean){
+            Snackbar.make(getWindow().getDecorView(),"公司名称不能为空",Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        //1表示扫描登录
+        presenter.login(companyBean.getSrvID(),split[0], split[1],"1");
     }
 
-    @Override
+   /* @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (hasFocus){
             if (v instanceof EditText){
@@ -255,5 +258,5 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
             }
         }
         //
-    }
+    }*/
 }

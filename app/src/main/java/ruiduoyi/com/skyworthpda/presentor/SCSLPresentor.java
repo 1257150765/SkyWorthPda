@@ -28,6 +28,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
     private static final String TAG = SCSLPresentor.class.getSimpleName();
     private SCSLContact.View view;
     private Context context;
+    private String startType = "";
 
     public SCSLPresentor(SCSLContact.View view, Context context) {
         this.view = view;
@@ -167,9 +168,8 @@ public class SCSLPresentor implements SCSLContact.Presentor {
                 view.onLoading(false);
                 if (value.isUtStatus()){
                     CheckQRCODEBean.UcDataBean bean = value.getUcData().get(0);
-                    view.onCheckQRCODESucceed(type,bean.getV_oricode(),bean.getV_wldm(),""+bean.getV_qty());
+                    view.onCheckQRCODESucceed(type,bean.getV_oricode(),bean.getV_wldm(),""+bean.getV_qty(),bean.getV_isInUse());
                 }else {
-
                     view.onScanError();
                     view.onShowTipsDailog(value.getUcMsg());
                 }
@@ -393,5 +393,10 @@ public class SCSLPresentor implements SCSLContact.Presentor {
 
             }
         });
+    }
+
+    @Override
+    public void setStartType(String startType) {
+        this.startType = startType;
     }
 }

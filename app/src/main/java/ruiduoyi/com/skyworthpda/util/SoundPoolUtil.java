@@ -27,13 +27,13 @@ public class SoundPoolUtil {
     }
 
     public static void playOK(){
-        soundPool.play(ok,0.8f,0.8f,1,0,1f);
+        soundPool.play(ok,1.0f,1.0f,1,0,1f);
     }
     public static void playScanError(){
-        soundPool.play(scanError,0.8f,0.8f,1,0,1f);
+        soundPool.play(scanError,1.0f,1.0f,1,0,1f);
     }
     public static void playNG(){
-        soundPool.play(ng,0.8f,0.8f,1,0,1f);
+        soundPool.play(ng,1.0f,1.0f,1,0,1f);
     }
 
 }

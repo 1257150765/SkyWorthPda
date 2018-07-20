@@ -1,21 +1,10 @@
 package ruiduoyi.com.skyworthpda.presentor;
 
-import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
-import android.support.v4.content.LocalBroadcastManager;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -43,11 +32,9 @@ public class LoginPresenter implements LoginContact.Presentor {
     }
 
     @Override
-    public void login(final String companyName, final String userName, final String pwd) {
+    public void login(final String companyName, final String userName, final String pwd, String key_isAuto) {
         view.onLoading(true);
-        final String userNameErrorInfo = "";
-        final String pwdErrorInfo = "";
-        RetrofitManager.login(companyName,userName,pwd).subscribe(new Observer<LoginBean>() {
+        RetrofitManager.login(companyName,userName,pwd,key_isAuto).subscribe(new Observer<LoginBean>() {
             @Override
             public void onSubscribe(Disposable d) {
 

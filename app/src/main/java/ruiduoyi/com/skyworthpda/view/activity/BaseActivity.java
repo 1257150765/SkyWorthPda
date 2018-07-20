@@ -32,11 +32,10 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     protected PreferenUtil preferenUtil;
     protected Animation anim;
     private AlertDialog loadingDialog;
-    private AlertDialog tipsDialog;
+    protected AlertDialog tipsDialog;
     private Toast tipsToast;
     private ImageView ivSucceed;
     private ImageView ivFail;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +98,7 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
         }
         tipsDialog.setMessage(tips);
         tipsDialog.show();
+
     }
 
     public void showSnakeBar(String tips){
@@ -139,6 +139,8 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
+
+
+
 }

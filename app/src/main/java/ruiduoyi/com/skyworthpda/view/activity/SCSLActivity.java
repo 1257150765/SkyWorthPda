@@ -89,6 +89,8 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     private SCSLAdapter adapter;
     private List<SLXXBean.UcDataBean> slData;
     private String curXb = "";
+    private String isUse = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +99,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         startType = getIntent().getStringExtra(START_TYPE);
         initView();
         presentor = new SCSLPresentor(this, this);
+        presentor.setStartType(startType);
         //getWindow().setEnterTransition(new Explode().setDuration(600));
         //getWindow().setExitTransition(new Explode().setDuration(600));
     }
@@ -147,6 +150,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 break;
             //上料确认，第二个框是站位，第三个框是二维码
             case Config.PERMISSION_FCL_SLQR_NAME:
+                cbJdsl.setText("仅待确认");
                 edit2ScanType = Config.CHECK_TYPE_ZWM;
                 edit3ScanType = Config.CHECK_TYPE_QRCODE;
                 break;
@@ -202,7 +206,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     }
 
 
-    //执行成功
+    //执行成功，吧所有输入框的内容都清除掉
     @Override
     public void onExecuteSucceed() {
         super.onExecuteSucceed();
@@ -210,14 +214,15 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         etEdit2.requestFocus();
         etEdit2.setText("");
         etEdit3.setText("");
+        isUse = "";
     }
 
-    //执行失败
+    //执行失败，可以认定只是最后一次扫描有问题，吧第三输入框的内容清除掉就可以了
     @Override
     public void onExecuteFalse() {
         super.onExecuteFalse();
-        etEdit2.requestFocus();
-        etEdit2.setText("");
+        etEdit3.requestFocus();
+        //etEdit2.setText("");
         etEdit3.setText("");
     }
 
@@ -229,20 +234,39 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
             return;
         }
         String type = "";
-        //那个输入框有焦点，就使用哪个扫描类型
+        //如果是首次上料和生产续料，是的话就根据扫描内容有没有*号判断是站位还是物料
+        //如果是生产续料，判断旧料盘是否正确 不正确就一直扫旧料盘，正确就默认继续扫新料盘
+        if (Config.PERMISSION_FCL_SCXL_NAME.equals(startType)) {
+            /*if ("N".equals(isUse) || "".equals(isUse)){
+                etEdit2.requestFocus();
+            }else if ("Y".equals(isUse) && !etEdit2.getText().toString().equals("")){
+                etEdit3.requestFocus();
+            }*/
+        }else {
+            if (code.contains("*")) {
+                //type = edit2ScanType;
+                etEdit3.requestFocus();
+                if ("".equals(etEdit2.getText().toString())){
+                    return;
+                }
+            } else{
+                //type = edit3ScanType;
+                etEdit2.requestFocus();
+            }
+            //LogWraper.d(TAG,"--"+type+","+code);
+        }
+
         if (focusEditText.getId() == etEdit2.getId()){
             type = edit2ScanType;
         }else if (focusEditText.getId() == etEdit3.getId()){
             type = edit3ScanType;
         }
-
-        //LogWraper.d(TAG,"--"+type+","+code);
-        if ("".equals(type) || "".equals(code)){
+        if ("".equals(type) || "".equals(code)) {
             return;
-        } else if(Config.CHECK_TYPE_ZWM.equals(type)){
-            presentor.checkZW(type,code);
-        }else if(Config.CHECK_TYPE_QRCODE.equals(type)){
-            presentor.checkQRCODE(type,code);
+        } else if (Config.CHECK_TYPE_ZWM.equals(type)) {
+            presentor.checkZW(type, code);
+        } else if (Config.CHECK_TYPE_QRCODE.equals(type)) {
+            presentor.checkQRCODE(type, code);
         }
     }
 
@@ -302,8 +326,22 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
      * @param qty 数量
      */
     @Override
-    public void onCheckQRCODESucceed(String type, String code,String wldm,String qty) {
+    public void onCheckQRCODESucceed(String type, String code,String wldm,String qty,String isUse) {
+        //记录旧料盘是否正确
         focusEditText.setText(code);
+        if (Config.PERMISSION_FCL_SCXL_NAME.equals(startType) && "2".equals(isUse)){
+            this.isUse = "2";//2代表最后一次上料，1代表上过料，但是,不是最后一次上料，0代表没上过
+        }else if (Config.PERMISSION_FCL_SCXL_NAME.equals(startType) && ("1".equals(isUse) || "0".equals(isUse))){
+            this.isUse = isUse;
+            if (focusEditText.getId() == etEdit2.getId()){
+                super.onScanError();
+                onShowTipsDailog("旧料盘错误");
+                etEdit2.setText("");
+                etEdit2.requestFocus();
+                return;
+            }
+        }
+
         //如果是第一或二个输入框，表示还没输入完,吧焦点移到第三个输入框
         if (focusEditText.getId() == etEdit2.getId() || focusEditText.getId() == etEdit1.getId()){
             etEdit3.requestFocus();
@@ -315,6 +353,22 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
             onShowTipsDailog("请选择线别");
             return;
         }
+        //非0代表该物料已经上过了
+        /*if (Config.PERMISSION_FCL_SCSL_NAME.equals(startType) || Config.PERMISSION_FCL_SCXL_NAME.equals(startType)) {
+            if (!"0".equals(isUse)) {
+                onShowTipsDailog("该物料已使用，扫描异常!");
+                etEdit3.setText("");
+                super.onScanError();
+                return;
+            }
+        }else if (Config.PERMISSION_FCL_SLQR_NAME.equals(startType) && "2".equals(isUse)){
+            if (!"0".equals(isUse)) {
+                onShowTipsDailog("该物料");
+                etEdit3.setText("");
+                super.onScanError();
+                return;
+            }
+        }*/
         switch (startType) {
             //首次上料
             case Config.PERMISSION_FCL_SCSL_NAME:
@@ -397,6 +451,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
             }
             if (v.getId() == etEdit3.getId()){
                 if (etEdit2.getText().toString().equals("")){
+                    // TODO: 2018-07-19
                     showSnakeBar("请先扫描站位");
                     etEdit2.requestFocus();
                     return;

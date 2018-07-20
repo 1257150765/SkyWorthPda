@@ -30,6 +30,9 @@ public abstract class BaseScanActivity extends BaseActivity implements EDAScanUt
         @Override
         public void onReceive(Context context, Intent intent) {
             if (CODE_RECEIVER_ACTION.equals(intent.getAction())){
+                if (tipsDialog.isShowing()){
+                    tipsDialog.dismiss();
+                }
                 String barcode = intent.getStringExtra("scannerdata");
                 LogWraper.d(TAG,barcode);
                 onReceiveCode(barcode);

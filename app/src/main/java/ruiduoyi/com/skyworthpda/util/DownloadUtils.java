@@ -53,6 +53,7 @@ public class DownloadUtils {
                 if (file.exists()){
                     file.delete();
                 }
+                //
                 OutputStream out=new FileOutputStream(filePath+"/"+fileName,false);
                 byte[] buff=new byte[1024];
                 int downloadSize=0;

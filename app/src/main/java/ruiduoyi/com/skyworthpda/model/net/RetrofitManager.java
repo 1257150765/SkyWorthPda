@@ -105,8 +105,8 @@ public class RetrofitManager {
                 .build();
     }
 
-    public static Observable<LoginBean> login(String companyName,String key_usrid,String key_pwd){
-        return retrofit.create(Api.class).login(Config.TYPE_INTERFACE_LOGIN,companyName,key_usrid,key_pwd)
+    public static Observable<LoginBean> login(String companyName, String key_usrid, String key_pwd, String key_isAuto){
+        return retrofit.create(Api.class).login(Config.TYPE_INTERFACE_LOGIN,companyName,key_usrid,key_pwd,key_isAuto)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
@@ -320,7 +320,7 @@ public class RetrofitManager {
 
     interface Api{
         @GET("SmtPDADataDeal")
-        Observable<LoginBean> login(@Query("key_prgid") String key_prgid,@Query("key_srvid") String key_srvid,@Query("key_usrid") String key_usrid,@Query("key_pwd") String key_pwd);
+        Observable<LoginBean> login(@Query("key_prgid") String key_prgid, @Query("key_srvid") String key_srvid, @Query("key_usrid") String key_usrid, @Query("key_pwd") String key_pwd, @Query("key_isAuto")String key_isAuto);
         @GET("SmtPDADataDeal")
         Observable<CompanyBean> getCompanyList(@Query("key_prgid") String key_prgid, @Query("key_srvid") String key_srvid);
 
