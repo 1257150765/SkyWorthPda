@@ -241,13 +241,27 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
             etUserPwd.requestFocus();
         }
         focusEditText.setText(code);*/
-        String[] split = code.split("\\*");
+
         if (null == companyBean){
             Snackbar.make(getWindow().getDecorView(),"公司名称不能为空",Snackbar.LENGTH_SHORT).show();
             return;
         }
-        //1表示扫描登录
-        presenter.login(companyBean.getSrvID(),split[0], split[1],"1");
+        String[] split = code.split("\\*");
+        if (split.length ==2) {
+            //1表示扫描登录
+            String temUser = "";
+            String temPwd = "";
+            if (split[0].length() < split[1].length()){
+                temUser = split[0];
+                temPwd = split[1];
+            }else {
+                temUser = split[1];
+                temPwd = split[0];
+            }
+            presenter.login(companyBean.getSrvID(), temUser, temPwd, "1");
+        }else {
+            super.onScanError();
+        }
     }
 
    /* @Override

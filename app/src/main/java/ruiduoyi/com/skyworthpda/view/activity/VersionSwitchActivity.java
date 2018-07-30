@@ -26,6 +26,11 @@ import ruiduoyi.com.skyworthpda.model.bean.ZWCXBean;
 import ruiduoyi.com.skyworthpda.presentor.VersionSwitchPresentor;
 import ruiduoyi.com.skyworthpda.util.Config;
 
+
+/**
+ *  Created by Chen on 2018/5/8.
+ * 版本切换
+ */
 public class VersionSwitchActivity extends BaseActivity implements VersionSeitchContact.View {
     @BindView(R.id.tv_text_versionSwitch)
     TextView tvText;
@@ -40,7 +45,7 @@ public class VersionSwitchActivity extends BaseActivity implements VersionSeitch
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     private String xb;
-    private VersionSeitchContact.Presentor presentor;
+    private VersionSwitchPresentor presentor;
     private String zwcx;
     private List<ZWCXBean.UcDataBean> zwcxData;
     private ArrayAdapter<String> zwcxAdapter;

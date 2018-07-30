@@ -65,6 +65,7 @@ public class SLXXBean {
         private String zwl_zwdm;
         private String zwl_wldm;
         private String zwl_dywldm;
+        private String zwl_upn;
         private int zwl_dwyl;
         private int zwl_osqty;
         private int zwl_kdbs;
@@ -73,6 +74,14 @@ public class SLXXBean {
         private int zwl_qrflag;
         private String v_fcolor;
         private String v_bcolor;
+
+        public String getZwl_upn() {
+            return zwl_upn;
+        }
+
+        public void setZwl_upn(String zwl_upn) {
+            this.zwl_upn = zwl_upn;
+        }
 
         public String getZwl_xbdm() {
             return zwl_xbdm;

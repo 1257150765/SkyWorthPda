@@ -74,6 +74,9 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
 
     @Override
     public void onLoading(boolean isLoading) {
+        if (tipsDialog != null && tipsDialog.isShowing()){
+            tipsDialog.dismiss();
+        }
         if (null == loadingDialog){
             return;
         }
@@ -84,6 +87,7 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
                 params.height = 250;
                 params.width = 250;
                 loadingDialog.getWindow().setAttributes(params);
+
             }
 
         }else {

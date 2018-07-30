@@ -13,7 +13,7 @@ import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
 /**
  * Created by Chen on 2018/6/14.
  */
-
+@Deprecated
 public abstract class BaseStatuScanActivity extends BaseScanActivity {
     private AlertDialog statuDialog;
     private ImageView ivSucceed;
@@ -29,6 +29,7 @@ public abstract class BaseStatuScanActivity extends BaseScanActivity {
         ivSucceed = new ImageView(this);
         ivSucceed.setImageResource(R.mipmap.ok);
     }
+
     private void showSucceedStatu() {
         statuDialog.setView(ivSucceed);
         statuDialog.show();
@@ -66,6 +67,5 @@ public abstract class BaseStatuScanActivity extends BaseScanActivity {
             statuDialog.dismiss();
         }
         super.onDestroy();
-
     }
 }

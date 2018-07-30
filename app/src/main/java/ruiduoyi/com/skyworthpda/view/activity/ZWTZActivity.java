@@ -26,9 +26,10 @@ import ruiduoyi.com.skyworthpda.contact.ZWTZContact;
 import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 import ruiduoyi.com.skyworthpda.presentor.ZWTZPresentor;
 
+/**
+ * 站位调整
+ */
 public class ZWTZActivity extends BaseScanActivity implements ZWTZContact.View, View.OnFocusChangeListener {
-
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.sp_xb_zwtzActivity)

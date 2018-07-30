@@ -45,7 +45,7 @@ public class BDPresentor implements BDContact.Presentor {
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
-
+                view.onShowTipsDailog("加载线别出错");
             }
 
             @Override

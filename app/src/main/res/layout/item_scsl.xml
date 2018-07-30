@@ -31,7 +31,7 @@
                     android:id="@+id/tv_wl_item_scsl"
                     android:gravity="center"
                     android:text="物料"
-                    android:layout_width="150dp"
+                    android:layout_width="130dp"
                     android:layout_height="match_parent" />
                 <TextView
                     android:background="@color/gray"
@@ -40,7 +40,7 @@
 
                 <TextView
                     android:id="@+id/tv_tdl_item_scsl"
-                    android:layout_width="150dp"
+                    android:layout_width="130dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="替代料" />
@@ -73,6 +73,15 @@
                     android:gravity="center"
                     android:text="可打板数"
                     android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:background="@color/gray"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/tv_upn_item_scsl"
+                    android:gravity="center"
+                    android:layout_width="180dp"
                     android:layout_height="match_parent" />
             </LinearLayout>
 

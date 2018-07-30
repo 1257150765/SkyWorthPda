@@ -41,6 +41,9 @@ import ruiduoyi.com.skyworthpda.view.adapter.SCSLAdapter;
  * Created by Chen on 2018/5/8.
  */
 
+/**
+ * 首次上料，生产续料 上料确认
+ */
 public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, View.OnFocusChangeListener {
 
     private static final String TAG = SCSLActivity.class.getSimpleName();
@@ -76,7 +79,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     EditText etEdit3;//第三个输入框
     private ArrayAdapter<String> xbAdapter;
     private List<XbBean.UcDataBean> xbData;
-    private SCSLContact.Presentor presentor;
+    private SCSLPresentor presentor;
     private String startType = "";
     public static final String START_TYPE = "startType";
     private String key_flag = "0";
@@ -88,7 +91,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     private AlertDialog dialog;
     private SCSLAdapter adapter;
     private List<SLXXBean.UcDataBean> slData;
-    private String curXb = "";
+    private String curXb = "";//记录当前的线别
     private String isUse = "";
 
     @Override
@@ -106,9 +109,6 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
 
     @Override
     protected void initView() {
-        /*btnBbqh.setBackgroundResource(R.drawable.btn_click_selector);
-        btnDgxl.setBackgroundResource(R.drawable.btn_click_selector);
-        btnQbxl.setBackgroundResource(R.drawable.btn_click_selector);*/
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -185,9 +185,11 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
      * 加载列表数据
      */
     private void loadData() {
+        //获取确认列表
         if (startType.equals(Config.PERMISSION_FCL_SLQR_NAME)){
             presentor.loadQRData(bean.getXbm_xbdm(),key_flag);
         }else {
+            //获取上料信息
             presentor.loadData(bean.getXbm_xbdm(), key_flag);
         }
     }
@@ -333,6 +335,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
             this.isUse = "2";//2代表最后一次上料，1代表上过料，但是,不是最后一次上料，0代表没上过
         }else if (Config.PERMISSION_FCL_SCXL_NAME.equals(startType) && ("1".equals(isUse) || "0".equals(isUse))){
             this.isUse = isUse;
+            //当验证的是旧料盘才会显示提示
             if (focusEditText.getId() == etEdit2.getId()){
                 super.onScanError();
                 onShowTipsDailog("旧料盘错误");
@@ -426,6 +429,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     public void onCheckZWSucceed(String type, String code) {
         etEdit2.setText(code);
         etEdit3.requestFocus();
+        //扫描站位后，滑动到对应的站位
         for (int i = 0; i < slData.size(); i++) {
             //LogWraper.d(TAG,"--"+slData.get(i).getZwl_zwdm());
             if (code.equals(slData.get(i).getZwl_zwdm())){
@@ -472,9 +476,11 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         if (resultCode == RESULT_OK){
             switch (requestCode){
                 case REQUEST_CODE_VERSIONSWITCH:
+                    //版本切换后，需要重新加载线别的站位程序
                     presentor.loadXb();
                     break;
                 case REQUEST_CODE_WLXX:
+                    //物料下线，需要重新加载上料信息
                     loadData();
                     break;
             }
@@ -500,8 +506,8 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         }
         xbAdapter = new ArrayAdapter<String>(SCSLActivity.this, R.layout.item_spinner, xbDataStr);
         spXb.setAdapter(xbAdapter);
-        Log.d(TAG, "onLoadXbSucceed: curXb:"+curXb);
-        Log.d(TAG, "onLoadXbSucceed: index:"+index);
+        //Log.d(TAG, "onLoadXbSucceed: curXb:"+curXb);
+        //Log.d(TAG, "onLoadXbSucceed: index:"+index);
         spXb.setSelection(index);
     }
 
@@ -522,6 +528,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     private void setZwcx(String xbm_zwcxdm) {
         etEdit1.setText(xbm_zwcxdm);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

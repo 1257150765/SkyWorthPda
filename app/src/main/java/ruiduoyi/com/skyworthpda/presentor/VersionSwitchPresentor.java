@@ -22,6 +22,10 @@ public class VersionSwitchPresentor implements VersionSeitchContact.Presentor {
         this.view = view;
     }
 
+    /**
+     * 加载当前线别的站位程序
+     * @param xb
+     */
     @Override
     public void loadZWCX(String xb) {
         view.onLoading(true);
@@ -54,6 +58,12 @@ public class VersionSwitchPresentor implements VersionSeitchContact.Presentor {
         });
     }
 
+
+    /**
+     * 执行版本切换
+     * @param xb 线别
+     * @param zwm_cxdm 站位程序
+     */
     @Override
     public void versionSwitch(String xb, String zwm_cxdm) {
         view.onLoading(true);

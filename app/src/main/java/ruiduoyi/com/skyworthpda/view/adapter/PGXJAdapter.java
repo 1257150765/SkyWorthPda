@@ -20,6 +20,7 @@ import ruiduoyi.com.skyworthpda.model.bean.PGXJRecordBean;
 
 public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
 
+
     private List<PGXJRecordBean.UcDataBean> data;
 
     public PGXJAdapter(List<PGXJRecordBean.UcDataBean> data) {
@@ -40,9 +41,10 @@ public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
         holder.tvWl.setText(pgxjBean.getXjd_wldm());
         holder.tvTdl.setText(pgxjBean.getXjd_dywl());
         holder.tvJd.setText(pgxjBean.getXjd_chkms());
-        if ("".equals(pgxjBean.getXjd_chkms())){
+        holder.tvUpn.setText(pgxjBean.getXjd_upn());
+        if ("".equals(pgxjBean.getXjd_chkms())) {
             holder.content.setBackgroundColor(Color.WHITE);
-        }else {
+        } else {
             holder.content.setBackgroundColor(Color.GREEN);
         }
     }
@@ -53,6 +55,8 @@ public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
     }
 
     public class PGXJHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.tv_upn_item_pgxj)
+        TextView tvUpn;
         @BindView(R.id.tv_zw_item_pgxj)
         TextView tvZw;
         @BindView(R.id.tv_wl_item_pgxj)
@@ -62,10 +66,11 @@ public class PGXJAdapter extends RecyclerView.Adapter<PGXJAdapter.PGXJHolder> {
         @BindView(R.id.tv_jd_item_pgxj)
         TextView tvJd;
         View content;
+
         public PGXJHolder(View itemView) {
             super(itemView);
             content = itemView;
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

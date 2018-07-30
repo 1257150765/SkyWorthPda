@@ -36,6 +36,9 @@ public class SCSLPresentor implements SCSLContact.Presentor {
         loadXb();
     }
 
+    /**
+     * 加载线别
+     */
     @Override
     public void loadXb() {
         view.onLoading(true);
@@ -221,7 +224,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
-                view.onShowTipsDailog("上料失败");
+                view.onShowTipsDailog("上料出错");
                 view.onExecuteFalse();
             }
 
@@ -263,7 +266,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             @Override
             public void onError(Throwable e) {
                 view.onLoading(false);
-                view.onShowTipsDailog("续料失败");
+                view.onShowTipsDailog("续料出错");
                 view.onExecuteFalse();
             }
 
@@ -305,7 +308,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             public void onError(Throwable e) {
                 view.onLoading(false);
                 view.onExecuteFalse();
-                view.onShowTipsDailog("上料确认失败");
+                view.onShowTipsDailog("上料确认出错");
             }
 
             @Override

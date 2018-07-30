@@ -326,7 +326,7 @@ public class RetrofitManager {
 
         @GET("SmtPDADataDeal")
         Observable<UpdateBean> checkUpdate(@Query("key_prgid") String key_prgid);
-@GET("SmtPDADataDeal")
+        @GET("SmtPDADataDeal")
         Observable<UpdateBean> checkUpdate2(@Query("key_prgid") String key_prgid,@Query("key_srvid") String key_srvid);
 
         @GET("SmtPDADataDeal")

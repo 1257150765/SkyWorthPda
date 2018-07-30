@@ -195,7 +195,7 @@
                         android:textColor="@color/white"
                         android:gravity="center"
                         android:text="物料"
-                        android:layout_width="150dp"
+                        android:layout_width="130dp"
                         android:layout_height="match_parent" />
                     <TextView
                         android:background="@color/gray"
@@ -204,7 +204,7 @@
 
                     <TextView
                         android:textColor="@color/white"
-                        android:layout_width="150dp"
+                        android:layout_width="130dp"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:text="替代料" />
@@ -238,6 +238,16 @@
                         android:gravity="center"
                         android:text="可打板数"
                         android:layout_width="80dp"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:background="@color/gray"
+                        android:layout_width="1px"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:textColor="@color/white"
+                        android:gravity="center"
+                        android:text="UPN"
+                        android:layout_width="160dp"
                         android:layout_height="match_parent" />
                 </LinearLayout>
                 <android.support.v7.widget.RecyclerView

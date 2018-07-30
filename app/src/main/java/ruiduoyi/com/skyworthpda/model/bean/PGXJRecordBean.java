@@ -60,7 +60,16 @@ public class PGXJRecordBean {
         private String xjd_dywl;
         private String xjd_chkms;
         private String xjd_zwcxdm;
+        private String xjd_upn;
         private int xjd_xjmid;
+
+        public String getXjd_upn() {
+            return xjd_upn;
+        }
+
+        public void setXjd_upn(String xjd_upn) {
+            this.xjd_upn = xjd_upn;
+        }
 
         public String getXjd_zwdm() {
             return xjd_zwdm;

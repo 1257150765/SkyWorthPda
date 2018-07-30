@@ -86,6 +86,7 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
                 bean = xbData.get(position-1);
                 etZwcx.setText(bean.getXbm_zwcxdm());
                 //presentor.loadData(xbData.get(position));
+                //是否有巡检记录
                 presentor.loadHaveRecord(bean.getXbm_xbdm());
             }
 
@@ -154,17 +155,21 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
 
     @Override
     public void onLoadHaveRecordSucceed(boolean b, String msg) {
+        //有巡检记录（巡检未完成），
         if (b){
             etZwcx.setText(msg);
             etCode.requestFocus();
+            //加载巡检巡检记录表
             presentor.loadRecord(bean.getXbm_xbdm());
         }else {
+            //无巡检记录(未巡检或巡检已完成)
             if (dialog == null){
                 dialog = new AlertDialog.Builder(this)
                         .setTitle("提示")
                         .setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                //添加巡检记录
                                 presentor.pgxj(Config.PGXJ_TYPE_ADD,bean.getXbm_xbdm(),"","");
                             }
                         }).setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -186,35 +191,42 @@ public class PGXJActivity extends BaseScanActivity implements PGXJContact.View {
         adapter = new PGXJAdapter(data);
         rvRecycler.setAdapter(adapter);
         rvRecycler.setLayoutManager(new LinearLayoutManager(PGXJActivity.this));
-        loadZw();
+        int index = loadZw();//找到未巡检的站位
+        rvRecycler.scrollToPosition(index);
+        if (index == data.size()){
+            onShowTipsDailog("巡检完成");
+        }
     }
 
     /**
      * 找到未巡检的站位
      */
-    private void loadZw() {
+    private int loadZw() {
         if (recordData == null){
-            return;
+            return -1;
         }
         for (int i=0; i<recordData.size(); i++) {
             PGXJRecordBean.UcDataBean bean = recordData.get(i);
             if (bean.getXjd_chkms().equals("")){
                 etJyzw.setText(bean.getXjd_zwdm());
                 zw = bean.getXjd_zwdm();
-                rvRecycler.scrollToPosition(i);
-                return;
+                ///rvRecycler.scrollToPosition(i);
+                return i;
             }
         }
+        return recordData.size();
     }
 
+    //检查二维码成功
     @Override
     public void onCheckQRCODESucceed(String type,String qrcode, String wldm) {
+        //巡检
         presentor.pgxj(Config.PGXJ_TYPE_SCAN,bean.getXbm_xbdm(),qrcode,wldm);
     }
 
+    //巡检成功
     @Override
     public void onPGXJSucceed(String key_type, String data) {
-
         if (bean == null){
             return;
         }

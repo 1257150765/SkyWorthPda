@@ -22,7 +22,6 @@ import static ruiduoyi.com.skyworthpda.App.edaScanUtil;
  * 封装了扫描功能，（）
  * Created by Chen on 2018/5/7.
  */
-
 public abstract class BaseScanActivity extends BaseActivity implements EDAScanUtil.EDAScanListener {
     private static final String CODE_RECEIVER_ACTION = Config.CUSTOM_NAME;
     private static final String TAG = BaseScanActivity.class.getSimpleName();
