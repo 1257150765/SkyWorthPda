@@ -46,7 +46,7 @@ public abstract class BaseStatuScanActivity extends BaseScanActivity {
 
     @Override
     public void onExecuteSucceed() {
-        SoundPoolUtil.playOK();
+        //SoundPoolUtil.playOK();
         showSucceedStatu();
     }
 

@@ -10,6 +10,7 @@ public interface BaseContact {
         void onLoading(boolean isLoading);
         void onShowTipsDailog(String tips);
         void onExecuteSucceed();
+        void onExecuteSucceed2();
         void onScanError();
 
         void onExecuteFalse();

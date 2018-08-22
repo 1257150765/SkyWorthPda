@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ruiduoyi.com.skyworthpda"
->
+    package="ruiduoyi.com.skyworthpda">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -11,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="com.honeywell.decode.permission.DECODE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -24,6 +24,7 @@
         <activity android:name=".view.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -39,17 +40,25 @@
         <activity
             android:name=".view.activity.PGXJActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".view.activity.BDActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".view.activity.YZCSActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
         <service android:name=".util.DownloadService" />
 
-        <activity android:name=".view.activity.VersionSwitchActivity"
-            android:theme="@style/DialogActivity"></activity>
-        <activity android:name=".view.activity.WLXXActivity"
-            android:theme="@style/DialogActivity"></activity>
+        <activity
+            android:name=".view.activity.VersionSwitchActivity"
+            android:theme="@style/DialogActivity" />
+        <activity
+            android:name=".view.activity.WLXXActivity"
+            android:theme="@style/DialogActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.ruiduoyi.FileProvider"
@@ -59,6 +68,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".view.activity.TestActivity"></activity>
     </application>
 
 </manifest>

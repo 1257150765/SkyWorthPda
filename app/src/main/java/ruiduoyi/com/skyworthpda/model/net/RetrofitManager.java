@@ -20,6 +20,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
 import ruiduoyi.com.skyworthpda.model.bean.CheckZWBean;
+import ruiduoyi.com.skyworthpda.model.bean.GzBean;
 import ruiduoyi.com.skyworthpda.model.bean.HaveRecordBean;
 import ruiduoyi.com.skyworthpda.model.bean.LoginBean;
 import ruiduoyi.com.skyworthpda.model.bean.CompanyBean;
@@ -128,6 +129,11 @@ public class RetrofitManager {
     }
     public static Observable<XbBean> getZZXB(){
         return retrofit.create(Api.class).getXb(Config.TYPE_INTERFACE_XB,"ZZXB")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+    public static Observable<GzBean> getGz(){
+        return retrofit.create(Api.class).getGz(Config.TYPE_INTERFACE_XB,"YZCS")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -307,6 +313,11 @@ public class RetrofitManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+    public static Observable<MesBean> getMesDetail2(String key_xbdm, String key_gzdm, String key_qrcode,String key_cur,String key_vol){
+        return retrofit.create(Api.class).getMesDetail2(Config.TYPE_INTERFACE_GETMES,key_xbdm,key_gzdm,key_qrcode,key_cur,key_vol)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
     public static Observable<UploadLogBean> uploadLog(String key_Mac,String key_ErrMsg){
         return retrofit.create(Api.class).uploadLog(Config.TYPE_INTERFACE_UPLOADLOG,key_Mac,key_ErrMsg);
@@ -317,6 +328,8 @@ public class RetrofitManager {
         setToken("");
         setCompanyName("");
     }
+
+
 
     interface Api{
         @GET("SmtPDADataDeal")
@@ -333,6 +346,8 @@ public class RetrofitManager {
         Observable<PermissionBean> getPermission(@Query("key_prgid") String key_prgid);
         @GET("SmtPDADataDeal")
         Observable<XbBean> getXb(@Query("key_prgid") String key_prgid, @Query("key_type") String key_type);
+        @GET("SmtPDADataDeal")
+        Observable<GzBean> getGz(@Query("key_prgid") String key_prgid, @Query("key_type") String key_type);
         @GET("SmtPDADataDeal")
         Observable<SLXXBean> getSLXX(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm, @Query("key_flag") String key_flag);
         @GET("SmtPDADataDeal")
@@ -375,6 +390,9 @@ public class RetrofitManager {
 
         @GET("SmtPDADataDeal")
         Observable<MesBean> getMesDetail(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm, @Query("key_gzdm") String gzdm, @Query("key_qrcode") String key_qrcode);
+
+        @GET("SmtPDADataDeal")
+        Observable<MesBean> getMesDetail2(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm, @Query("key_gzdm") String gzdm, @Query("key_qrcode") String key_qrcode,@Query("key_cur") String key_cur,@Query("key_vol") String key_vol);
 
         @GET("SmtPDADataDeal")
         Observable<UploadLogBean> uploadLog(@Query("key_prgid") String key_prgid,@Query("key_Mac") String key_Mac,@Query("key_ErrMsg") String key_ErrMsg);

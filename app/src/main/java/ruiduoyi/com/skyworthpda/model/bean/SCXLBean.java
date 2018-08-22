@@ -9,14 +9,14 @@ import java.util.List;
 public class SCXLBean {
 
     /**
-     * utStatus : false
-     * ucMsg : 20004你扫描的旧料盘条码不属于最后一次上料记录, 不允许上料!
-     * ucData : []
+     * utStatus : true
+     * ucMsg : 操作成功！
+     * ucData : [{"zwl_desc":""}]
      */
 
     private boolean utStatus;
     private String ucMsg;
-    private List<?> ucData;
+    private List<UcDataBean> ucData;
 
     public boolean isUtStatus() {
         return utStatus;
@@ -34,11 +34,27 @@ public class SCXLBean {
         this.ucMsg = ucMsg;
     }
 
-    public List<?> getUcData() {
+    public List<UcDataBean> getUcData() {
         return ucData;
     }
 
-    public void setUcData(List<?> ucData) {
+    public void setUcData(List<UcDataBean> ucData) {
         this.ucData = ucData;
+    }
+
+    public static class UcDataBean {
+        /**
+         * zwl_desc :
+         */
+
+        private String zwl_desc;
+
+        public String getZwl_desc() {
+            return zwl_desc;
+        }
+
+        public void setZwl_desc(String zwl_desc) {
+            this.zwl_desc = zwl_desc;
+        }
     }
 }

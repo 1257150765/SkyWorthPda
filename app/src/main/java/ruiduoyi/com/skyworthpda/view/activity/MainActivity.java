@@ -356,6 +356,10 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     case Config.PERMISSION_SMTZZ_DZJC_CODE:
                         gotoBD(bean.getG_cxmc(), bean.getG_cxdm());
                         break;
+                    //运转测试
+                    case Config.PERMISSION_SMTZZ_YZCS_CODE:
+                        gotoYzcs(bean.getG_cxmc(), bean.getG_cxdm());
+                        break;
                     default:
                         showSnakeBar("敬请期待");
                         break;
@@ -363,6 +367,13 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                 return true;
             }
         });
+    }
+
+    private void gotoYzcs(String startTypeName, String startTypeCode) {
+        Intent intent = new Intent(MainActivity.this, YZCSActivity.class);
+        intent.putExtra(Config.ACTIVITY_START_TYPE_NAME, startTypeName);
+        intent.putExtra(Config.ACTIVITY_START_TYPE_CODE, startTypeCode);
+        startActivity(intent);
     }
 
     private void gotoBD(String startTypeName, String startTypeCode) {

@@ -214,7 +214,15 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             public void onNext(SCSLBean value) {
                 view.onLoading(false);
                 if (value.isUtStatus()){
-                    view.onExecuteSucceed();
+                    //如果后台返回了提示信息则显示给用户
+                    List<SCSLBean.UcDataBean> ucData = value.getUcData();
+                    if (ucData != null && ucData.size() > 0 &&  (!"".equals(ucData.get(0).getZwl_desc()))){
+                        view.onShowTipsDailog2(ucData.get(0).getZwl_desc());
+                        view.onExecuteSucceed2();
+                    }else {
+                        view.onExecuteSucceed();
+                    }
+
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
                     view.onExecuteFalse();
@@ -256,7 +264,15 @@ public class SCSLPresentor implements SCSLContact.Presentor {
             public void onNext(SCXLBean value) {
                 view.onLoading(false);
                 if (value.isUtStatus()){
-                    view.onExecuteSucceed();
+
+                    //如果后台返回了提示信息则显示给用户
+                    List<SCXLBean.UcDataBean> ucData = value.getUcData();
+                    if (ucData != null && ucData.size() > 0 &&  (!"".equals(ucData.get(0).getZwl_desc()))){
+                        view.onShowTipsDailog2(ucData.get(0).getZwl_desc());
+                        view.onExecuteSucceed2();
+                    }else {
+                        view.onExecuteSucceed();
+                    }
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
                     view.onExecuteFalse();

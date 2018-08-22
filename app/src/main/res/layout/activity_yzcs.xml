@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <android.support.v7.widget.Toolbar
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        app:titleTextColor="@color/white"
+        android:background="?android:attr/colorPrimary"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+    </android.support.v7.widget.Toolbar>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+        android:background="@drawable/border_shape"
+        android:orientation="vertical"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:text="线别:"
+                android:gravity="center_vertical|end"
+                android:layout_width="80dp"
+                android:layout_height="match_parent" />
+            <Spinner
+                android:id="@+id/sp_xbSp_yzcsActivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></Spinner>
+        </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="工站:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <Spinner
+                    android:id="@+id/sp_gzSp_yzcsActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="工单号:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <TextView
+
+                    android:id="@+id/tv_gdh_yzcsActivity"
+                    android:gravity="start|center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="产品型号:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:gravity="start|center_vertical"
+                    android:id="@+id/tv_cpxh_yzcsActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="品名规格:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:gravity="start|center_vertical"
+                    android:id="@+id/tv_pmgg_yzcsActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+
+                    android:text="订单数量:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:gravity="start|center_vertical"
+                    android:id="@+id/tv_ddsl_yzcsActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="投入数量:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:gravity="start|center_vertical"
+                    android:id="@+id/tv_trsl_yzcsActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="电流值:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <EditText
+
+                    android:id="@+id/et_aDianLiu_yzcsActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:text="电压值:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <EditText
+                    android:id="@+id/et_vDianYa_yzcsActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:id="@+id/tv_tv7_yzcsActivity"
+                    android:text="MES条码:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <EditText
+
+                    android:id="@+id/et_edit7_yzcsActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <TextView
+                android:background="@color/gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

@@ -16,6 +16,7 @@ public class SoundPoolUtil {
     static SoundPool soundPool;
     private static int ok;
     private static int ng;
+    private static int blp;
 
     public static void init(Context context){
         if (soundPool == null){
@@ -24,6 +25,8 @@ public class SoundPoolUtil {
         scanError = soundPool.load(context, R.raw.scanerror, 1);
         ok = soundPool.load(context, R.raw.ok, 1);
         ng = soundPool.load(context, R.raw.ng, 1);
+        //不良品提交成功
+        blp = soundPool.load(context, R.raw.buliangpin_ok, 1);
     }
 
     public static void playOK(){
@@ -34,6 +37,9 @@ public class SoundPoolUtil {
     }
     public static void playNG(){
         soundPool.play(ng,1.0f,1.0f,1,0,1f);
+    }
+    public static void playBlp(){
+        soundPool.play(blp,1.0f,1.0f,1,0,1f);
     }
 
 }

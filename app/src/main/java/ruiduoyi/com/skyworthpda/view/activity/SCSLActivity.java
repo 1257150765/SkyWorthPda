@@ -93,6 +93,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     private List<SLXXBean.UcDataBean> slData;
     private String curXb = "";//记录当前的线别
     private String isUse = "";
+    protected AlertDialog tipsDialog2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +213,16 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     @Override
     public void onExecuteSucceed() {
         super.onExecuteSucceed();
+        loadData();
+        etEdit2.requestFocus();
+        etEdit2.setText("");
+        etEdit3.setText("");
+        isUse = "";
+    }
+
+    @Override
+    public void onExecuteSucceed2() {
+        super.onExecuteSucceed2();
         loadData();
         etEdit2.requestFocus();
         etEdit2.setText("");
@@ -417,6 +428,25 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     public void onWLXXSucceed() {
         super.onExecuteSucceed();
         presentor.loadXb();
+    }
+
+    @Override
+    public void onShowTipsDailog2(String msg) {
+        if (tipsDialog2 == null) {
+            tipsDialog2 = new AlertDialog.Builder(this)
+                    //.setView(R.layout.loading)
+                    .setCancelable(false)
+                    .setTitle("温馨提示")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create();
+        }
+        tipsDialog2.setMessage(msg);
+        tipsDialog2.show();
     }
 
 

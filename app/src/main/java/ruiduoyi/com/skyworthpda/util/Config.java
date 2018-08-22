@@ -31,6 +31,8 @@ public class Config {
     public static final String PERMISSION_SMTZZ_KZQDQHBD_NAME = "控制器/电器盒绑定";
     public static final String PERMISSION_SMTZZ_DZJC_CODE = "PDA908D1";
     public static final String PERMISSION_SMTZZ_DZJC_NAME = "电子检查";
+    public static final String PERMISSION_SMTZZ_YZCS_CODE = "PDA909D1";
+    public static final String PERMISSION_SMTZZ_YZCS_NAME = "运转测试";
 
     public static final String THEME_ID = "1";
     public static final String CACHE_DATA_COMPANYNAME = "companyName";
@@ -45,7 +47,7 @@ public class Config {
     public static final String TYPE_INTERFACE_PERMISSION = "99996";
     public static final String TYPE_INTERFACE_XB= "99995";
     public static final String TYPE_INTERFACE_CHECK = "99994";
-
+    public static final String TYPE_INTERFACE_GZ = "99995";
     public static final String TYPE_INTERFACE_UPLOADLOG = "80001";
 
     public static final String TYPE_INTERFACE_GETCOMPANYLIST = "10000";
@@ -93,5 +95,6 @@ public class Config {
     public static final String ACTIVITY_START_TYPE_CODE = "startTypeCode";
     public static final long STATU_DIALOG_SHOW_TIME = 3000L;
     public static final String TYPE_INTERFACE_GETMES = "30001";
+
 
 }

@@ -24,65 +24,66 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.BDContact;
+import ruiduoyi.com.skyworthpda.contact.YZCSContact;
+import ruiduoyi.com.skyworthpda.model.bean.GzBean;
 import ruiduoyi.com.skyworthpda.model.bean.MesBean;
 import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 import ruiduoyi.com.skyworthpda.presentor.BDPresentor;
+import ruiduoyi.com.skyworthpda.presentor.YZCSPresentor;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
 
 /**
- * 压缩机绑定，控制器/电器盒绑定,(简称绑定)
+ * 运转测试
  */
-public class BDActivity extends BaseStatuScanActivity implements View.OnFocusChangeListener, BDContact.View {
+public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.View {
 
     private static final String CANCEL = "CANCEL";
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tv_tv7_bdActivity)
+    @BindView(R.id.tv_tv7_yzcsActivity)
     TextView tvTv7;
-    @BindView(R.id.tv_tv8_bdActivity)
-    TextView tvTv8;
-
-    @BindView(R.id.et_edit7_bdActivity)
+    @BindView(R.id.et_edit7_yzcsActivity)
     EditText etEdit7;
-    @BindView(R.id.et_edit8_bdActivity)
-    EditText etEdit8;
-    @BindView(R.id.sp_xbSp_bdActivity)
+    @BindView(R.id.sp_xbSp_yzcsActivity)
     Spinner spXbSp;
-    @BindView(R.id.tv_tips_bdActivity)
-    TextView tvTips;
-    @BindView(R.id.tv_gdh_bdActivity)
+    @BindView(R.id.tv_gdh_yzcsActivity)
     TextView tvGdh;
-    @BindView(R.id.tv_cpxh_bdActivity)
+    @BindView(R.id.tv_cpxh_yzcsActivity)
     TextView tvCpxh;
-    @BindView(R.id.tv_pmgg_bdActivity)
+    @BindView(R.id.tv_pmgg_yzcsActivity)
     TextView tvPmgg;
-    @BindView(R.id.tv_ddsl_bdActivity)
+    @BindView(R.id.tv_ddsl_yzcsActivity)
     TextView tvDdsl;
-    @BindView(R.id.tv_trsl_bdActivity)
+    @BindView(R.id.tv_trsl_yzcsActivity)
     TextView tvTrsl;
+    @BindView(R.id.sp_gzSp_yzcsActivity)
+    Spinner spGz;
+    @BindView(R.id.et_aDianLiu_yzcsActivity)
+    EditText etADianLiu;
+    @BindView(R.id.et_vDianYa_yzcsActivity)
+    EditText etVDianYa;
     private EditText focusEditText;
     private String startTypeName;
     private String startTypeCode;
     private String tips = "";
-    private BDPresentor presentor;
+    private YZCSPresentor presentor;
     private ArrayAdapter<String> xbAdapter;
     private List<XbBean.UcDataBean> xbData;
     private XbBean.UcDataBean bean;
-    private String mesCode = "";
     private String bdType = "";
-    private static final String TYPE_ZZYSJ = "ZZYSJ";
-    private static final String TYPE_ZZKZQ = "ZZKZQ";
-    private static final String TYPE_ZZDZJ = "ZZDZJ";
-    //private boolean isCancel = true;
+
+    private ArrayAdapter<String> gzAdapter;
+    private List<GzBean.UcDataBean> gzData;
+    private GzBean.UcDataBean gzBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_bdactivity);
+        setContentView(R.layout.activity_yzcs);
         ButterKnife.bind(this);
         initView();
-        presentor = new BDPresentor(this, this);
+        presentor = new YZCSPresentor(this, this);
     }
 
     @Override
@@ -93,6 +94,7 @@ public class BDActivity extends BaseStatuScanActivity implements View.OnFocusCha
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setTitle("总装车间-" + startTypeName);
+        //线别
         spXbSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -113,48 +115,55 @@ public class BDActivity extends BaseStatuScanActivity implements View.OnFocusCha
                 bean = xbData.get(0);
             }
         });
-        switch (startTypeCode) {
-            case Config.PERMISSION_SMTZZ_YSJBD_CODE:
-                tvTv7.setText("MES条码:");
-                bdType = TYPE_ZZYSJ;
-                tvTv8.setText("压缩机条码:");
-                tips = "*提示: 请先扫描MES条码, 然后扫描压缩机条码.";
-                tvTips.setText(tips);
-                break;
-            case Config.PERMISSION_SMTZZ_KZQDQHBD_CODE:
-                bdType = TYPE_ZZKZQ;
-                tvTv7.setText("MES条码:");
-                tvTv8.setText("控制器条码:");
-                tips = "*提示: 请先扫描MES条码, 然后扫描控制器条码.";
-                tvTips.setText(tips);
+        //工站
+        spGz.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //因为不要默认值，所有每个下拉框都加了一个空的选项，
+                // 用户一定选择后才能操作（防止用户错选），所以第一个框是空的，不加载数据
+                //其他地方的下拉框也以此类推
+                if (null == gzData || position == 0) {
+                    gzBean = null;
+                    return;
+                }
+                gzBean = gzData.get(position - 1);
+            }
 
-                break;
-            case Config.PERMISSION_SMTZZ_DZJC_CODE:
-                bdType = TYPE_ZZDZJ;
-                tvTv7.setText("创维条码:");
-                tvTv8.setText("NG条码:");
-                tips = "*提示: 请先扫描创维条码, 然后扫描品质条码.";
-                tvTips.setText(tips);
-                break;
-        }
-        etEdit7.setOnFocusChangeListener(this);
-        etEdit8.setOnFocusChangeListener(this);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                bean = xbData.get(0);
+            }
+        });
     }
 
     private void clearData() {
+        etADianLiu.setText("");
+        etVDianYa.setText("");
         etEdit7.setText("");
-        etEdit8.setText("");
-        etEdit7.requestFocus();
+        etADianLiu.requestFocus();
     }
 
 
     @Override
     protected void onReceiveCode(String code) {
+        String dl = etADianLiu.getText().toString();
+        String dy = etVDianYa.getText().toString();
         if (null == bean) {
             showSnakeBar("请先选择线别");
             return;
+        }else if (null == gzBean){
+            showSnakeBar("请先选择工站");
+            return;
+        } else if ("".equals(dl)){
+            showSnakeBar("请先输入电流值");
+            return;
+        }else if ("".equals(dy)){
+            showSnakeBar("请先输入电压值");
+            return;
         }
-        presentor.bd(bean.getXbm_xbdm(),bdType,code);
+        bdType = gzBean.getOpr_gzdm();
+        presentor.bd(bean.getXbm_xbdm(), bdType,code, dl, dy);
+
         /*
         if (focusEditText.getId() == etEdit7.getId()) {
             presentor.bd(bean.getXbm_xbdm(), bdType, edit7Text);
@@ -173,18 +182,11 @@ public class BDActivity extends BaseStatuScanActivity implements View.OnFocusCha
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (hasFocus) {
-            if (v instanceof EditText) {
-                focusEditText = (EditText) v;
-            }
 
-        }
-    }
 
     /**
      * 成功加载总装线别
+     *
      * @param xbData
      */
     @Override
@@ -195,10 +197,21 @@ public class BDActivity extends BaseStatuScanActivity implements View.OnFocusCha
         for (XbBean.UcDataBean bean : xbData) {
             xbDataStr.add(bean.getXbm_xbdm());
         }
-        xbAdapter = new ArrayAdapter<String>(BDActivity.this, R.layout.item_spinner, xbDataStr);
+        xbAdapter = new ArrayAdapter<String>(YZCSActivity.this, R.layout.item_spinner, xbDataStr);
         spXbSp.setAdapter(xbAdapter);
     }
+    @Override
+    public void onLoadZZGZSucceed(List<GzBean.UcDataBean> gzData) {
+        this.gzData = gzData;
+        List<String> gzDataStr = new ArrayList<>();
+        gzDataStr.add("");
+        for (GzBean.UcDataBean bean : gzData) {
+            gzDataStr.add(bean.getOpr_gzmc());
+        }
+        gzAdapter = new ArrayAdapter<String>(YZCSActivity.this, R.layout.item_spinner, gzDataStr);
+        spGz.setAdapter(gzAdapter);
 
+    }
 
 
     @Override
@@ -208,6 +221,7 @@ public class BDActivity extends BaseStatuScanActivity implements View.OnFocusCha
 
     /**
      * 2个都绑定绑定成功
+     *
      * @param code
      */
     @Override
@@ -220,24 +234,26 @@ public class BDActivity extends BaseStatuScanActivity implements View.OnFocusCha
             onExecuteSucceed();
             return;
         }*/
-        etEdit8.setText(code);
-        if ("OK".equals(code.toUpperCase())){
+        if ("OK".equals(code.toUpperCase())) {
             SoundPoolUtil.playOK();
-        }else if ("NG".equals(code.toUpperCase())){
+        } else if ("NG".equals(code.toUpperCase())) {
             SoundPoolUtil.playBlp();
         }
         onExecuteSucceed();
         clearData();
     }
 
+
+
     /**
      * 成功绑定一个
+     *
      * @param ucData
      */
     @Override
     public void onBDSucceed(final MesBean.UcDataBean ucData) {
         //isCancel = false;
-        if (!tvGdh.getText().toString().equals(ucData.getBrp_djbh())){
+        if (!tvGdh.getText().toString().equals(ucData.getBrp_djbh())) {
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setMessage("扫描的MES条码与上次扫描的工单号不一致, 请确认工单是否正确？")
                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
@@ -250,25 +266,26 @@ public class BDActivity extends BaseStatuScanActivity implements View.OnFocusCha
                     .setNegativeButton("否", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            presentor.bd(bean.getXbm_xbdm(),bdType,CANCEL);
+                            presentor.bd(bean.getXbm_xbdm(), bdType, CANCEL,"","");
 
                         }
                     })
                     .create();
             dialog.show();
-        }else {
+        } else {
             setData(ucData);
         }
+        clearData();
 
     }
-    private void setData(MesBean.UcDataBean ucData){
+
+    private void setData(MesBean.UcDataBean ucData) {
         tvGdh.setText(ucData.getBrp_djbh());
         tvCpxh.setText(ucData.getBrp_wldm());
         tvPmgg.setText(ucData.getBrp_pmgg());
-        tvDdsl.setText(""+ucData.getPlm_jhsl());
-        tvTrsl.setText(""+ucData.getBdm_cnt());
+        tvDdsl.setText("" + ucData.getPlm_jhsl());
+        tvTrsl.setText("" + ucData.getBdm_cnt());
         etEdit7.setText(ucData.getBrp_upn());
-        etEdit8.requestFocus();
     }
 
     @Override
@@ -279,5 +296,6 @@ public class BDActivity extends BaseStatuScanActivity implements View.OnFocusCha
         /*if (bean != null && !isCancel){
             presentor.bd(bean.getXbm_xbdm(),bdType,CANCEL);
         }*/
+
     }
 }

@@ -3,17 +3,18 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        versionCode="1"
-        versionName="1.0.0.16"
+        versionCode = "1"
+        versionName = "1.0.0.19"
         applicationId "ruiduoyi.com.skyworthpda"
         minSdkVersion 21
         targetSdkVersion 27
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
 
+    buildTypes {
         release {
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         /*定义输出的apk名字*/

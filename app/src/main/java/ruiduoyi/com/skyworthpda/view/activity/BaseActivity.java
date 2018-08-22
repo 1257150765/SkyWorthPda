@@ -110,13 +110,21 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     }
 
     /**
-     * 执行成功
-     */
+     * 执行成功，有语音，有弹出框
+     * */
     @Override
     public void onExecuteSucceed() {
         SoundPoolUtil.playOK();
         tipsToast.setView(ivSucceed);
         tipsToast.show();
+        //showSucceedStatu();
+    }
+    /**
+     * 执行成功,只有语音，没有弹出框（绿色标识）
+     */
+    @Override
+    public void onExecuteSucceed2() {
+        SoundPoolUtil.playOK();
         //showSucceedStatu();
     }
 

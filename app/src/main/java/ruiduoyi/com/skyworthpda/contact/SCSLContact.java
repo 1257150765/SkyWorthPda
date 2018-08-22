@@ -17,6 +17,7 @@ public interface SCSLContact {
         void onCheckQRCODESucceed(String type,String code,String wldm,String qty,String isUse);
 
         void onWLXXSucceed();
+        void onShowTipsDailog2(String msg);
     }
     public interface Presentor{
         void loadXb();
