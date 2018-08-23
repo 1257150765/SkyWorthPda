@@ -307,6 +307,8 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                         dataImg.add(R.mipmap.kzqbd);
                     case Config.PERMISSION_SMTZZ_DZJC_CODE:
                         dataImg.add(R.mipmap.jzjl);
+                    case Config.PERMISSION_SMTZZ_YZCS_CODE:
+                        dataImg.add(R.mipmap.jzjl);
                     default:
                         dataImg.add(R.mipmap.unknown);
                         break;

@@ -12,30 +12,30 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
     </android.support.v7.widget.Toolbar>
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <LinearLayout
+    <ScrollView
         android:background="@drawable/border_shape"
-        android:orientation="vertical"
+        android:scrollbars="none"
         android:layout_margin="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <LinearLayout
+
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <TextView
-                android:text="线别:"
-                android:gravity="center_vertical|end"
-                android:layout_width="80dp"
-                android:layout_height="match_parent" />
-            <Spinner
-                android:id="@+id/sp_xbSp_yzcsActivity"
+            android:layout_height="wrap_content">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></Spinner>
-        </LinearLayout>
+                android:layout_height="50dp">
+                <TextView
+                    android:text="线别:"
+                    android:gravity="center_vertical|end"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent" />
+                <Spinner
+                    android:id="@+id/sp_xbSp_yzcsActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+            </LinearLayout>
             <TextView
                 android:background="@color/gray"
                 android:layout_width="match_parent"
@@ -194,7 +194,6 @@
                     android:layout_width="80dp"
                     android:layout_height="match_parent" />
                 <EditText
-
                     android:id="@+id/et_edit7_yzcsActivity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
@@ -203,7 +202,6 @@
                 android:background="@color/gray"
                 android:layout_width="match_parent"
                 android:layout_height="1px" />
-
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </ScrollView>
 </LinearLayout>

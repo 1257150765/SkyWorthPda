@@ -13,9 +13,7 @@ import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 public interface YZCSContact {
     public interface View extends BaseContact.View{
         void onLoadZZXBSucceed(List<XbBean.UcDataBean> ucData);
-        void onBDSucceed(MesBean.UcDataBean ucDataBean);
-        void onBDFalse();
-        void onBDSucceed(String key_qrcode);
+        void onBDSucceed(String key_qrcode, MesBean.UcDataBean ucDataBean);
         void onLoadZZGZSucceed(List<GzBean.UcDataBean> ucData);
     }
     public interface Presentor{

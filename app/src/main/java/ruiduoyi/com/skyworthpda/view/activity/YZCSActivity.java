@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -23,12 +24,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ruiduoyi.com.skyworthpda.R;
-import ruiduoyi.com.skyworthpda.contact.BDContact;
 import ruiduoyi.com.skyworthpda.contact.YZCSContact;
 import ruiduoyi.com.skyworthpda.model.bean.GzBean;
 import ruiduoyi.com.skyworthpda.model.bean.MesBean;
 import ruiduoyi.com.skyworthpda.model.bean.XbBean;
-import ruiduoyi.com.skyworthpda.presentor.BDPresentor;
 import ruiduoyi.com.skyworthpda.presentor.YZCSPresentor;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
@@ -83,6 +82,7 @@ public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.V
         setContentView(R.layout.activity_yzcs);
         ButterKnife.bind(this);
         initView();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         presentor = new YZCSPresentor(this, this);
     }
 
@@ -148,6 +148,12 @@ public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.V
     protected void onReceiveCode(String code) {
         String dl = etADianLiu.getText().toString();
         String dy = etVDianYa.getText().toString();
+        //如果是提交品质条码（不良品），不需要上传电流电压
+        if ("NG".equals(code.toUpperCase())) {
+            bdType = gzBean.getOpr_gzdm();
+            presentor.bd(bean.getXbm_xbdm(), bdType,code, dl, dy);
+            return;
+        }
         if (null == bean) {
             showSnakeBar("请先选择线别");
             return;
@@ -164,12 +170,6 @@ public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.V
         bdType = gzBean.getOpr_gzdm();
         presentor.bd(bean.getXbm_xbdm(), bdType,code, dl, dy);
 
-        /*
-        if (focusEditText.getId() == etEdit7.getId()) {
-            presentor.bd(bean.getXbm_xbdm(), bdType, edit7Text);
-        } else if (focusEditText.getId() == etEdit8.getId()) {
-            presentor.bd(bean.getXbm_xbdm(),bdType,edit8Text);
-        }*/
     }
 
     @Override
@@ -213,45 +213,12 @@ public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.V
 
     }
 
-
-    @Override
-    public void onBDFalse() {
-
-    }
-
-    /**
-     * 2个都绑定绑定成功
-     *
-     * @param code
-     */
-    @Override
-    public void onBDSucceed(String code) {
-        //已经取消了扫描记录（绑定成功或者取消绑定都会回调这个方法）
-        /*isCancel = true;
-        //有可能是取消之前的扫描记录
-        if (CANCEL.equals(code)){
-            etEdit8.setText("");
-            onExecuteSucceed();
-            return;
-        }*/
-        if ("OK".equals(code.toUpperCase())) {
-            SoundPoolUtil.playOK();
-        } else if ("NG".equals(code.toUpperCase())) {
-            SoundPoolUtil.playBlp();
-        }
-        onExecuteSucceed();
-        clearData();
-    }
-
-
-
     /**
      * 成功绑定一个
-     *
      * @param ucData
      */
     @Override
-    public void onBDSucceed(final MesBean.UcDataBean ucData) {
+    public void onBDSucceed(final String qrcode, final MesBean.UcDataBean ucData) {
         //isCancel = false;
         if (!tvGdh.getText().toString().equals(ucData.getBrp_djbh())) {
             AlertDialog dialog = new AlertDialog.Builder(this)
@@ -260,7 +227,8 @@ public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.V
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             spXbSp.setEnabled(false);
-                            setData(ucData);
+                            spGz.setEnabled(false);
+                            setData(qrcode,ucData);
                         }
                     })
                     .setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -273,19 +241,26 @@ public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.V
                     .create();
             dialog.show();
         } else {
-            setData(ucData);
+            setData(qrcode,ucData);
         }
-        clearData();
 
     }
 
-    private void setData(MesBean.UcDataBean ucData) {
+    private void setData(String qrcode, MesBean.UcDataBean ucData) {
+        //如果是提交不良品   不清除信息
+       if ("NG".equals(qrcode.toUpperCase())) {
+            SoundPoolUtil.playBlp();
+            return;
+        }
+
+        onExecuteSucceed();
         tvGdh.setText(ucData.getBrp_djbh());
         tvCpxh.setText(ucData.getBrp_wldm());
         tvPmgg.setText(ucData.getBrp_pmgg());
         tvDdsl.setText("" + ucData.getPlm_jhsl());
         tvTrsl.setText("" + ucData.getBdm_cnt());
         etEdit7.setText(ucData.getBrp_upn());
+        clearData();
     }
 
     @Override

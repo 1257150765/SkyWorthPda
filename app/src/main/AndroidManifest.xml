@@ -48,7 +48,8 @@
         <activity
             android:name=".view.activity.YZCSActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="stateUnspecified"
+             />
 
         <service android:name=".util.DownloadService" />
 

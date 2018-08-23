@@ -111,12 +111,14 @@ public class YZCSPresentor implements YZCSContact.Presentor {
                 view.onLoading(false);
                 if (value.isUtStatus()){
                     //当没有返回数据时，判断为mes和压缩机都绑定完成（一次操作需绑定两个条码）
-                    if (value.getUcData() == null || value.getUcData().size() ==0) {
+                    /*if (value.getUcData() == null || value.getUcData().size() ==0) {
                         view.onBDSucceed(key_qrcode);
                     }else {
                         //当有返回数据时，判断为mes绑定完成（一次操作需绑定两个条码）
-                        view.onBDSucceed(value.getUcData().get(0));
-                    }
+
+                    }*/
+                    //运转测试，都会返回数据，但是提交品质条码返回的数据有空值（静置检漏不一样）
+                    view.onBDSucceed(key_qrcode,value.getUcData().get(0));
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());
                 }
