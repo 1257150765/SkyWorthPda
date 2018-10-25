@@ -5,17 +5,14 @@ import android.os.Environment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.MainContact;
 import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
 import ruiduoyi.com.skyworthpda.model.bean.UpdateBean;
 import ruiduoyi.com.skyworthpda.model.ceche.PreferenUtil;
 import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
-import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.DownloadService;
 import ruiduoyi.com.skyworthpda.util.DownloadUtils;
 
@@ -88,7 +85,7 @@ public class MainPresentor implements MainContact.Presentor {
     }
 
     @Override
-    public void checkUpdate() {
+    public void checkUpdate(final boolean isAuto) {
         view.onLoading(true);
         RetrofitManager.checkUpdate().subscribe(new Observer<UpdateBean>() {
             @Override
@@ -102,9 +99,9 @@ public class MainPresentor implements MainContact.Presentor {
                 if (value.isUtStatus()){
                     UpdateBean.UcDataBean bean = value.getUcData().get(0);
                     if (DownloadService.haveNewVersion(context,bean.getV_SrvVer())){
-                        view.onCheckUpdateSucceed(true,bean.getV_UpAddr());
+                        view.onCheckUpdateSucceed(true,bean.getV_UpAddr(),isAuto);
                     }else {
-                        view.onCheckUpdateSucceed(false,bean.getV_UpAddr());
+                        view.onCheckUpdateSucceed(false,bean.getV_UpAddr(),isAuto);
                     }
                 }else {
                     view.onShowTipsDailog(value.getUcMsg());

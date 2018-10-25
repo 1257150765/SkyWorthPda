@@ -10,7 +10,6 @@ import io.reactivex.disposables.Disposable;
 import ruiduoyi.com.skyworthpda.contact.SCSLContact;
 import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
 import ruiduoyi.com.skyworthpda.model.bean.CheckZWBean;
-import ruiduoyi.com.skyworthpda.model.bean.SCQRBean;
 import ruiduoyi.com.skyworthpda.model.bean.SCSLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SCXLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLQRBean;
@@ -171,7 +170,7 @@ public class SCSLPresentor implements SCSLContact.Presentor {
                 view.onLoading(false);
                 if (value.isUtStatus()){
                     CheckQRCODEBean.UcDataBean bean = value.getUcData().get(0);
-                    view.onCheckQRCODESucceed(type,bean.getV_oricode(),bean.getV_wldm(),""+bean.getV_qty(),bean.getV_isInUse());
+                    view.onCheckQRCODESucceed(type,bean);
                 }else {
                     view.onScanError();
                     view.onShowTipsDailog(value.getUcMsg());
@@ -202,9 +201,9 @@ public class SCSLPresentor implements SCSLContact.Presentor {
      * @param qty 数量
      */
     @Override
-    public void scsl(String xbm_xbdm, String zw,String code, String wldm, String qty) {
+    public void scsl(String xbm_xbdm, String zw,String code, String wldm, String qty,String binValue) {
         view.onLoading(true);
-        RetrofitManager.scsl(xbm_xbdm,zw,code,wldm,qty).subscribe(new Observer<SCSLBean>() {
+        RetrofitManager.scsl(xbm_xbdm,zw,code,wldm,qty,binValue).subscribe(new Observer<SCSLBean>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -250,11 +249,12 @@ public class SCSLPresentor implements SCSLContact.Presentor {
      * @param code 新料盘二维码
      * @param wldm 物料代码
      * @param qty 数量
+     * @param binValue
      */
     @Override
-    public void scxl(String xbm_xbdm, String oldCoed, String code, String wldm, String qty) {
+    public void scxl(String xbm_xbdm, String oldCoed, String code, String wldm, String qty, String binValue) {
         view.onLoading(true);
-        RetrofitManager.scxl(xbm_xbdm,oldCoed,code,wldm,qty).subscribe(new Observer<SCXLBean>() {
+        RetrofitManager.scxl(xbm_xbdm,oldCoed,code,wldm,qty,binValue).subscribe(new Observer<SCXLBean>() {
             @Override
             public void onSubscribe(Disposable d) {
 

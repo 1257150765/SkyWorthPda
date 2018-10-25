@@ -72,7 +72,7 @@ public class BDActivity extends BaseStatuScanActivity implements View.OnFocusCha
     private String mesCode = "";
     private String bdType = "";
     private static final String TYPE_ZZYSJ = "ZZYSJ";
-    private static final String TYPE_ZZKZQ = "ZZKZQ";
+    private static final String TYPE_ZZKZQ = "ZZGXJC";
     private static final String TYPE_ZZDZJ = "ZZDZJ";
     //private boolean isCancel = true;
 

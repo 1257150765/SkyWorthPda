@@ -8,18 +8,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Xml;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,12 +27,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.xmlpull.v1.XmlPullParser;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,6 +60,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL = 1001;
+    private static final long CHECK_UPDATE_TIME = 1000 * 1 * 30L;//30分钟
     @BindView(R.id.banner_mainactivity)
     BGABanner bgabBanner;
     @BindView(R.id.toolbar)
@@ -80,10 +84,12 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     TextView bm;
     @BindView(R.id.iv_clearLog)
     CircleImageView ivClearLog;
-    private MainContact.Presentor presentor;
+    private MainPresentor presentor;
     private ProgressDialog downloadProgressDialog;
     private boolean isCanBack = false;
     private Timer timer;
+    private boolean isResume = false;
+    private ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(2);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +108,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         initView();
         presentor = new MainPresentor(this, this);
         //int a = 1 / 0;
+
     }
 
     @Override
@@ -135,7 +142,29 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                 return false;
             }
         });
+        executor.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (!isResume) {
+                        try {
+                            Thread.sleep(5000L);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            presentor.checkUpdate(true);
+                        }
+                    });
 
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        },CHECK_UPDATE_TIME,CHECK_UPDATE_TIME, TimeUnit.MILLISECONDS);
     }
 
 
@@ -144,7 +173,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         if (requestCode == MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL){
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 //showSnakeBar("授予成功");
-                presentor.checkUpdate();
+                presentor.checkUpdate(false);
             }else {
                 Util.startToAppDetail(this);
                 //showSnakeBar("授予失败");
@@ -180,10 +209,10 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                                 .create();
                         dialog.show();
                     }else {
-                        presentor.checkUpdate();
+                        presentor.checkUpdate(false);
                     }
                 }else {
-                    presentor.checkUpdate();
+                    presentor.checkUpdate(false);
                 }
                 break;
         }
@@ -194,11 +223,13 @@ public class MainActivity extends BaseActivity implements MainContact.View {
     @Override
     protected void onResume() {
         super.onResume();
+        isResume = true;
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
+        isResume = false;
     }
 
     @OnClick({R.id.ll_switch_layout_mainactivity, R.id.ll_exit_layout_mainactivity})
@@ -216,43 +247,84 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         }
     }
 
-
+    AlertDialog dialog;
+    AlertDialog dialog2;
     @Override
-    public void onCheckUpdateSucceed(boolean hasNewVer, final String url) {
-        try {
-            URL url1 = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            onShowTipsDailog("URL不合法，更新失败");
+    public void onCheckUpdateSucceed(boolean hasNewVer, final String url, boolean isAuto) {
+        XmlPullParser parser = Xml.newPullParser();
+        parser.getAttributeValue(null,"");
+        if (dialog !=null && dialog.isShowing()){
             return;
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        if (hasNewVer) {
-            builder.setCancelable(false)
-                    .setMessage("发现新版本，点击确定开始更新")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            presentor.update(url);
-                        }
-                    });
-        } else {
-            builder.setCancelable(true)
-                    .setMessage("未发现新版本，是否更新")
-                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            presentor.update(url);
-                        }
-                    })
-                    .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
+        if (dialog2 !=null && dialog2.isShowing()){
+            return;
         }
-        builder.create().show();
+        if (isAuto){
+            if (!isResume){
+                return;
+            }
+            try {
+                URL url1 = new URL(url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            if (hasNewVer) {
+                builder.setCancelable(false)
+                        .setMessage("发现新版本，是否更新")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                presentor.update(url);
+                            }
+                        }).setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+            dialog = builder.create();
+            dialog.show();
+        }else {
+            try {
+                URL url1 = new URL(url);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                onShowTipsDailog("URL不合法，更新失败");
+                return;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            if (hasNewVer) {
+                builder.setCancelable(false)
+                        .setMessage("发现新版本，点击确定开始更新")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                presentor.update(url);
+                            }
+                        });
+            } else {
+                builder.setCancelable(true)
+                        .setMessage("未发现新版本，是否更新")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                presentor.update(url);
+                            }
+                        })
+                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+            }
+            dialog2 = builder.create();
+            dialog2.show();
+        }
+
     }
 
 
@@ -263,6 +335,7 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         if (timer != null) {
             timer.cancel();
         }
+        executor.shutdown();
     }
 
 

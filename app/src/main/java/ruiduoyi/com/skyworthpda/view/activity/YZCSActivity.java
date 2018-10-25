@@ -33,7 +33,8 @@ import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
 
 /**
- * 运转测试
+ * 用于运转测试
+ *
  */
 public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.View {
 
@@ -140,7 +141,7 @@ public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.V
         etADianLiu.setText("");
         etVDianYa.setText("");
         etEdit7.setText("");
-        etADianLiu.requestFocus();
+        etVDianYa.requestFocus();
     }
 
 
@@ -160,11 +161,11 @@ public class YZCSActivity extends BaseStatuScanActivity implements YZCSContact.V
         }else if (null == gzBean){
             showSnakeBar("请先选择工站");
             return;
-        } else if ("".equals(dl)){
-            showSnakeBar("请先输入电流值");
+        } else if ("".equals(dy)){
+            showSnakeBar("请先输入制热压力记录");
             return;
-        }else if ("".equals(dy)){
-            showSnakeBar("请先输入电压值");
+        }else if ("".equals(dl)){
+            showSnakeBar("请先输入制冷电流记录");
             return;
         }
         bdType = gzBean.getOpr_gzdm();

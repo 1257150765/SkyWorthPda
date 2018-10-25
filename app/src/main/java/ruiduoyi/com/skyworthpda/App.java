@@ -12,6 +12,7 @@ import ruiduoyi.com.skyworthpda.util.CatchExceptionUtil;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.EDAScanUtil;
 import ruiduoyi.com.skyworthpda.util.LogWraper;
+import ruiduoyi.com.skyworthpda.util.NewLandScanUtil;
 import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
 import ruiduoyi.com.skyworthpda.util.Util;
 
@@ -23,6 +24,7 @@ public class App extends Application {
     private static final String TAG = App.class.getSimpleName();
     public static int themeId = R.style.AppTheme1;
     public static EDAScanUtil edaScanUtil;
+    public static NewLandScanUtil newLandScanUtil;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -44,6 +46,9 @@ public class App extends Application {
                 Util.init(this);
                 preferenUtil.setBoolean(Config.IS_INIT,true);
             }
+        }else if ("NLS-M620".equals(Build.MODEL)){//新大陆的pda（亚伦）
+            //Log.d(TAG, "onCreate: "+Build.MODEL);
+            newLandScanUtil = new NewLandScanUtil(this);
         }else {
             Toast.makeText(this,"程序不支持此类型的终端，会出现无法扫描的情况",Toast.LENGTH_LONG).show();
         }

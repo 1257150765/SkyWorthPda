@@ -91,7 +91,7 @@ public class RetrofitManager {
                 Response response = chain.proceed(request1);
                 MediaType mediaType = response.body().contentType();
                 String content= response.body().string();
-                LogWraper.d("response",content);
+                LogWraper.d("Net",content);
                 return response.newBuilder().body(ResponseBody.create(mediaType, content)).build();
             }
         };
@@ -169,8 +169,8 @@ public class RetrofitManager {
      * @param qty 数量
      * @return
      */
-    public static Observable<SCSLBean> scsl(String xbm_xbdm, String zw, String code,String wldm, String qty){
-        return retrofit.create(Api.class).scsl(Config.TYPE_INTERFACE_SCSL,xbm_xbdm,zw,code,wldm,qty)
+    public static Observable<SCSLBean> scsl(String xbm_xbdm, String zw, String code,String wldm, String qty,String binValue){
+        return retrofit.create(Api.class).scsl(Config.TYPE_INTERFACE_SCSL,xbm_xbdm,zw,code,wldm,qty,binValue)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
@@ -182,10 +182,11 @@ public class RetrofitManager {
      * @param code 新料盘
      * @param wldm 物料代码
      * @param qty 数量
+     * @param binValue
      * @return
      */
-    public static Observable<SCXLBean> scxl(String xbm_xbdm, String oldCoed, String code,String wldm, String qty){
-        return retrofit.create(Api.class).scxl(Config.TYPE_INTERFACE_SCXL,xbm_xbdm,oldCoed,code,wldm,qty)
+    public static Observable<SCXLBean> scxl(String xbm_xbdm, String oldCoed, String code, String wldm, String qty, String binValue){
+        return retrofit.create(Api.class).scxl(Config.TYPE_INTERFACE_SCXL,xbm_xbdm,oldCoed,code,wldm,qty,binValue)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
 
@@ -355,7 +356,7 @@ public class RetrofitManager {
         @GET("SmtPDADataDeal")
         Observable<CheckQRCODEBean> checkQRCODE(@Query("key_prgid") String key_prgid, @Query("key_type") String key_type, @Query("key_chkval") String key_chkval);
         @GET("SmtPDADataDeal")
-        Observable<SCSLBean> scsl(@Query("key_prgid") String key_prgid,@Query("key_xbdm") String key_xbdm,@Query("key_zwdm") String key_zwdm,@Query("key_qrcode") String key_qrcode,@Query("key_wldm") String key_wldm,@Query("key_qty") String key_qty);
+        Observable<SCSLBean> scsl(@Query("key_prgid") String key_prgid,@Query("key_xbdm") String key_xbdm,@Query("key_zwdm") String key_zwdm,@Query("key_qrcode") String key_qrcode,@Query("key_wldm") String key_wldm,@Query("key_qty") String key_qty,@Query("key_usrVal") String key_usrVal);
 
         @GET("SmtPDADataDeal")
         Observable<ZWCXBean> getZwcx(@Query("key_prgid") String key_prgid, @Query("key_type") String key_type, @Query("key_xbdm") String key_xbdm);
@@ -367,7 +368,7 @@ public class RetrofitManager {
         Observable<XLZWBean> getXLZW(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm, @Query("key_qrcode") String key_qrcode);
 
         @GET("SmtPDADataDeal")
-        Observable<SCXLBean> scxl(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm, @Query("key_oldcode") String key_oldcode, @Query("key_qrcode") String key_qrcode, @Query("key_wldm") String key_wldm, @Query("key_qty") String key_qty);
+        Observable<SCXLBean> scxl(@Query("key_prgid") String key_prgid, @Query("key_xbdm") String key_xbdm, @Query("key_oldcode") String key_oldcode, @Query("key_qrcode") String key_qrcode, @Query("key_wldm") String key_wldm, @Query("key_qty") String key_qty,@Query("key_usrVal") String key_usrVal);
 
         @GET("SmtPDADataDeal")
         Observable<SLQRBean> slqr(@Query("key_prgid") String key_prgid,@Query("key_xbdm") String key_xbdm,@Query("key_zwdm") String key_zwdm,@Query("key_qrcode") String key_qrcode,@Query("key_wldm") String key_wldm);

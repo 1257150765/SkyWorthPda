@@ -2,6 +2,7 @@ package ruiduoyi.com.skyworthpda.contact;
 
 import java.util.List;
 
+import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLXXBean;
 import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 
@@ -14,7 +15,7 @@ public interface SCSLContact {
         void onLoadXbSucceed(List<XbBean.UcDataBean> xbData);
         void onLoadDataSucceed(List<SLXXBean.UcDataBean> data);
         void onCheckZWSucceed(String type,String code);
-        void onCheckQRCODESucceed(String type,String code,String wldm,String qty,String isUse);
+        void onCheckQRCODESucceed(String type, CheckQRCODEBean.UcDataBean bean);
 
         void onWLXXSucceed();
         void onShowTipsDailog2(String msg);
@@ -24,8 +25,8 @@ public interface SCSLContact {
         void loadData(String xbStr,String key_flag);
         void checkZW(String type, String code);
         void checkQRCODE(String type, String code);
-        void scsl(String xbm_xbdm, String zw,String code, String wldm, String qty);
-        void scxl(String xbm_xbdm, String oldCoed, String code, String wldm, String qty);
+        void scsl(String xbm_xbdm, String zw,String code, String wldm, String qty,String binValue);
+        void scxl(String xbm_xbdm, String oldCoed, String code, String wldm, String qty, String binValue);
         void slqr(String xbm_xbdm, String zw, String code, String wldm);
 
         void wlxx(String type, String xbm_xbdm);

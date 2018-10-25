@@ -63,6 +63,24 @@ public class CheckQRCODEBean {
         private int v_qty;
         private String v_oricode;
         private String v_isInUse;
+        private String v_isNeedUsrValue;
+        private String v_pmgg;
+
+        public String getV_isNeedUsrValue() {
+            return v_isNeedUsrValue;
+        }
+
+        public void setV_isNeedUsrValue(String v_isNeedUsrValue) {
+            this.v_isNeedUsrValue = v_isNeedUsrValue;
+        }
+
+        public String getV_pmgg() {
+            return v_pmgg;
+        }
+
+        public void setV_pmgg(String v_pmgg) {
+            this.v_pmgg = v_pmgg;
+        }
 
         public String getV_isInUse() {
             return v_isInUse;

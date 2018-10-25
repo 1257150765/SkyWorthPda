@@ -2,15 +2,19 @@ package ruiduoyi.com.skyworthpda.view.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,7 +25,10 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.BreakIterator;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,12 +37,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import ruiduoyi.com.skyworthpda.R;
 import ruiduoyi.com.skyworthpda.contact.SCSLContact;
+import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLXXBean;
 import ruiduoyi.com.skyworthpda.model.bean.XbBean;
 import ruiduoyi.com.skyworthpda.presentor.SCSLPresentor;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.LogWraper;
 import ruiduoyi.com.skyworthpda.view.adapter.SCSLAdapter;
+import ruiduoyi.com.skyworthpda.widget.PowerButton;
 
 /**
  * Created by Chen on 2018/5/8.
@@ -274,6 +283,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
         }else if (focusEditText.getId() == etEdit3.getId()){
             type = edit3ScanType;
         }
+
         if ("".equals(type) || "".equals(code)) {
             return;
         } else if (Config.CHECK_TYPE_ZWM.equals(type)) {
@@ -334,14 +344,18 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
     /**
      * 检查二维码成功
      * @param type QRCODE
-     * @param code 二维码
-     * @param wldm 物料代码
-     * @param qty 数量
      */
     @Override
-    public void onCheckQRCODESucceed(String type, String code,String wldm,String qty,String isUse) {
+    public void onCheckQRCODESucceed(String type, CheckQRCODEBean.UcDataBean qrCodeBean) {
         //记录旧料盘是否正确
+        final String code = qrCodeBean.getV_oricode();
+        final String wldm = qrCodeBean.getV_wldm();
+        String isNeedUsrValue = qrCodeBean.getV_isNeedUsrValue();
+        String pmgg = qrCodeBean.getV_pmgg();
+        final String qty = ""+qrCodeBean.getV_qty();
         focusEditText.setText(code);
+        String isUse = qrCodeBean.getV_isInUse();
+
         if (Config.PERMISSION_FCL_SCXL_NAME.equals(startType) && "2".equals(isUse)){
             this.isUse = "2";//2代表最后一次上料，1代表上过料，但是,不是最后一次上料，0代表没上过
         }else if (Config.PERMISSION_FCL_SCXL_NAME.equals(startType) && ("1".equals(isUse) || "0".equals(isUse))){
@@ -354,6 +368,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 etEdit2.requestFocus();
                 return;
             }
+
         }
 
         //如果是第一或二个输入框，表示还没输入完,吧焦点移到第三个输入框
@@ -362,7 +377,7 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
             return;
         }
         //输入完则执行过程
-        String edit2Str = etEdit2.getText().toString().trim();
+        final String edit2Str = etEdit2.getText().toString().trim();
         if (null == bean){
             onShowTipsDailog("请选择线别");
             return;
@@ -394,7 +409,37 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                     onShowTipsDailog("请扫描条码");
                     return;
                 }
-                presentor.scsl(bean.getXbm_xbdm(),edit2Str,code,wldm,qty);
+                if ("1".equals(isNeedUsrValue)){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        final View view= LayoutInflater.from(this).inflate(R.layout.dialog_add_usrvalue,null);
+                        final android.app.AlertDialog deleteDialog=new android.app.AlertDialog.Builder(this).setView(view).setCancelable(false).create();
+                        //隐藏键盘
+                        deleteDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                        TextView tvWldm = view.findViewById(R.id.tv_wldm_dialog_add_usrValue);
+                        tvWldm.setText(wldm);
+                        TextView tvPmgg = view.findViewById(R.id.tv_pmgg_dialog_add_usrValue);
+                        tvPmgg.setText(pmgg);
+                        PowerButton delBtn=(PowerButton)view.findViewById(R.id.sure_btn);
+                        final TextInputEditText binValue=(TextInputEditText)view.findViewById(R.id.bin_ed);
+                        delBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String binText = binValue.getText().toString();
+                                if ("".equals(binText)){
+                                    showSnakeBar(view,"BIN值不能为空");
+                                    return;
+                                }
+                                presentor.scsl(bean.getXbm_xbdm(),edit2Str,code,wldm,qty,binText);
+                                deleteDialog.dismiss();
+                            }
+                        });
+                        deleteDialog.show();
+                    }
+                }else {
+                    presentor.scsl(bean.getXbm_xbdm(),edit2Str,code,wldm,qty,"");
+                }
+
+
                 break;
             //生产续料
             case Config.PERMISSION_FCL_SCXL_NAME:
@@ -406,7 +451,36 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                     onShowTipsDailog("请扫描新料盘");
                     return;
                 }
-                presentor.scxl(bean.getXbm_xbdm(),edit2Str,code,wldm,qty);
+                if ("1".equals(isNeedUsrValue)){
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        final View view= LayoutInflater.from(this).inflate(R.layout.dialog_add_usrvalue,null);
+                        final android.app.AlertDialog deleteDialog=new android.app.AlertDialog.Builder(this).setView(view).setCancelable(false).create();
+                        //隐藏键盘
+                        deleteDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                        TextView tvWldm = view.findViewById(R.id.tv_wldm_dialog_add_usrValue);
+                        tvWldm.setText(wldm);
+                        TextView tvPmgg = view.findViewById(R.id.tv_pmgg_dialog_add_usrValue);
+                        tvPmgg.setText(pmgg);
+                        PowerButton delBtn=(PowerButton)view.findViewById(R.id.sure_btn);
+                        final TextInputEditText binValue=(TextInputEditText)view.findViewById(R.id.bin_ed);
+                        delBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String binText = binValue.getText().toString();
+                                if ("".equals(binText)){
+                                    showSnakeBar(view,"BIN值不能为空");
+                                    return;
+                                }
+                                presentor.scxl(bean.getXbm_xbdm(),edit2Str,code,wldm,qty,binText);
+                                deleteDialog.dismiss();
+                            }
+                        });
+                        deleteDialog.show();
+                    }
+                }else {
+                    presentor.scxl(bean.getXbm_xbdm(),edit2Str,code,wldm,qty,"");
+                }
+
                 break;
             //上料确认
             case Config.PERMISSION_FCL_SLQR_NAME:
@@ -422,6 +496,8 @@ public class SCSLActivity extends BaseScanActivity implements SCSLContact.View, 
                 break;
         }
     }
+
+
 
     //执行物料下线成功，
     @Override

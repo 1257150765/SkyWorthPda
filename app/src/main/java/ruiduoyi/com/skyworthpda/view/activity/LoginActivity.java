@@ -124,28 +124,8 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
         }*/
         tilUserIdLayout.setErrorEnabled(false);
         tiluserPwdLayout.setErrorEnabled(false);
-        //如果大于等于6.0 并且还没有授权
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                presenter.checkUpdate(companyBean.getSrvID());
-            }else {
-                AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setMessage("请授予App写SD卡的权限，否则将会导致更新失败.")
-                        .setCancelable(false)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // 如果没有授予该权限，就去提示用户请求
-                                ActivityCompat.requestPermissions(LoginActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION_WTITE_EXTERNAL);
-                            }
-                        })
-                        .create();
-                dialog.show();
-                //presenter.login(companyBean.getSrvID(),userName, pwd);
-            }
-        }else {
-            presenter.checkUpdate(companyBean.getSrvID());
-        }
+        presenter.login(companyBean.getSrvID(),userName,pwd,"0");
+
     }
 
     @Override
@@ -176,6 +156,30 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
                 spCompanyname.setSelection(i);
             }
         }
+        companyBean = companyNameList.get(0);
+        //加载公司后检查更新
+        //如果大于等于6.0 并且还没有授权
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                presenter.checkUpdate(companyBean.getSrvID());
+            }else {
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setMessage("请授予App写SD卡的权限，否则将会导致更新失败.")
+                        .setCancelable(false)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // 如果没有授予该权限，就去提示用户请求
+                                ActivityCompat.requestPermissions(LoginActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_PERMISSION_WTITE_EXTERNAL);
+                            }
+                        })
+                        .create();
+                dialog.show();
+                //presenter.login(companyBean.getSrvID(),userName, pwd);
+            }
+        }else {
+            presenter.checkUpdate(companyBean.getSrvID());
+        }
     }
 
     @Override
@@ -195,29 +199,22 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
 
     @Override
     public void onCheckUpdateSucceed(boolean hasUpdate, final String url) {
-        final String userName = etUserId.getText().toString();
-        final String pwd = etUserPwd.getText().toString();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         if (hasUpdate) {
-            builder.setCancelable(true)
-                    .setMessage("发现新版本，是否更新")
-                    .setPositiveButton("是", new DialogInterface.OnClickListener() {
+            builder.setCancelable(false)
+                    .setMessage("发现新版本，点击确定开始更新")
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             presenter.update(url);
                         }
-                    })
-                    .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            presenter.login(companyBean.getSrvID(),userName, pwd, "0");
-                        }
                     });
             builder.create().show();
-        } else {
+        }/* else {
             //0表示手动登录
             presenter.login(companyBean.getSrvID(),userName, pwd, "0");
-        }
+        }*/
 
     }
 

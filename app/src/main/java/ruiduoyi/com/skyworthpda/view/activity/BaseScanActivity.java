@@ -14,15 +14,16 @@ import ruiduoyi.com.skyworthpda.App;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.EDAScanUtil;
 import ruiduoyi.com.skyworthpda.util.LogWraper;
-import ruiduoyi.com.skyworthpda.util.SoundPoolUtil;
+import ruiduoyi.com.skyworthpda.util.NewLandScanUtil;
 
 import static ruiduoyi.com.skyworthpda.App.edaScanUtil;
+import static ruiduoyi.com.skyworthpda.App.newLandScanUtil;
 
 /**
  * 封装了扫描功能，（）
  * Created by Chen on 2018/5/7.
  */
-public abstract class BaseScanActivity extends BaseActivity implements EDAScanUtil.EDAScanListener {
+public abstract class BaseScanActivity extends BaseActivity implements EDAScanUtil.EDAScanListener, NewLandScanUtil.OnScanListener {
     private static final String CODE_RECEIVER_ACTION = Config.CUSTOM_NAME;
     private static final String TAG = BaseScanActivity.class.getSimpleName();
     BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -39,29 +40,38 @@ public abstract class BaseScanActivity extends BaseActivity implements EDAScanUt
         }
     };
 
-
     @Override
     protected void onResume() {
         super.onResume();
-        if (edaScanUtil == null){
+        if (edaScanUtil == null && newLandScanUtil == null){
             IntentFilter filter = new IntentFilter(CODE_RECEIVER_ACTION);
             registerReceiver(receiver, filter);
-        }else {
+        }else if (edaScanUtil !=null){
             LogWraper.d(TAG,"监听器");
             edaScanUtil.start(this);
+        }else if (newLandScanUtil !=null){
+            newLandScanUtil.open();
+            newLandScanUtil.setOnScanListener(this);
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (edaScanUtil == null){
+        if (edaScanUtil == null && newLandScanUtil == null){
             unregisterReceiver(receiver);
-        }else {
+        }else if (edaScanUtil!=null){
             edaScanUtil.stop();
+        }else if (newLandScanUtil != null){
+            newLandScanUtil.close();
         }
     }
     protected abstract void onReceiveCode(String code);
+
+    @Override
+    protected void initView() {
+
+    }
 
     @Override
     public void onExecuteSucceed() {
@@ -77,5 +87,15 @@ public abstract class BaseScanActivity extends BaseActivity implements EDAScanUt
     public void onScanSucceed(String code) {
         LogWraper.d(TAG,"EDA60K:"+code);
         onReceiveCode(code);
+    }
+
+    @Override
+    public void onSuccess(String result) {
+        onReceiveCode(result);
+    }
+
+    @Override
+    public void onFail(String error) {
+
     }
 }

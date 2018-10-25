@@ -87,9 +87,7 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
                 params.height = 250;
                 params.width = 250;
                 loadingDialog.getWindow().setAttributes(params);
-
             }
-
         }else {
             loadingDialog.dismiss();
         }
@@ -106,7 +104,10 @@ public  abstract class BaseActivity extends AppCompatActivity implements BaseCon
     }
 
     public void showSnakeBar(String tips){
-        Snackbar.make(getWindow().getDecorView(),tips,Snackbar.LENGTH_SHORT).show();
+        showSnakeBar(getWindow().getDecorView(),tips);
+    }
+    public void showSnakeBar(View view,String tips){
+        Snackbar.make(view,tips,Snackbar.LENGTH_SHORT).show();
     }
 
     /**

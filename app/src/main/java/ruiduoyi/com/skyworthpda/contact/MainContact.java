@@ -1,7 +1,6 @@
 package ruiduoyi.com.skyworthpda.contact;
 
 import java.util.List;
-import java.util.Map;
 
 import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
 
@@ -11,7 +10,7 @@ import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
 
 public interface MainContact {
     public interface View extends BaseContact.View{
-        void onCheckUpdateSucceed(boolean hasNewVer,String url);
+        void onCheckUpdateSucceed(boolean hasNewVer, String url, boolean isAuto);
         void onLoadPermissionSecceed(List<PermissionBean.UcDataBean> titles, List<List<PermissionBean.UcDataBean>> childs);
         void onUpdate(int value);
         void onUpdateSucceed();
@@ -19,7 +18,7 @@ public interface MainContact {
 
     public interface Presentor{
         void loadPermission();
-        void checkUpdate();
+        void checkUpdate(boolean b);
         void update(String url);
     }
 }
