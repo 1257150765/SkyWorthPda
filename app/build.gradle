@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         versionCode = "1"
-        versionName = "1.0.0.22"
+        versionName = "1.0.0.23"
         applicationId "ruiduoyi.com.skyworthpda"
         minSdkVersion 21
         targetSdkVersion 27
