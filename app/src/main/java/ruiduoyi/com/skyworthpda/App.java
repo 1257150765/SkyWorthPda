@@ -1,13 +1,11 @@
 package ruiduoyi.com.skyworthpda;
 
 import android.app.Application;
-import android.media.SoundPool;
 import android.os.Build;
-import android.util.Log;
 import android.widget.Toast;
 
-
 import ruiduoyi.com.skyworthpda.model.ceche.PreferenUtil;
+import ruiduoyi.com.skyworthpda.model.net.RetrofitManager;
 import ruiduoyi.com.skyworthpda.util.CatchExceptionUtil;
 import ruiduoyi.com.skyworthpda.util.Config;
 import ruiduoyi.com.skyworthpda.util.EDAScanUtil;
@@ -28,6 +26,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        RetrofitManager.MAC = Util.getMac(this);
         //CrashReport.initCrashReport(getApplicationContext(), "f25ebf3d0c", true);
         CatchExceptionUtil.getInstance().init(this,true,false);
         SoundPoolUtil.init(this);

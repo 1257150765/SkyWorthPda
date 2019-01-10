@@ -13,6 +13,7 @@ public class NewLandScanUtil {
     private BroadcastReceiver receiver;
     private Context context;
 
+
     public NewLandScanUtil(Context context) {
         this.context = context;
     }

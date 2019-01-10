@@ -1,16 +1,16 @@
 package ruiduoyi.com.skyworthpda.util;
 
-import android.graphics.Color;
-
 /**
  * Created by Chen on 2018/5/7.
  */
 
 public class Config {
-    //public static final String BASE_URL = "http://cwps.ruiduoyi.com:8080/RdyService.asmx/";
-    public static final String BASE_URL = "http://172.24.176.7:9999/RdyService.asmx/";
+    public static final String BASE_URL = "http://cwps.ruiduoyi.com:8080/RdyService.asmx/";
+    //public static final String BASE_URL = "http://172.24.176.7:9999/RdyService.asmx/";
+    //public static final String BASE_URL = "http://192.168.43.173:8889/RdyService.asmx/";
     public static final String CACHE_DATA_USERNAME = "userName";
     public static final String CACHE_DATA_PWD = "pwd";
+
     public static final String CACHE_DATA_REMEMBER = "isRemember";
     public static final String PERMISSION_FCL = "防错料管理";
     public static final String PERMISSION_FCL_SCSL_CODE = "PDA901D1";
@@ -33,6 +33,9 @@ public class Config {
     public static final String PERMISSION_SMTZZ_DZJC_NAME = "电子检查";
     public static final String PERMISSION_SMTZZ_YZCS_CODE = "PDA909D1";
     public static final String PERMISSION_SMTZZ_YZCS_NAME = "运转测试";
+    public static final String PERMISSION_CP_RKSM = "PDA701D1";
+    public static final String PERMISSION_CP_CKSM = "PDA702D1";
+
 
     public static final String THEME_ID = "1";
     public static final String CACHE_DATA_COMPANYNAME = "companyName";
@@ -49,6 +52,7 @@ public class Config {
     public static final String TYPE_INTERFACE_CHECK = "99994";
     public static final String TYPE_INTERFACE_GZ = "99995";
     public static final String TYPE_INTERFACE_UPLOADLOG = "80001";
+
 
     public static final String TYPE_INTERFACE_GETCOMPANYLIST = "10000";
     public static final String TYPE_INTERFACE_GETSLXX = "10001";
@@ -96,5 +100,23 @@ public class Config {
     public static final long STATU_DIALOG_SHOW_TIME = 3000L;
     public static final String TYPE_INTERFACE_GETMES = "30001";
 
+
+    public static final String TYPE_INTERFACE_GETKW = "ReadStockList";
+    public static final String TYPE_INTERFACE_GETRKRECORD = "StkInResume";//获取有无入库的记录
+    public static final String TYPE_INTERFACE_CHECK_CPCODE = "StockInCheck";
+
+    public static final String TYPE_INTERFACE_RK = "StockInPost";//入库
+
+    public static final String TYPE_INTERFACE_CANCELRK = "StkInCancel";//取消入库
+
+
+    public static final String TYPE_INTERFACE_GETFHD = "LoadShippingNote";//获取发货单
+    public static final String TYPE_INTERFACE_GET_FHDDETAIL = "LoadShippingNote";//获取发货单明细
+
+
+    public static final String TYPE_INTERFACE_CHECK_CPCODE2 = "StockOutCheck";//出货条码验证
+    public static final String TYPE_INTERFACE_CANCELCK = "StkOutCancel";
+    public static final String TYPE_INTERFACE_CK = "StockOutPost";
+    public static final String TYPE_INTERFACE_GETCKRECORD = "StkOutResume";
 
 }

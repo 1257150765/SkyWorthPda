@@ -17,17 +17,28 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
+import ruiduoyi.com.skyworthpda.model.bean.CKBean;
+import ruiduoyi.com.skyworthpda.model.bean.CKRecordBean;
+import ruiduoyi.com.skyworthpda.model.bean.CancelCKBean;
+import ruiduoyi.com.skyworthpda.model.bean.CancelRKBean;
 import ruiduoyi.com.skyworthpda.model.bean.CheckQRCODEBean;
 import ruiduoyi.com.skyworthpda.model.bean.CheckZWBean;
+import ruiduoyi.com.skyworthpda.model.bean.CpCodeBean;
+import ruiduoyi.com.skyworthpda.model.bean.FhdBean;
+import ruiduoyi.com.skyworthpda.model.bean.FhdDetailBean;
 import ruiduoyi.com.skyworthpda.model.bean.GzBean;
 import ruiduoyi.com.skyworthpda.model.bean.HaveRecordBean;
+import ruiduoyi.com.skyworthpda.model.bean.KwBean;
 import ruiduoyi.com.skyworthpda.model.bean.LoginBean;
 import ruiduoyi.com.skyworthpda.model.bean.CompanyBean;
 import ruiduoyi.com.skyworthpda.model.bean.MesBean;
 import ruiduoyi.com.skyworthpda.model.bean.PGXJBean;
 import ruiduoyi.com.skyworthpda.model.bean.PGXJRecordBean;
 import ruiduoyi.com.skyworthpda.model.bean.PermissionBean;
+import ruiduoyi.com.skyworthpda.model.bean.RKBean;
+import ruiduoyi.com.skyworthpda.model.bean.RKRecordBean;
 import ruiduoyi.com.skyworthpda.model.bean.SCSLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SCXLBean;
 import ruiduoyi.com.skyworthpda.model.bean.SLQRBean;
@@ -51,6 +62,7 @@ import static ruiduoyi.com.skyworthpda.util.Config.BASE_URL;
  */
 
 public class RetrofitManager {
+    public static  String MAC = "";
 
     static {
         init();
@@ -69,19 +81,21 @@ public class RetrofitManager {
 
     static Retrofit retrofit;
     public static void init(){
+
         Interceptor logInterceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
-               HttpUrl.Builder builder = request.url().newBuilder()
-                       .scheme(request.url().scheme())
-                       .host(request.url().host());
-               if (!"".equals(token)){
-                   builder.addQueryParameter("key_tokenid",token);
-               }
-               if (!"".equals(companyName)){
-                   builder.addQueryParameter("key_srvid",companyName);
-               }
+                HttpUrl.Builder builder = request.url().newBuilder()
+                        .scheme(request.url().scheme())
+                        .host(request.url().host());
+                if (!"".equals(token)){
+                    builder.addQueryParameter("key_tokenid",token);
+                }
+                if (!"".equals(companyName)){
+                    builder.addQueryParameter("key_srvid",companyName);
+                }
+                builder.addQueryParameter("key_Mac",MAC);
                 Request request1 = request.newBuilder()
                         .url(builder.build())
                         .method(request.method(),request.body())
@@ -132,6 +146,7 @@ public class RetrofitManager {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
     public static Observable<GzBean> getGz(){
         return retrofit.create(Api.class).getGz(Config.TYPE_INTERFACE_XB,"YZCS")
                 .subscribeOn(Schedulers.io())
@@ -330,6 +345,81 @@ public class RetrofitManager {
         setCompanyName("");
     }
 
+    public static Observable<KwBean> getKw(){
+        return retrofit.create(Api.class).getKw(Config.TYPE_INTERFACE_GETKW).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+
+    }
+
+    //入库时验证成品条码
+    public static Observable<CpCodeBean> checkCPCODE(String code) {
+        return retrofit.create(Api.class).checkCPCODE(Config.TYPE_INTERFACE_CHECK_CPCODE,code).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    //入库
+    public static Observable<RKBean> rk(String kwCode,String jsonData,String djbh) {
+        return retrofit.create(Api.class).rk(Config.TYPE_INTERFACE_RK,kwCode,jsonData,djbh)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+    public static Observable<CancelRKBean> cancelRk(String djbh, String tmJson) {
+        return retrofit.create(Api.class).cancelRk(Config.TYPE_INTERFACE_CANCELRK,djbh,tmJson)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+    public static Observable<RKRecordBean> getRkRecord() {
+        return retrofit.create(Api.class).getRkRecord(Config.TYPE_INTERFACE_GETRKRECORD)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+
+    public static Observable<FhdBean> getFhd(String djbh) {
+        //0获取发货单，1获取发货单明细
+        return retrofit.create(Api.class).getFhd(Config.TYPE_INTERFACE_GETFHD,djbh,"0")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+    public static Observable<FhdDetailBean> getFhdDetail(String djbh) {
+        //0获取发货单，1获取发货单明细
+        return retrofit.create(Api.class).getFhdDetail(Config.TYPE_INTERFACE_GET_FHDDETAIL,djbh,"1")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    //出库时验证成品条码
+    public static Observable<CpCodeBean> checkCPCODE2(String djbh, String code) {
+        return retrofit.create(Api.class).checkCPCODE2(Config.TYPE_INTERFACE_CHECK_CPCODE2,djbh,code).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static Observable<CancelCKBean> cancelCk(String djbh, String tmxh) {
+        return retrofit.create(Api.class).cancelCk(Config.TYPE_INTERFACE_CANCELCK,djbh,tmxh)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static Observable<CKBean> ck(String key_shiplist, String key_scanlist, String djbh) {
+        return retrofit.create(Api.class).ck(Config.TYPE_INTERFACE_CK,key_shiplist,key_scanlist,djbh)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+
+    public static Observable<CKRecordBean> getCkRecord() {
+        return retrofit.create(Api.class).getCkRecord(Config.TYPE_INTERFACE_GETCKRECORD)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 
 
     interface Api{
@@ -397,6 +487,42 @@ public class RetrofitManager {
 
         @GET("SmtPDADataDeal")
         Observable<UploadLogBean> uploadLog(@Query("key_prgid") String key_prgid,@Query("key_Mac") String key_Mac,@Query("key_ErrMsg") String key_ErrMsg);
+
+        @GET("SmtPDADataDeal")
+        Observable<KwBean> getKw(@Query("key_prgid") String key_prgid);
+
+        @GET("SmtPDADataDeal")
+        Observable<CpCodeBean> checkCPCODE(@Query("key_prgid") String key_prgid, @Query("key_tmxh") String code);
+
+        @GET("SmtPDADataDeal")
+        Observable<CpCodeBean> checkCPCODE2(@Query("key_prgid") String key_prgid,@Query("key_ShipNo") String key_ShipNo, @Query("key_tmxh") String code);
+
+        @GET("SmtPDADataDeal")
+        Observable<RKBean> rk(@Query("key_prgid") String key_prgid, @Query("key_stkid")String kwCode, @Query("key_scanlist")String jsonData, @Query("key_djbh")String djbh);
+
+        @GET("SmtPDADataDeal")
+        Observable<CancelRKBean> cancelRk(@Query("key_prgid") String key_prgid, @Query("key_djbh") String djbh, @Query("key_tmxh")String tmJson);
+
+        @GET("SmtPDADataDeal")
+        Observable<RKRecordBean> getRkRecord(@Query("key_prgid") String key_prgid);
+
+
+        @GET("SmtPDADataDeal")
+        Observable<FhdBean> getFhd(@Query("key_prgid") String key_prgid, @Query("key_Djbh") String key_Djbh, @Query("key_flag") String key_flag);
+
+        @GET("SmtPDADataDeal")
+        Observable<FhdDetailBean> getFhdDetail(@Query("key_prgid") String key_prgid, @Query("key_Djbh") String key_Djbh, @Query("key_flag") String key_flag);
+
+
+        @GET("SmtPDADataDeal")
+        Observable<CancelCKBean> cancelCk(@Query("key_prgid") String key_prgid, @Query("key_djbh") String djbh, @Query("key_tmxh")String tmxh);
+
+        @POST("SmtPDADataDeal")
+        Observable<CKBean> ck(@Query("key_prgid") String key_prgid, @Query("key_shiplist") String key_shiplist, @Query("key_scanlist") String key_scanlist, @Query("key_djbh")String djbh);
+
+
+        @GET("SmtPDADataDeal")
+        Observable<CKRecordBean> getCkRecord(@Query("key_prgid") String key_prgid);
 
     }
 }

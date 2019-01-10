@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
@@ -149,14 +148,16 @@ public class LoginActivity extends BaseScanActivity implements LoginContact.View
         for (CompanyBean.UcDataBean bean:companyNameList){
             data.add(bean.getSrvName());
         }
-
         spCompanyname.setAdapter(new ArrayAdapter<String>(this, R.layout.item_spinner, data));
         for (int i = 0; i < companyNameList.size(); i++) {
             if (code.equals(companyNameList.get(i).getSrvID())){
                 spCompanyname.setSelection(i);
+                companyBean = companyNameList.get(i);
             }
         }
-        companyBean = companyNameList.get(0);
+        if (companyBean==null){
+            companyBean = companyNameList.get(0);
+        }
         //加载公司后检查更新
         //如果大于等于6.0 并且还没有授权
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

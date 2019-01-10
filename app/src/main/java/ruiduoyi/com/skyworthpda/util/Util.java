@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-
-import ruiduoyi.com.skyworthpda.App;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 
 /**
  * Created by Chen on 2018/6/5.
@@ -62,5 +62,12 @@ public class Util {
         localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
         localIntent.setData(Uri.fromParts("package", context.getPackageName(), null));
         context.startActivity(localIntent);
+    }
+    public static String getMac(Context context) {
+        String mac = "";
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
+        mac = info.getMacAddress();
+        return mac;
     }
 }

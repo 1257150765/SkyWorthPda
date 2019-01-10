@@ -18,7 +18,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Xml;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -376,12 +375,22 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                         break;
                     case Config.PERMISSION_SMTZZ_YSJBD_CODE:
                         dataImg.add(R.mipmap.ysjbd);
+                        break;
                     case Config.PERMISSION_SMTZZ_KZQDQHBD_CODE:
                         dataImg.add(R.mipmap.kzqbd);
+                        break;
                     case Config.PERMISSION_SMTZZ_DZJC_CODE:
                         dataImg.add(R.mipmap.jzjl);
+                        break;
                     case Config.PERMISSION_SMTZZ_YZCS_CODE:
                         dataImg.add(R.mipmap.jzjl);
+                        break;
+                    case Config.PERMISSION_CP_RKSM:
+                        dataImg.add(R.mipmap.jzjl);
+                        break;
+                    case Config.PERMISSION_CP_CKSM:
+                        dataImg.add(R.mipmap.jzjl);
+                        break;
                     default:
                         dataImg.add(R.mipmap.unknown);
                         break;
@@ -435,6 +444,14 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                     case Config.PERMISSION_SMTZZ_YZCS_CODE:
                         gotoYzcs(bean.getG_cxmc(), bean.getG_cxdm());
                         break;
+                    //运转测试
+                    case Config.PERMISSION_CP_RKSM:
+                        gotoRksm();
+                        break;
+                    //运转测试
+                    case Config.PERMISSION_CP_CKSM:
+                        gotoCksm();
+                        break;
                     default:
                         showSnakeBar("敬请期待");
                         break;
@@ -442,6 +459,15 @@ public class MainActivity extends BaseActivity implements MainContact.View {
                 return true;
             }
         });
+    }
+
+    private void gotoRksm() {
+        Intent intent = new Intent(MainActivity.this, RKSMActivity.class);
+        startActivity(intent);
+    }
+    private void gotoCksm() {
+        Intent intent = new Intent(MainActivity.this, FhdActivity.class);
+        startActivity(intent);
     }
 
     private void gotoYzcs(String startTypeName, String startTypeCode) {
@@ -517,5 +543,4 @@ public class MainActivity extends BaseActivity implements MainContact.View {
         }
 
     }
-
 }
